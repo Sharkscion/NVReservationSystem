@@ -13,8 +13,8 @@
         public InvalidNameException(string? message, Exception? innerException)
             : base(message, innerException) { }
 
-        public InvalidNameException(string? paramName, string? message)
-            : base(paramName, message) { }
+        public InvalidNameException(string? message, string? paramName)
+            : base(message, paramName) { }
     }
 
     public class AgeLimitException : ArgumentOutOfRangeException

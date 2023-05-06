@@ -38,8 +38,8 @@
         public InvalidStationFormatException(string? message, Exception? innerException)
             : base(message, innerException) { }
 
-        public InvalidStationFormatException(string? paramName, string? message)
-            : base(paramName, message) { }
+        public InvalidStationFormatException(string? message, string? paramName)
+            : base(message, paramName) { }
     }
 
     public class InvalidMarketPairException : ArgumentException
@@ -83,7 +83,7 @@
         public InvalidFlightTimeException(string? message, Exception? innerException)
             : base(message, innerException) { }
 
-        public InvalidFlightTimeException(string? paramName, string? message)
-            : base(paramName, message) { }
+        public InvalidFlightTimeException(string? message, string? paramName)
+            : base(message, paramName) { }
     }
 }
