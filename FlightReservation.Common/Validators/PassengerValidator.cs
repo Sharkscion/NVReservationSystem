@@ -6,9 +6,7 @@ namespace FlightReservation.Common.Validators
     {
         public static bool IsNameValid(string value)
         {
-            bool isEmpty = value.Trim() == string.Empty;
-
-            if (isEmpty)
+            if (string.IsNullOrEmpty(value?.Trim()))
             {
                 return false;
             }

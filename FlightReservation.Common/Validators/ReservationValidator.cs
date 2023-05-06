@@ -17,6 +17,11 @@ namespace FlightReservation.Common.Validators
 
         public static bool IsBookingReferenceFormatValid(string value)
         {
+            if (string.IsNullOrEmpty(value?.Trim()))
+            {
+                return false;
+            }
+
             string pattern = @"^[A-Z][A-Z0-9]{5}$";
             if (!Regex.IsMatch(value, pattern))
             {

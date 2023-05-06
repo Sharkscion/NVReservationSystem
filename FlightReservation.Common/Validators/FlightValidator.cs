@@ -6,8 +6,7 @@ namespace FlightReservation.Common.Validators
     {
         public static bool IsAirlineCodeValid(string value)
         {
-            bool isEmpty = value.Trim() == string.Empty;
-            if (isEmpty)
+            if (string.IsNullOrEmpty(value?.Trim()))
             {
                 return false;
             }
@@ -41,8 +40,7 @@ namespace FlightReservation.Common.Validators
 
         public static bool IsStationFormatValid(string value)
         {
-            bool isEmpty = value.Trim() == string.Empty;
-            if (isEmpty)
+            if (string.IsNullOrEmpty(value?.Trim()))
             {
                 return false;
             }
