@@ -1,6 +1,6 @@
 ﻿namespace FlightReservation.Data.Reservation
 {
-    public class MaxPassengerCountReachedException : ArgumentException
+    public class MaxPassengerCountReachedException : ArgumentOutOfRangeException
     {
         private const string DEFAULT_MESSAGE = "Max passenger count per booking has been reached.";
 
@@ -42,7 +42,7 @@
             : base(message, innerException) { }
     }
 
-    public class InvalidPNRException : ArgumentOutOfRangeException
+    public class InvalidPNRException : ArgumentException
     {
         private const string DEFAULT_MESSAGE = "PNR is invalid.";
 

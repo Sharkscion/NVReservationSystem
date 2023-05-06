@@ -1,6 +1,6 @@
 ﻿namespace FlightReservation.Data.Flight
 {
-    public class InvalidAirlineCodeException : ArgumentOutOfRangeException
+    public class InvalidAirlineCodeException : ArgumentException
     {
         private const string DEFAULT_MESSAGE = "Invalid Airline Code.";
 
@@ -28,7 +28,7 @@
             : base(message, innerException) { }
     }
 
-    public class InvalidStationFormatException : ArgumentOutOfRangeException
+    public class InvalidStationFormatException : ArgumentException
     {
         private const string DEFAULT_MESSAGE = "Station contains an invalid format.";
 
@@ -73,7 +73,7 @@
             : base(message, innerException) { }
     }
 
-    public class InvalidFlightTimeException : ArgumentOutOfRangeException
+    public class InvalidFlightTimeException : ArgumentException
     {
         private const string DEFAULT_MESSAGE = "Flight time is invalid.";
 

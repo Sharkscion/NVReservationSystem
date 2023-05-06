@@ -1,6 +1,6 @@
 ﻿namespace FlightReservation.Data.Passenger
 {
-    public class InvalidNameException : ArgumentOutOfRangeException
+    public class InvalidNameException : ArgumentException
     {
         private const string DEFAULT_MESSAGE = "Name is invalid.";
 
