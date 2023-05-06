@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlightReservation", "Flight
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlightReservation.UI", "..\FlightReservation.UI\FlightReservation.UI.csproj", "{78B46E2F-3607-4417-A0F4-054AB7774F65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightReservation.Common", "..\FlightReservation.Common\FlightReservation.Common.csproj", "{BCC3F71E-E2ED-437D-9503-C47A8A4689C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlightReservation.Common", "..\FlightReservation.Common\FlightReservation.Common.csproj", "{BCC3F71E-E2ED-437D-9503-C47A8A4689C9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightReservation.Common.Test", "..\FlightReservation.Common.Test\FlightReservation.Common.Test.csproj", "{F2FCE344-D12E-473C-973E-D41CA5F9E760}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{BCC3F71E-E2ED-437D-9503-C47A8A4689C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCC3F71E-E2ED-437D-9503-C47A8A4689C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCC3F71E-E2ED-437D-9503-C47A8A4689C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2FCE344-D12E-473C-973E-D41CA5F9E760}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2FCE344-D12E-473C-973E-D41CA5F9E760}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2FCE344-D12E-473C-973E-D41CA5F9E760}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2FCE344-D12E-473C-973E-D41CA5F9E760}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
