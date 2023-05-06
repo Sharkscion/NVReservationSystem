@@ -14,6 +14,6 @@ namespace FlightReservation.Services.Contracts
             string airlineCode,
             int flightNumber
         );
-        IFlight? Find(int flightNumber, string airlineCode, string origin, string destination);
+        bool DoesExists(IFlight flight);
     }
 }

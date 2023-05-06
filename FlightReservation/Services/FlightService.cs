@@ -1,4 +1,5 @@
-﻿using FlightReservation.Data.Contracts;
+﻿using FlightReservation.Comparers;
+using FlightReservation.Data.Contracts;
 using FlightReservation.Data.Flight;
 using FlightReservation.Repositories.Contracts;
 using FlightReservation.Services.Contracts;
@@ -16,38 +17,18 @@ namespace FlightReservation.Services
 
         public void Create(IFlight flight)
         {
-            IFlight? existingFlight = Find(
-                airlineCode: flight.AirlineCode,
-                flightNumber: flight.FlightNumber,
-                origin: flight.DepartureStation,
-                destination: flight.ArrivalStation
-            );
-
-            if (existingFlight is not null)
+            if (DoesExists(flight))
             {
-                throw new DuplicateFlightException($"Duplicate Flight: {existingFlight}");
+                throw new DuplicateFlightException($"Duplicate Flight: {flight}");
             }
 
             _flightRepository.Create(flight);
         }
 
-        public IFlight? Find(
-            int flightNumber,
-            string airlineCode,
-            string origin,
-            string destination
-        )
+        public bool DoesExists(IFlight flight)
         {
-            return _flightRepository
-                .List()
-                .Where(
-                    (flight) =>
-                        flight.FlightNumber == flightNumber
-                        && flight.AirlineCode == airlineCode
-                        && flight.DepartureStation == origin
-                        && flight.ArrivalStation == destination
-                )
-                .FirstOrDefault();
+            var equalityComparer = new FlightEqualityComparer();
+            return _flightRepository.List().Contains(flight, equalityComparer);
         }
 
         public IEnumerable<IFlight> FindAllHaving(int flightNumber)

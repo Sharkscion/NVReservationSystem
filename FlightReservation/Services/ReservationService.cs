@@ -22,16 +22,7 @@ namespace FlightReservation.Services
 
         public string Create(IReservation reservation)
         {
-            IFlight flightInfo = reservation.FlightInfo;
-
-            IFlight? existingFlight = _flightService.Find(
-                flightNumber: flightInfo.FlightNumber,
-                airlineCode: flightInfo.AirlineCode,
-                origin: flightInfo.DepartureStation,
-                destination: flightInfo.ArrivalStation
-            );
-
-            if (existingFlight is null)
+            if (!_flightService.DoesExists(reservation.FlightInfo))
             {
                 throw new FlightDoesNotExistException("Flight does not exists.");
             }
