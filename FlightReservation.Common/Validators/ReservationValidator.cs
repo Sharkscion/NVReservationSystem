@@ -4,7 +4,6 @@ namespace FlightReservation.Common.Validators
 {
     public static class ReservationValidator
     {
-
         public static bool IsFlightDateValid(DateTime value)
         {
             bool isOnOrAfterToday = value.Date >= DateTime.Now.Date;

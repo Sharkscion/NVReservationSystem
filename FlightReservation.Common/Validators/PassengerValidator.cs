@@ -24,15 +24,14 @@ namespace FlightReservation.Common.Validators
 
         public static bool IsBirthDateValid(DateTime value)
         {
-            bool isAtleast16DaysOld =
-                DateTime.Now.Subtract(value).TotalDays >= 16;
+            bool isAtleast16DaysOld = DateTime.Now.Subtract(value).TotalDays >= 16;
 
             if (!isAtleast16DaysOld)
             {
                 return false;
             }
 
-            return true;   
+            return true;
         }
     }
 }

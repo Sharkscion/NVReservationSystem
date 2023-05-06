@@ -81,21 +81,22 @@ namespace FlightReservation.UI.Views.Reservation
 
         private void displaySearchedReservation(IReservation reservation)
         {
-            Console.WriteLine($"Flight Date: {reservation.FlightDate}");
+            Console.WriteLine($"Flight Date: {reservation.FlightDate.ToShortDateString()}");
             Console.WriteLine();
 
-            Console.WriteLine(
-                $"Flight Designator: {reservation.FlightInfo.AirlineCode} {reservation.FlightInfo.FlightNumber}"
-            );
-            Console.WriteLine(
-                $"Origin/Destination: {reservation.FlightInfo.DepartureStation} -> {reservation.FlightInfo.ArrivalStation}"
-            );
-            Console.WriteLine(
-                $"Scheduled Departure Time: {reservation.FlightInfo.DepartureScheduledTime}"
-            );
-            Console.WriteLine(
-                $"Scheduled Arrival Time: {reservation.FlightInfo.ArrivalScheduledTime}"
-            );
+            string flightDesignator =
+                reservation.FlightInfo.AirlineCode + " " + reservation.FlightInfo.FlightNumber;
+            string originDestination =
+                reservation.FlightInfo.DepartureStation
+                + " -> "
+                + reservation.FlightInfo.ArrivalStation;
+            string flightTime =
+                reservation.FlightInfo.DepartureScheduledTime.ToString("HH:mm")
+                + "-"
+                + reservation.FlightInfo.ArrivalScheduledTime.ToString("HH:mm");
+
+            Console.WriteLine($"Booked Flight Details_______");
+            Console.WriteLine($"{flightDesignator} {originDestination} {flightTime}");
             Console.WriteLine();
 
             int count = 1;
@@ -104,6 +105,8 @@ namespace FlightReservation.UI.Views.Reservation
                 Console.WriteLine($"Passenger #{count}_________________");
                 Console.WriteLine($"Name: {passenger.FirstName} {passenger.LastName}");
                 Console.WriteLine($"Birth Date: {passenger.BirthDate.ToShortDateString()}");
+                Console.WriteLine($"Age: {passenger.Age}");
+                Console.WriteLine();
             }
         }
 
