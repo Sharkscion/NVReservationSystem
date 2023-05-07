@@ -5,11 +5,11 @@ using System.Text;
 
 namespace FlightReservation.Test.Services.Fixtures
 {
-    public class FakeRepository : IFlightRepository, IDisposable
+    public class FakeFlightRepository : IFlightRepository, IDisposable
     {
         private readonly HashSet<IFlight> _flights;
 
-        public FakeRepository()
+        public FakeFlightRepository()
         {
             _flights = new HashSet<IFlight>
             {
