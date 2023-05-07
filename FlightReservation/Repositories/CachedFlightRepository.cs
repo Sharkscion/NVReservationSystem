@@ -17,7 +17,7 @@ namespace FlightReservation.Repositories
             return _flights.AsQueryable();
         }
 
-        public bool Create(IFlight item)
+        public bool Save(IFlight item)
         {
             _flights.Add(item);
             return true;
