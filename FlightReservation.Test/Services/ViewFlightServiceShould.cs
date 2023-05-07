@@ -21,7 +21,7 @@ namespace FlightReservation.Test.Services
         }
 
         [Fact]
-        public void ReturnFlights_HavingAirlineCode()
+        public void ReturnFlights_MatchingAirlineCode()
         {
             string airlineCode = "NV";
 
@@ -32,7 +32,7 @@ namespace FlightReservation.Test.Services
         }
 
         [Fact]
-        public void ReturnFlights_HavingFlightNumber()
+        public void ReturnFlights_MatchingFlightNumber()
         {
             int flightNumber = 1;
 
@@ -43,7 +43,7 @@ namespace FlightReservation.Test.Services
         }
 
         [Fact]
-        public void ReturnFlights_HavingOriginDestination()
+        public void ReturnFlights_MatchingOriginDestination()
         {
             string origin = "MNL";
             string destination = "CEB";
@@ -58,7 +58,7 @@ namespace FlightReservation.Test.Services
         }
 
         [Fact]
-        public void ReturnFlights_HavingFlightDesignator()
+        public void ReturnFlights_MatchingFlightDesignator()
         {
             string airlineCode = "NV";
             int flightNumber = 1;

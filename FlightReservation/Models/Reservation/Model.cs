@@ -32,6 +32,11 @@ namespace FlightReservation.Models.Reservation
             get { return _passengers; }
             set
             {
+                if (value.Count() == 0)
+                {
+                    throw new NoPassengersException("Reservation must have at least 1 passenger.");
+                }
+
                 if (value.Count() > MAX_PASSENGER_COUNT)
                 {
                     throw new MaxPassengerCountReachedException(
