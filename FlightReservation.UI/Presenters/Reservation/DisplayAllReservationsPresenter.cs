@@ -1,4 +1,4 @@
-﻿using FlightReservation.Data.Contracts;
+﻿using FlightReservation.Models.Contracts;
 using FlightReservation.Services.Contracts;
 using FlightReservation.UI.Presenters.Reservation.Contracts;
 using FlightReservation.UI.Views.Contracts;

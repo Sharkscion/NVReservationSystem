@@ -1,5 +1,5 @@
 ﻿using FlightReservation.Common.Validators;
-using FlightReservation.Data.Flight;
+using FlightReservation.Models.Flight;
 using FlightReservation.Services.Contracts;
 using FlightReservation.UI.Common;
 using FlightReservation.UI.Presenters.FlightMaintenance.Contracts;

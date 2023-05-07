@@ -1,6 +1,6 @@
-﻿namespace FlightReservation.Data.Flight
+﻿namespace FlightReservation.Models.Flight
 {
-    public class InvalidAirlineCodeException : ArgumentOutOfRangeException
+    public class InvalidAirlineCodeException : ArgumentException
     {
         private const string DEFAULT_MESSAGE = "Invalid Airline Code.";
 
@@ -28,7 +28,7 @@
             : base(message, innerException) { }
     }
 
-    public class InvalidStationFormatException : ArgumentOutOfRangeException
+    public class InvalidStationFormatException : ArgumentException
     {
         private const string DEFAULT_MESSAGE = "Station contains an invalid format.";
 
@@ -38,8 +38,8 @@
         public InvalidStationFormatException(string? message, Exception? innerException)
             : base(message, innerException) { }
 
-        public InvalidStationFormatException(string? paramName, string? message)
-            : base(paramName, message) { }
+        public InvalidStationFormatException(string? message, string? paramName)
+            : base(message, paramName) { }
     }
 
     public class InvalidMarketPairException : ArgumentException
@@ -73,7 +73,7 @@
             : base(message, innerException) { }
     }
 
-    public class InvalidFlightTimeException : ArgumentOutOfRangeException
+    public class InvalidFlightTimeException : ArgumentException
     {
         private const string DEFAULT_MESSAGE = "Flight time is invalid.";
 
@@ -83,7 +83,7 @@
         public InvalidFlightTimeException(string? message, Exception? innerException)
             : base(message, innerException) { }
 
-        public InvalidFlightTimeException(string? paramName, string? message)
-            : base(paramName, message) { }
+        public InvalidFlightTimeException(string? message, string? paramName)
+            : base(message, paramName) { }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using FlightReservation.Common.Validators;
-using FlightReservation.Data.Contracts;
+using FlightReservation.Models.Contracts;
 
-namespace FlightReservation.Data.Reservation
+namespace FlightReservation.Models.Reservation
 {
     public class ReservationModel : IReservation
     {
@@ -42,6 +42,8 @@ namespace FlightReservation.Data.Reservation
                 _passengers = value;
             }
         }
+
+        public ReservationModel() { }
 
         public ReservationModel(
             IFlight flightInfo,

@@ -1,7 +1,7 @@
 ﻿using FlightReservation.Common.Validators;
-using FlightReservation.Data.Flight;
-using FlightReservation.Data.Passenger;
-using FlightReservation.Data.Reservation;
+using FlightReservation.Models.Flight;
+using FlightReservation.Models.Passenger;
+using FlightReservation.Models.Reservation;
 using FlightReservation.Services.Contracts;
 using FlightReservation.UI.Common;
 using FlightReservation.UI.Presenters.Reservation.Contracts;
