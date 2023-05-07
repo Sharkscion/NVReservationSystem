@@ -60,7 +60,6 @@ namespace FlightReservation.Test.Services
             Assert.False(exists);
         }
 
-
         [Fact]
         public void RaiseError_OnDuplicateFlight()
         {
