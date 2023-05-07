@@ -14,6 +14,20 @@
             : base(message, innerException) { }
     }
 
+    public class NoPassengersException : ArgumentException
+    {
+        private const string DEFAULT_MESSAGE = "Reservation does not have any passengers.";
+
+        public NoPassengersException()
+            : base(DEFAULT_MESSAGE) { }
+
+        public NoPassengersException(string? message)
+            : base(message) { }
+
+        public NoPassengersException(string? message, Exception? innerException)
+            : base(message, innerException) { }
+    }
+
     public class InvalidFlightDateException : ArgumentOutOfRangeException
     {
         private const string DEFAULT_MESSAGE = "Flight date is invalid.";
