@@ -43,6 +43,8 @@ namespace FlightReservation.Models.Reservation
             }
         }
 
+        public ReservationModel() { }
+
         public ReservationModel(
             IFlight flightInfo,
             DateTime flightDate,
