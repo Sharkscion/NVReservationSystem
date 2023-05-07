@@ -29,7 +29,7 @@ namespace FlightReservation.Test.Services
         }
 
         [Fact]
-        public void ReturnTrue_IfFlightExists()
+        public void ReturnTrue_WhenFlight_Exists()
         {
             var model = new FlightModel
             {
@@ -45,7 +45,7 @@ namespace FlightReservation.Test.Services
         }
 
         [Fact]
-        public void ReturnFalse_IfFlightDoesNotExists()
+        public void ReturnFalse_WhenFlight_DoesNotExists()
         {
             var model = new FlightModel
             {
