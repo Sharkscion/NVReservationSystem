@@ -8,7 +8,8 @@ namespace FlightReservation.UI.Views.FlightMaintenance.Contracts
     {
         event InputChangedEventHandler<string> AirlineCodeChanged;
         event SubmitEventHandler<SubmitEventArgs<string>> Submitted;
+
+        public string AirlineCode { get; set; }
         void Display(IEnumerable<IFlight> flights);
-        void SetAirlineCodeError(string message);
     }
 }

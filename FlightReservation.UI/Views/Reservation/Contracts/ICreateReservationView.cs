@@ -16,13 +16,10 @@ namespace FlightReservation.UI.Views.Reservation.Contracts
         event SubmitEventHandler<SearchAvailableFlightEventArgs> FlightSearched;
         event SubmitEventHandler<ReservationEventArgs> Submitted;
 
-        void SetFlightDateError(string message);
-        void SetAirlineCodeError(string message);
-        void SetFlightNumberError(string message);
-        void SetFirstNameError(string message);
-        void SetLastNameError(string message);
-        void SetBirthDateError(string message);
-        void AlertError(string header, string message);
+        public DateTime FlightDate { get; set; }
+        public string AirlineCode { get; set; }
+        public int FlightNumber { get; set; }
+
         void DisplayBookingConfirmation(string bookingReference);
         void DisplayAvailableFlights(IEnumerable<IFlight> flights);
     }

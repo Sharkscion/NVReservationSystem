@@ -3,17 +3,21 @@ using FlightReservation.UI.Common;
 using FlightReservation.UI.Views.Contracts;
 using FlightReservation.UI.Views.FlightMaintenance.Contracts;
 using FlightReservation.UI.Views.Utilities;
-using System.Text;
 
 namespace FlightReservation.UI.Views.FlightMaintenance
 {
     internal class SearchByAirlineCodePage : BasePage, ISearchByAirlineCodeView
     {
-        private string _airlineCode;
         private bool _isFormValid;
 
         public event IFormView.InputChangedEventHandler<string> AirlineCodeChanged;
         public event IFormView.SubmitEventHandler<SubmitEventArgs<string>> Submitted;
+
+        public string AirlineCode { get; set; }
+        public bool IsFormValid
+        {
+            get { return _isFormValid; }
+        }
 
         public SearchByAirlineCodePage(string title)
             : base(title)
@@ -29,7 +33,7 @@ namespace FlightReservation.UI.Views.FlightMaintenance
 
             if (flights.Count() == 0)
             {
-                Console.WriteLine($"No flights found with airline code ({_airlineCode})...");
+                Console.WriteLine($"No flights found with airline code ({AirlineCode})...");
             }
             else
             {
@@ -41,15 +45,8 @@ namespace FlightReservation.UI.Views.FlightMaintenance
 
         public void Reset()
         {
-            _airlineCode = string.Empty;
+            AirlineCode = string.Empty;
             _isFormValid = true;
-        }
-
-        public void SetAirlineCodeError(string message)
-        {
-            _isFormValid = false;
-            Console.WriteLine(message);
-            Console.WriteLine();
         }
 
         public override void ShowContent()
@@ -78,14 +75,32 @@ namespace FlightReservation.UI.Views.FlightMaintenance
 
         private void OnAirlineCodeChanged(string airlineCode)
         {
-            _airlineCode = airlineCode;
-            AirlineCodeChanged?.Invoke(this, new ChangeEventArgs<string>(_airlineCode));
+            AirlineCode = airlineCode;
+            AirlineCodeChanged?.Invoke(this, new ChangeEventArgs<string>(AirlineCode));
         }
 
         private void OnSubmitted()
         {
-            var args = new SubmitEventArgs<string>(_airlineCode);
+            var args = new SubmitEventArgs<string>(AirlineCode);
             Submitted?.Invoke(this, args);
+        }
+
+        public void SetFieldError(string paramName, string message)
+        {
+            _isFormValid = false;
+            Console.WriteLine(message);
+            Console.WriteLine();
+        }
+
+        public void AlertError(string header, string message)
+        {
+            Console.WriteLine();
+            Console.WriteLine("*****************************************");
+            Console.WriteLine(header);
+            Console.WriteLine(message);
+            Console.WriteLine("*****************************************");
+
+            Console.WriteLine();
         }
     }
 }

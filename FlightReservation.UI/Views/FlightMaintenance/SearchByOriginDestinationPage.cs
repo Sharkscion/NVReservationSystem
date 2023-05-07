@@ -9,8 +9,13 @@ namespace FlightReservation.UI.Views.FlightMaintenance
     internal class SearchByOriginDestinationPage : BasePage, ISearchByOriginDestinationView
     {
         private bool _isFormValid;
-        private string _origin;
-        private string _destination;
+
+        public string DepartureStation { get; set; }
+        public string ArrivalStation { get; set; }
+        public bool IsFormValid
+        {
+            get { return _isFormValid; }
+        }
 
         public event IFormView.InputChangedEventHandler<string> DepartureStationChanged;
         public event IFormView.InputChangedEventHandler<string> ArrivalStationChanged;
@@ -30,7 +35,9 @@ namespace FlightReservation.UI.Views.FlightMaintenance
 
             if (flights.Count() == 0)
             {
-                Console.WriteLine($"No flights going from {_origin} to {_destination}...");
+                Console.WriteLine(
+                    $"No flights going from {DepartureStation} to {ArrivalStation}..."
+                );
             }
             else
             {
@@ -43,22 +50,8 @@ namespace FlightReservation.UI.Views.FlightMaintenance
         public void Reset()
         {
             _isFormValid = true;
-            _origin = string.Empty;
-            _destination = string.Empty;
-        }
-
-        public void SetArrivalStationError(string message)
-        {
-            _isFormValid = false;
-            Console.WriteLine(message);
-            Console.WriteLine();
-        }
-
-        public void SetDepartureStationError(string message)
-        {
-            _isFormValid = false;
-            Console.WriteLine(message);
-            Console.WriteLine();
+            DepartureStation = string.Empty;
+            ArrivalStation = string.Empty;
         }
 
         public override void ShowContent()
@@ -78,7 +71,7 @@ namespace FlightReservation.UI.Views.FlightMaintenance
 
                 if (!_isFormValid)
                 {
-                    Console.WriteLine("Please enter a value...");
+                    SetFieldError(nameof(DepartureStation), "Please enter a value");
                     continue;
                 }
 
@@ -96,7 +89,7 @@ namespace FlightReservation.UI.Views.FlightMaintenance
 
                 if (!_isFormValid)
                 {
-                    Console.WriteLine("Please enter a value...");
+                    SetFieldError(nameof(ArrivalStation), "Please enter a value");
                     continue;
                 }
 
@@ -106,22 +99,40 @@ namespace FlightReservation.UI.Views.FlightMaintenance
 
         private void OnDepartureStationCodeChanged(string value)
         {
-            _origin = value;
-            DepartureStationChanged?.Invoke(this, new ChangeEventArgs<string>(_origin));
+            DepartureStation = value;
+            DepartureStationChanged?.Invoke(this, new ChangeEventArgs<string>(DepartureStation));
         }
 
         private void OnArrivalStationCodeChanged(string value)
         {
-            _destination = value;
-            ArrivalStationChanged?.Invoke(this, new ChangeEventArgs<string>(_destination));
+            ArrivalStation = value;
+            ArrivalStationChanged?.Invoke(this, new ChangeEventArgs<string>(ArrivalStation));
         }
 
         private void OnSubmitted()
         {
-            var data = new Tuple<string, string>(_origin, _destination);
+            var data = new Tuple<string, string>(DepartureStation, ArrivalStation);
             var args = new SubmitEventArgs<Tuple<string, string>>(data);
 
             Submitted?.Invoke(this, args);
+        }
+
+        public void SetFieldError(string paramName, string message)
+        {
+            _isFormValid = false;
+            Console.WriteLine(message);
+            Console.WriteLine();
+        }
+
+        public void AlertError(string header, string message)
+        {
+            Console.WriteLine();
+            Console.WriteLine("*****************************************");
+            Console.WriteLine(header);
+            Console.WriteLine(message);
+            Console.WriteLine("*****************************************");
+
+            Console.WriteLine();
         }
     }
 }

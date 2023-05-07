@@ -9,7 +9,13 @@ namespace FlightReservation.UI.Views.FlightMaintenance
     internal class SearchByFlightNumberPage : BasePage, ISearchByFlightNumberView
     {
         private bool _isFormValid;
-        private int _flightNumber;
+
+        public int FlightNumber { get; set; }
+
+        public bool IsFormValid
+        {
+            get { return _isFormValid; }
+        }
 
         public SearchByFlightNumberPage(string title)
             : base(title)
@@ -28,7 +34,7 @@ namespace FlightReservation.UI.Views.FlightMaintenance
 
             if (flights.Count() == 0)
             {
-                Console.WriteLine($"No flights found with flight number ({_flightNumber})...");
+                Console.WriteLine($"No flights found with flight number ({FlightNumber})...");
             }
             else
             {
@@ -41,14 +47,7 @@ namespace FlightReservation.UI.Views.FlightMaintenance
         public void Reset()
         {
             _isFormValid = true;
-            _flightNumber = -1;
-        }
-
-        public void SetFlightNumberError(string message)
-        {
-            _isFormValid = false;
-            Console.WriteLine(message);
-            Console.WriteLine();
+            FlightNumber = -1;
         }
 
         public override void ShowContent()
@@ -67,7 +66,7 @@ namespace FlightReservation.UI.Views.FlightMaintenance
                 _isFormValid = int.TryParse(input, out int flightNumber);
                 if (!_isFormValid)
                 {
-                    SetFlightNumberError("Please input a numeric value...");
+                    SetFieldError(nameof(FlightNumber), "Please input a numeric value...");
                     continue;
                 }
 
@@ -77,14 +76,32 @@ namespace FlightReservation.UI.Views.FlightMaintenance
 
         private void OnFlightNumberChanged(int flightNumber)
         {
-            _flightNumber = flightNumber;
-            FlightNumberChanged?.Invoke(this, new ChangeEventArgs<int>(_flightNumber));
+            FlightNumber = flightNumber;
+            FlightNumberChanged?.Invoke(this, new ChangeEventArgs<int>(FlightNumber));
         }
 
         private void OnSubmitted()
         {
-            var args = new SubmitEventArgs<int>(_flightNumber);
+            var args = new SubmitEventArgs<int>(FlightNumber);
             Submitted?.Invoke(this, args);
+        }
+
+        public void SetFieldError(string paramName, string message)
+        {
+            _isFormValid = false;
+            Console.WriteLine(message);
+            Console.WriteLine();
+        }
+
+        public void AlertError(string header, string message)
+        {
+            Console.WriteLine();
+            Console.WriteLine("*****************************************");
+            Console.WriteLine(header);
+            Console.WriteLine(message);
+            Console.WriteLine("*****************************************");
+
+            Console.WriteLine();
         }
     }
 }
