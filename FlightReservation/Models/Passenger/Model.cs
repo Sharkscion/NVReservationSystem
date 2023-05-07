@@ -1,12 +1,11 @@
 ﻿using FlightReservation.Common.Validators;
 using FlightReservation.Models.Contracts;
-using FlightReservation.Utilities;
 
 namespace FlightReservation.Models.Passenger
 {
     public class PassengerModel : IPassenger
     {
-        private readonly IDateTimeProvider _dateTimeProvider;
+        private readonly IDateTimeProvider? _dateTimeProvider;
 
         private string _firstName;
         private string _lastName;
@@ -67,10 +66,7 @@ namespace FlightReservation.Models.Passenger
             get { return _age; }
         }
 
-        public PassengerModel()
-        {
-            _dateTimeProvider = new DateTimeProvider();
-        }
+        public PassengerModel() { }
 
         public PassengerModel(IDateTimeProvider dateTimeProvider)
         {
@@ -87,7 +83,8 @@ namespace FlightReservation.Models.Passenger
 
         private void calculateAge()
         {
-            DateTime dateNow = _dateTimeProvider.DateNow;
+            DateTime dateNow = _dateTimeProvider?.GetNow() ?? DateTime.Now;
+
             int daysInAYear = 365;
 
             if (isLeapYear(BirthDate.Year))
