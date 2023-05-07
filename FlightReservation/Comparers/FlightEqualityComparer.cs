@@ -1,4 +1,4 @@
-﻿using FlightReservation.Data.Contracts;
+﻿using FlightReservation.Models.Contracts;
 using System.Diagnostics.CodeAnalysis;
 
 namespace FlightReservation.Comparers

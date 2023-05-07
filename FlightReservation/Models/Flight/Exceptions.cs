@@ -1,4 +1,4 @@
-﻿namespace FlightReservation.Data.Flight
+﻿namespace FlightReservation.Models.Flight
 {
     public class InvalidAirlineCodeException : ArgumentException
     {

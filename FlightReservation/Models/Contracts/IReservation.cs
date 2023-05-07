@@ -1,4 +1,4 @@
-﻿namespace FlightReservation.Data.Contracts
+﻿namespace FlightReservation.Models.Contracts
 {
     public interface IReservation
     {

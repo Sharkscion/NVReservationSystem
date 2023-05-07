@@ -1,7 +1,7 @@
 ﻿using FlightReservation.Common.Validators;
-using FlightReservation.Data.Contracts;
+using FlightReservation.Models.Contracts;
 
-namespace FlightReservation.Data.Passenger
+namespace FlightReservation.Models.Passenger
 {
     public class PassengerModel : IPassenger
     {
@@ -73,7 +73,7 @@ namespace FlightReservation.Data.Passenger
 
         private void calculateAge()
         {
-            _age = DateTime.UtcNow.AddYears(-BirthDate.Year).Year;
+            _age = DateTime.Now.AddYears(-BirthDate.Year).Year;
         }
     }
 }

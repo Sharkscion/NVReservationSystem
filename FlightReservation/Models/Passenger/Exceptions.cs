@@ -1,4 +1,4 @@
-﻿namespace FlightReservation.Data.Passenger
+﻿namespace FlightReservation.Models.Passenger
 {
     public class InvalidNameException : ArgumentException
     {

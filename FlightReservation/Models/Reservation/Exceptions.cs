@@ -1,4 +1,4 @@
-﻿namespace FlightReservation.Data.Reservation
+﻿namespace FlightReservation.Models.Reservation
 {
     public class MaxPassengerCountReachedException : ArgumentOutOfRangeException
     {

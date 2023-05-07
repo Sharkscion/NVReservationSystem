@@ -1,4 +1,4 @@
-using FlightReservation.Data.Flight;
+using FlightReservation.Models.Flight;
 
 namespace FlightReservation.Test.Models
 {
