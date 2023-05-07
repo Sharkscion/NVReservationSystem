@@ -36,7 +36,7 @@ namespace FlightReservation.Test.Models
         [Fact]
         public void RaiseError_MoreThanMaxPassengerCount()
         {
-            var passengers = seedPassengers(count: 6);
+            var passengers = generatePassengers(count: 6);
             var model = new ReservationModel();
 
             Action action = () => model.Passengers = passengers;
@@ -47,7 +47,7 @@ namespace FlightReservation.Test.Models
         [Fact]
         public void RaiseError_InvalidBookingReference()
         {
-            var passengers = seedPassengers(count: 1);
+            var passengers = generatePassengers(count: 1);
             var flight = new FlightModel(
                 airlineCode: "NV",
                 flightNumber: 1234,
@@ -75,7 +75,7 @@ namespace FlightReservation.Test.Models
         [Fact]
         public void CreateNewInstance_WithValidBookingReference()
         {
-            var passengers = seedPassengers(count: 1);
+            var passengers = generatePassengers(count: 1);
 
             var flight = new FlightModel(
                 airlineCode: "NV",
@@ -106,7 +106,7 @@ namespace FlightReservation.Test.Models
             Assert.Equal(initialBooking.Passengers.Count(), confirmedBooking.Passengers.Count());
         }
 
-        private List<PassengerModel> seedPassengers(int count)
+        private List<PassengerModel> generatePassengers(int count)
         {
             var passengers = new List<PassengerModel>();
 
