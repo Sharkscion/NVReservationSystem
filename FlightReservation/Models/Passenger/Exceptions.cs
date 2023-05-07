@@ -19,7 +19,7 @@
 
     public class AgeLimitException : ArgumentOutOfRangeException
     {
-        private const string DEFAULT_MESSAGE = "Age is invalid.";
+        private const string DEFAULT_MESSAGE = "Age is not allowed.";
 
         public AgeLimitException()
             : base(DEFAULT_MESSAGE) { }
