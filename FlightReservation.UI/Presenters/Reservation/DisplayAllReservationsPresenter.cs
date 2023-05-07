@@ -20,11 +20,10 @@ namespace FlightReservation.UI.Presenters.Reservation
             _service = service;
         }
 
-        public void OnSubmitted(IFormView source, EventArgs args)
+        public void OnSubmitted(IDisplayAllReservationsView source, EventArgs args)
         {
             IEnumerable<IReservation> reservations = _service.ViewAll();
             _view.DisplayReservations(reservations);
-            _view.Reset();
         }
     }
 }

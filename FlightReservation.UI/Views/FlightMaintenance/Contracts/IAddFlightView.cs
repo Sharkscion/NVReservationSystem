@@ -13,12 +13,11 @@ namespace FlightReservation.UI.Views.FlightMaintenance.Contracts
         event InputChangedEventHandler<TimeOnly> DepartureScheduledTimeChanged;
         event SubmitEventHandler<FlightEventArgs> Submitted;
 
-        void SetAirlineCodeError(string message);
-        void SetFlightNumberError(string message);
-        void SetArrivalStationError(string message);
-        void SetDepartureStationError(string message);
-        void SetArrivalScheduledTimeError(string message);
-        void SetDepartureScheduledTimeError(string message);
-        void AlertError(string header, string message);
+        public string AirlineCode { get; set; }
+        public int FlightNumber { get; set; }
+        public string DepartureStation { get; set; }
+        public string ArrivalStation { get; set; }
+        public TimeOnly DepartureScheduledTime { get; set; }
+        public TimeOnly ArrivalScheduledTime { get; set; }
     }
 }

@@ -23,7 +23,10 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
             bool isValid = FlightValidator.IsFlightNumberValid(args.Value);
             if (!isValid)
             {
-                _view.SetFlightNumberError("Flight number must be an integer between 1 and 9999.");
+                _view.SetFieldError(
+                    nameof(_view.FlightNumber),
+                    "Flight number must be an integer between 1 and 9999."
+                );
             }
         }
 

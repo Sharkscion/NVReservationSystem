@@ -8,5 +8,24 @@
         public string DepartureStation { get; set; }
         public TimeOnly ArrivalScheduledTime { get; set; }
         public TimeOnly DepartureScheduledTime { get; set; }
+
+        public FlightEventArgs() { }
+
+        public FlightEventArgs(
+            string airlineCode,
+            int flightNumber,
+            string arrivalStation,
+            string departureStation,
+            TimeOnly arrivalScheduledTime,
+            TimeOnly departureScheduledTime
+        )
+        {
+            AirlineCode = airlineCode;
+            FlightNumber = flightNumber;
+            ArrivalStation = arrivalStation;
+            DepartureStation = departureStation;
+            ArrivalScheduledTime = arrivalScheduledTime;
+            DepartureScheduledTime = departureScheduledTime;
+        }
     }
 }

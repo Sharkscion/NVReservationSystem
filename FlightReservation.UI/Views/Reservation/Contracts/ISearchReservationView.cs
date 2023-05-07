@@ -9,7 +9,7 @@ namespace FlightReservation.UI.Views.Reservation.Contracts
         event InputChangedEventHandler<string> PNRChanged;
         event SubmitEventHandler<SubmitEventArgs<string>> Submitted;
 
-        void SetPNRError(string message);
+        public string PNR { get; set; }
         void DisplayReservation(IReservation? reservation);
     }
 }

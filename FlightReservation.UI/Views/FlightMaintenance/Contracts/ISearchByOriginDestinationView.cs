@@ -9,8 +9,10 @@ namespace FlightReservation.UI.Views.FlightMaintenance.Contracts
         event InputChangedEventHandler<string> DepartureStationChanged;
         event InputChangedEventHandler<string> ArrivalStationChanged;
         event SubmitEventHandler<SubmitEventArgs<Tuple<string, string>>> Submitted;
+
+        public string DepartureStation { get; set; }
+        public string ArrivalStation { get; set; }
+
         void Display(IEnumerable<IFlight> flights);
-        void SetDepartureStationError(string message);
-        void SetArrivalStationError(string message);
     }
 }

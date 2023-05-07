@@ -8,8 +8,8 @@ namespace FlightReservation.UI.Views.FlightMaintenance.Contracts
     {
         event InputChangedEventHandler<int> FlightNumberChanged;
         event SubmitEventHandler<SubmitEventArgs<int>> Submitted;
-        void Display(IEnumerable<IFlight> flights);
 
-        void SetFlightNumberError(string message);
+        public int FlightNumber { get; set; }
+        void Display(IEnumerable<IFlight> flights);
     }
 }

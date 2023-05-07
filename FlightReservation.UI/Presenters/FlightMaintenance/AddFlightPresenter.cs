@@ -24,7 +24,8 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
             bool isValid = FlightValidator.IsAirlineCodeValid(args.Value);
             if (!isValid)
             {
-                _view.SetAirlineCodeError(
+                _view.SetFieldError(
+                    nameof(_view.AirlineCode),
                     "Airline code must be 2-3 uppercased-alphanumeric characters "
                         + "where a numeric character could appear at most once."
                 );
@@ -36,31 +37,66 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
             bool isFormatValid = FlightValidator.IsStationFormatValid(args.Value);
             if (!isFormatValid)
             {
-                _view.SetArrivalStationError(
+                _view.SetFieldError(
+                    nameof(_view.ArrivalStation),
                     "Arrival station must be exactly 3 uppercased-alphanumeric characters "
                         + "where the first character is a letter."
+                );
+                return;
+            }
+
+            if (_view.DepartureStation == args.Value)
+            {
+                _view.SetFieldError(
+                    nameof(_view.ArrivalStation),
+                    "Arrival station must not be the same as the Departure Station."
                 );
             }
         }
 
-        public void OnArrivalScheduledTimeChanged(
-            IFormView source,
-            ChangeEventArgs<TimeOnly> args
-        ) { }
+        public void OnArrivalScheduledTimeChanged(IFormView source, ChangeEventArgs<TimeOnly> args)
+        {
+            if (_view.DepartureScheduledTime > args.Value)
+            {
+                _view.SetFieldError(
+                    nameof(_view.ArrivalScheduledTime),
+                    "Arrival scheduled time must be after the departure scheduled time."
+                );
+            }
+        }
 
         public void OnDepartureScheduledTimeChanged(
             IFormView source,
             ChangeEventArgs<TimeOnly> args
-        ) { }
+        )
+        {
+            if (args.Value > _view.ArrivalScheduledTime)
+            {
+                _view.SetFieldError(
+                    nameof(_view.DepartureScheduledTime),
+                    "Departure scheduled time must be before the arrival scheduled time."
+                );
+            }
+        }
 
         public void OnDepartureStationChanged(IFormView source, ChangeEventArgs<string> args)
         {
             bool isFormatValid = FlightValidator.IsStationFormatValid(args.Value);
             if (!isFormatValid)
             {
-                _view.SetArrivalStationError(
+                _view.SetFieldError(
+                    nameof(_view.DepartureStation),
                     "Departure station must be exactly 3 uppercased-alphanumeric characters "
                         + "where the first character is a letter."
+                );
+                return;
+            }
+
+            if (_view.ArrivalStation == args.Value)
+            {
+                _view.SetFieldError(
+                    nameof(_view.DepartureStation),
+                    "Departure station must not be the same as the arrival station."
                 );
             }
         }
@@ -70,7 +106,10 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
             bool isValid = FlightValidator.IsFlightNumberValid(args.Value);
             if (!isValid)
             {
-                _view.SetFlightNumberError("Flight number must be an integer between 1 and 9999.");
+                _view.SetFieldError(
+                    nameof(_view.FlightNumber),
+                    "Flight number must be an integer between 1 and 9999."
+                );
             }
         }
 
@@ -91,23 +130,23 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
             }
             catch (InvalidAirlineCodeException e)
             {
-                _view.SetAirlineCodeError(e.Message);
+                _view.SetFieldError(nameof(_view.AirlineCode), e.Message);
             }
             catch (InvalidFlightNumberException e)
             {
-                _view.SetFlightNumberError(e.Message);
+                _view.SetFieldError(nameof(_view.FlightNumber), e.Message);
             }
             catch (InvalidMarketPairException e)
             {
-                dynamicallyCallViewErrorMethod(paramName: e.ParamName, message: e.Message);
+                _view.SetFieldError(e.ParamName, message: e.Message);
             }
             catch (InvalidStationFormatException e)
             {
-                dynamicallyCallViewErrorMethod(paramName: e.ParamName, message: e.Message);
+                _view.SetFieldError(e.ParamName, message: e.Message);
             }
             catch (InvalidFlightTimeException e)
             {
-                dynamicallyCallViewErrorMethod(paramName: e.ParamName, message: e.Message);
+                _view.SetFieldError(e.ParamName, message: e.Message);
             }
             catch (DuplicateFlightException e)
             {
@@ -121,15 +160,6 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
             {
                 _view.Reset();
             }
-        }
-
-        private void dynamicallyCallViewErrorMethod(string paramName, string message)
-        {
-            var type = Type.GetType(nameof(IAddFlightView));
-            var viewErrorMethod = type?.GetMethod($"Set{paramName}Error");
-
-            object[] parameters = new object[] { message };
-            viewErrorMethod?.Invoke(_view, parameters);
         }
     }
 }

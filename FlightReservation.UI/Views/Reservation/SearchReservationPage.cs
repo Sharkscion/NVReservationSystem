@@ -8,7 +8,13 @@ namespace FlightReservation.UI.Views.Reservation
     internal class SearchReservationPage : BasePage, ISearchReservationView
     {
         private bool _isFormValid;
-        private string _searchTerm;
+
+        public string PNR { get; set; }
+
+        public bool IsFormValid
+        {
+            get { return _isFormValid; }
+        }
 
         public SearchReservationPage(string title)
             : base(title)
@@ -40,14 +46,7 @@ namespace FlightReservation.UI.Views.Reservation
         public void Reset()
         {
             _isFormValid = true;
-            _searchTerm = string.Empty;
-        }
-
-        public void SetPNRError(string message)
-        {
-            _isFormValid = false;
-            Console.WriteLine(message);
-            Console.WriteLine();
+            PNR = string.Empty;
         }
 
         public override void ShowContent()
@@ -66,7 +65,7 @@ namespace FlightReservation.UI.Views.Reservation
                 _isFormValid = input is not null && input != string.Empty;
                 if (!_isFormValid)
                 {
-                    SetPNRError("Please enter a value...");
+                    SetFieldError(nameof(PNR), "Please enter a value...");
                     continue;
                 }
 
@@ -76,7 +75,7 @@ namespace FlightReservation.UI.Views.Reservation
 
         private void displayNoReservationFound()
         {
-            Console.WriteLine($"No reservation found with a booking reference '{_searchTerm}'...");
+            Console.WriteLine($"No reservation found with a booking reference '{PNR}'...");
         }
 
         private void displaySearchedReservation(IReservation reservation)
@@ -112,13 +111,30 @@ namespace FlightReservation.UI.Views.Reservation
 
         private void OnPNRChanged(string value)
         {
-            _searchTerm = value;
-            PNRChanged?.Invoke(this, new ChangeEventArgs<string>(_searchTerm));
+            PNR = value;
+            PNRChanged?.Invoke(this, new ChangeEventArgs<string>(value));
         }
 
         private void OnSubmitted()
         {
-            Submitted?.Invoke(this, new SubmitEventArgs<string>(_searchTerm));
+            Submitted?.Invoke(this, new SubmitEventArgs<string>(PNR));
+        }
+
+        public void SetFieldError(string paramName, string message)
+        {
+            _isFormValid = false;
+            Console.WriteLine(message);
+            Console.WriteLine();
+        }
+
+        public void AlertError(string header, string message)
+        {
+            Console.WriteLine();
+            Console.WriteLine("*****************************************");
+            Console.WriteLine(header);
+            Console.WriteLine(message);
+            Console.WriteLine("*****************************************");
+            Console.WriteLine();
         }
     }
 }

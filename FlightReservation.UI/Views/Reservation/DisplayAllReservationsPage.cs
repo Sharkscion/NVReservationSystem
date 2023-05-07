@@ -9,9 +9,7 @@ namespace FlightReservation.UI.Views.Reservation
         public DisplayAllReservationsPage(string title)
             : base(title) { }
 
-        public event IFormView.SubmitEventHandler<EventArgs> Submitted;
-
-        public void Reset() { }
+        public event IDisplayAllReservationsView.SubmitEventHandler<EventArgs> Submitted;
 
         public override void ShowContent()
         {

@@ -24,7 +24,10 @@ namespace FlightReservation.UI.Presenters.Reservation
             bool isValid = ReservationValidator.IsBookingReferenceFormatValid(args.Value);
             if (!isValid)
             {
-                _view.SetPNRError("PNR should be 6 uppercased-alphanumeric characters.");
+                _view.SetFieldError(
+                    nameof(_view.PNR),
+                    "PNR should be 6 uppercased-alphanumeric characters."
+                );
             }
         }
 

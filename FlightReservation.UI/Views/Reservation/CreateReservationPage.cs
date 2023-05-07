@@ -13,17 +13,21 @@ namespace FlightReservation.UI.Views.Reservation
         private const string DATE_FORMAT = "MM/dd/yyyy";
 
         private bool _isFormValid;
-
-        private DateTime _flightDate;
-        private string _airlineCode;
-        private int _flightNumber;
-
         private int _paxCount;
 
         private CultureInfo _dateCulture;
 
         private List<PassengerEventArgs> _passengers;
         private FlightEventArgs _selectedFlight;
+
+        public DateTime FlightDate { get; set; }
+        public string AirlineCode { get; set; }
+        public int FlightNumber { get; set; }
+
+        public bool IsFormValid
+        {
+            get { return _isFormValid; }
+        }
 
         public CreateReservationPage(string title)
             : base(title)
@@ -68,10 +72,10 @@ namespace FlightReservation.UI.Views.Reservation
         {
             if (flights.Count() == 0)
             {
-                string flightDesignator = _airlineCode + " " + _flightNumber;
+                string flightDesignator = AirlineCode + " " + FlightNumber;
                 AlertError(
                     header: "No Available Flights",
-                    message: $"No ({flightDesignator}) flights scheduled on {_flightDate.ToShortDateString()}"
+                    message: $"No ({flightDesignator}) flights scheduled on {FlightDate.ToShortDateString()}"
                 );
                 return;
             }
@@ -84,54 +88,12 @@ namespace FlightReservation.UI.Views.Reservation
         {
             _isFormValid = true;
 
-            _airlineCode = string.Empty;
-            _flightNumber = -1;
-            _flightDate = DateTime.Now;
+            AirlineCode = string.Empty;
+            FlightNumber = -1;
+            FlightDate = DateTime.Now;
 
             _paxCount = MAX_PAX_COUNT;
             _passengers = new List<PassengerEventArgs>();
-        }
-
-        public void SetAirlineCodeError(string message)
-        {
-            _isFormValid = false;
-            Console.WriteLine(message);
-            Console.WriteLine();
-        }
-
-        public void SetBirthDateError(string message)
-        {
-            _isFormValid = false;
-            Console.WriteLine(message);
-            Console.WriteLine();
-        }
-
-        public void SetFirstNameError(string message)
-        {
-            _isFormValid = false;
-            Console.WriteLine(message);
-            Console.WriteLine();
-        }
-
-        public void SetFlightDateError(string message)
-        {
-            _isFormValid = false;
-            Console.WriteLine(message);
-            Console.WriteLine();
-        }
-
-        public void SetFlightNumberError(string message)
-        {
-            _isFormValid = false;
-            Console.WriteLine(message);
-            Console.WriteLine();
-        }
-
-        public void SetLastNameError(string message)
-        {
-            _isFormValid = false;
-            Console.WriteLine(message);
-            Console.WriteLine();
         }
 
         public override void ShowContent()
@@ -177,7 +139,8 @@ namespace FlightReservation.UI.Views.Reservation
 
                 if (!_isFormValid)
                 {
-                    SetFlightDateError(
+                    SetFieldError(
+                        nameof(FlightDate),
                         $"Please enter a valid date with the format \"{DATE_FORMAT}\"..."
                     );
                     continue;
@@ -201,7 +164,7 @@ namespace FlightReservation.UI.Views.Reservation
                 _isFormValid = airlineCode is not null && airlineCode != string.Empty;
                 if (!_isFormValid)
                 {
-                    SetAirlineCodeError("Please enter a value...");
+                    SetFieldError(nameof(AirlineCode), "Please enter a value...");
                     continue;
                 }
 
@@ -223,7 +186,7 @@ namespace FlightReservation.UI.Views.Reservation
                 _isFormValid = int.TryParse(input, out flightNumber);
                 if (!_isFormValid)
                 {
-                    SetFlightNumberError("Please enter a numeric value...");
+                    SetFieldError(nameof(FlightNumber), "Please enter a numeric value...");
                     continue;
                 }
 
@@ -272,7 +235,7 @@ namespace FlightReservation.UI.Views.Reservation
 
                 if (!_isFormValid)
                 {
-                    SetFirstNameError("Please enter a value...");
+                    SetFieldError("FirstName", "Please enter a value...");
                     continue;
                 }
 
@@ -294,7 +257,7 @@ namespace FlightReservation.UI.Views.Reservation
 
                 if (!_isFormValid)
                 {
-                    SetLastNameError("Please enter a value...");
+                    SetFieldError("FirstName", "Please enter a value...");
                     continue;
                 }
 
@@ -322,7 +285,8 @@ namespace FlightReservation.UI.Views.Reservation
 
                 if (!_isFormValid)
                 {
-                    SetLastNameError(
+                    SetFieldError(
+                        "BirthDate",
                         $"Please enter a valid date with the format \"{DATE_FORMAT}\"..."
                     );
                     continue;
@@ -379,7 +343,7 @@ namespace FlightReservation.UI.Views.Reservation
             Console.WriteLine("-------------------------------------------");
             Console.WriteLine("Booking Summary");
             Console.WriteLine("-------------------------------------------");
-            Console.WriteLine($"Flight Date: {_flightDate.ToShortDateString()}");
+            Console.WriteLine($"Flight Date: {FlightDate.ToShortDateString()}");
             Console.WriteLine();
 
             string flightDesignator =
@@ -421,19 +385,19 @@ namespace FlightReservation.UI.Views.Reservation
 
         private void OnFlightDateChanged(DateTime value)
         {
-            _flightDate = value;
-            FlightDateChanged?.Invoke(this, new ChangeEventArgs<DateTime>(_flightDate));
+            FlightDate = value;
+            FlightDateChanged?.Invoke(this, new ChangeEventArgs<DateTime>(value));
         }
 
         private void OnAirlineCodeChanged(string value)
         {
-            _airlineCode = value;
+            AirlineCode = value;
             AirlineCodeChanged?.Invoke(this, new ChangeEventArgs<string>(value));
         }
 
         private void OnFlightNumberChanged(int value)
         {
-            _flightNumber = value;
+            FlightNumber = value;
             FlightNumberChanged?.Invoke(this, new ChangeEventArgs<int>(value));
         }
 
@@ -468,7 +432,7 @@ namespace FlightReservation.UI.Views.Reservation
         {
             var args = new ReservationEventArgs()
             {
-                FlightDate = _flightDate,
+                FlightDate = FlightDate,
                 FlightInfo = _selectedFlight,
                 Passengers = _passengers
             };
@@ -480,12 +444,19 @@ namespace FlightReservation.UI.Views.Reservation
         {
             var args = new SearchAvailableFlightEventArgs()
             {
-                FlightDate = _flightDate,
-                AirlineCode = _airlineCode,
-                FlightNumber = _flightNumber
+                FlightDate = FlightDate,
+                AirlineCode = AirlineCode,
+                FlightNumber = FlightNumber
             };
 
             FlightSearched?.Invoke(this, args);
+        }
+
+        public void SetFieldError(string paramName, string message)
+        {
+            _isFormValid = false;
+            Console.WriteLine(message);
+            Console.WriteLine();
         }
     }
 }
