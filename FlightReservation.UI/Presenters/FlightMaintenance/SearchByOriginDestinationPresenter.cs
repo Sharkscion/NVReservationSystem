@@ -26,8 +26,18 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
             bool isValid = FlightValidator.IsStationFormatValid(args.Value);
             if (!isValid)
             {
-                _view.SetArrivalStationError(
+                _view.SetFieldError(
+                    nameof(_view.ArrivalStation),
                     "Arrival station code must be 3 uppercased-alphanumeric characters."
+                );
+                return;
+            }
+
+            if (args.Value == _view.DepartureStation)
+            {
+                _view.SetFieldError(
+                    nameof(_view.ArrivalStation),
+                    "Arrival station must not be the same as the departure station."
                 );
             }
         }
@@ -37,8 +47,18 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
             bool isValid = FlightValidator.IsStationFormatValid(args.Value);
             if (!isValid)
             {
-                _view.SetDepartureStationError(
+                _view.SetFieldError(
+                    nameof(_view.DepartureStation),
                     "Departure station code must be 3 uppercased-alphanumeric characters."
+                );
+                return;
+            }
+
+            if (args.Value == _view.ArrivalStation)
+            {
+                _view.SetFieldError(
+                    nameof(_view.DepartureStation),
+                    "Departure station must not be the same as the arrival station."
                 );
             }
         }

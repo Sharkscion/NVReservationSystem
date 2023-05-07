@@ -32,7 +32,8 @@ namespace FlightReservation.UI.Presenters.Reservation
             bool isValid = FlightValidator.IsAirlineCodeValid(args.Value);
             if (!isValid)
             {
-                _view.SetAirlineCodeError(
+                _view.SetFieldError(
+                    nameof(_view.AirlineCode),
                     "Airline code must be 2-3 uppercased-alphanumeric characters."
                 );
             }
@@ -43,7 +44,7 @@ namespace FlightReservation.UI.Presenters.Reservation
             bool isValid = PassengerValidator.IsBirthDateValid(args.Value);
             if (!isValid)
             {
-                _view.SetBirthDateError("Passenger should at least be 16 days old.");
+                _view.SetFieldError("BirthDate", "Passenger should at least be 16 days old.");
             }
         }
 
@@ -52,7 +53,7 @@ namespace FlightReservation.UI.Presenters.Reservation
             bool isValid = PassengerValidator.IsNameValid(args.Value);
             if (!isValid)
             {
-                _view.SetFirstNameError("Name should at least be 20 letters.");
+                _view.SetFieldError("FirstName", "Name should at least be 20 letters.");
             }
         }
 
@@ -61,7 +62,10 @@ namespace FlightReservation.UI.Presenters.Reservation
             bool isValid = ReservationValidator.IsFlightDateValid(args.Value);
             if (!isValid)
             {
-                _view.SetFlightDateError("Flight date cannot not be past-dated.");
+                _view.SetFieldError(
+                    nameof(_view.FlightDate),
+                    "Flight date cannot not be past-dated."
+                );
             }
         }
 
@@ -70,7 +74,8 @@ namespace FlightReservation.UI.Presenters.Reservation
             bool isValid = FlightValidator.IsFlightNumberValid(args.Value);
             if (!isValid)
             {
-                _view.SetFlightNumberError(
+                _view.SetFieldError(
+                    nameof(_view.FlightNumber),
                     "Flight number cannot be an integer between 1 and 9999."
                 );
             }
@@ -91,7 +96,7 @@ namespace FlightReservation.UI.Presenters.Reservation
             bool isValid = PassengerValidator.IsNameValid(args.Value);
             if (!isValid)
             {
-                _view.SetFirstNameError("Name should at least be 20 letters.");
+                _view.SetFieldError("LastName", "Name should at least be 20 letters.");
             }
         }
 
@@ -130,7 +135,7 @@ namespace FlightReservation.UI.Presenters.Reservation
             }
             catch (InvalidFlightDateException e)
             {
-                _view.SetFlightDateError(e.Message);
+                _view.SetFieldError(nameof(_view.FlightDate), e.Message);
             }
             catch (InvalidNameException e)
             {

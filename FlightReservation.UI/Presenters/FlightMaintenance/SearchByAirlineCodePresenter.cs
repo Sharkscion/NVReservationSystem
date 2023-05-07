@@ -23,7 +23,8 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
             bool isValid = FlightValidator.IsAirlineCodeValid(args.Value);
             if (!isValid)
             {
-                _view.SetAirlineCodeError(
+                _view.SetFieldError(
+                    nameof(_view.AirlineCode),
                     "Airline code must be 2-3 uppercased-alphanumeric characters."
                 );
             }
