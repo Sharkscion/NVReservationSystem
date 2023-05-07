@@ -1,6 +1,6 @@
-﻿namespace FlightReservation.Data.Passenger
+﻿namespace FlightReservation.Models.Passenger
 {
-    public class InvalidNameException : ArgumentOutOfRangeException
+    public class InvalidNameException : ArgumentException
     {
         private const string DEFAULT_MESSAGE = "Name is invalid.";
 
@@ -13,13 +13,13 @@
         public InvalidNameException(string? message, Exception? innerException)
             : base(message, innerException) { }
 
-        public InvalidNameException(string? paramName, string? message)
-            : base(paramName, message) { }
+        public InvalidNameException(string? message, string? paramName)
+            : base(message, paramName) { }
     }
 
     public class AgeLimitException : ArgumentOutOfRangeException
     {
-        private const string DEFAULT_MESSAGE = "Age is invalid.";
+        private const string DEFAULT_MESSAGE = "Age is not allowed.";
 
         public AgeLimitException()
             : base(DEFAULT_MESSAGE) { }

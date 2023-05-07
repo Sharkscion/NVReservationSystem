@@ -31,6 +31,6 @@ namespace FlightReservation.Common.Test
         {
             bool result = ReservationValidator.IsBookingReferenceFormatValid(value);
             Assert.Equal(expectedResult, result);
-        } 
+        }
     }
 }

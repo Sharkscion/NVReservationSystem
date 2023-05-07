@@ -28,6 +28,7 @@ namespace FlightReservation.Common.Test
         [InlineData("Name1", false)]
         [InlineData("Name", true)]
         [InlineData("abcdefghijklmnopqrst", true)]
+        // More than 20 characters
         [InlineData("abcdefghijklmnopqrstu", false)]
         public void ValidateName(string value, bool expectedResult)
         {

@@ -1,6 +1,6 @@
 ﻿using FlightReservation.Comparers;
-using FlightReservation.Data.Contracts;
-using FlightReservation.Data.Flight;
+using FlightReservation.Models.Contracts;
+using FlightReservation.Models.Flight;
 using FlightReservation.Repositories.Contracts;
 using FlightReservation.Services.Contracts;
 

@@ -1,14 +1,17 @@
 ﻿using FlightReservation.Common.Validators;
-using FlightReservation.Data.Contracts;
+using FlightReservation.Models.Contracts;
+using FlightReservation.Utilities;
 
-namespace FlightReservation.Data.Passenger
+namespace FlightReservation.Models.Passenger
 {
     public class PassengerModel : IPassenger
     {
+        private readonly IDateTimeProvider _dateTimeProvider;
+
         private string _firstName;
         private string _lastName;
         private DateTime _birthdate;
-        private int _age;
+        private Age _age;
 
         public string FirstName
         {
@@ -59,12 +62,23 @@ namespace FlightReservation.Data.Passenger
             }
         }
 
-        public int Age
+        public Age Age
         {
             get { return _age; }
         }
 
+        public PassengerModel()
+        {
+            _dateTimeProvider = new DateTimeProvider();
+        }
+
+        public PassengerModel(IDateTimeProvider dateTimeProvider)
+        {
+            _dateTimeProvider = dateTimeProvider;
+        }
+
         public PassengerModel(string firstName, string lastName, DateTime birthDate)
+            : this()
         {
             FirstName = firstName;
             LastName = lastName;
@@ -73,7 +87,28 @@ namespace FlightReservation.Data.Passenger
 
         private void calculateAge()
         {
-            _age = DateTime.UtcNow.AddYears(-BirthDate.Year).Year;
+            DateTime dateNow = _dateTimeProvider.DateNow;
+            int daysInAYear = 365;
+
+            if (isLeapYear(BirthDate.Year))
+            {
+                daysInAYear++;
+            }
+
+            int result = dateNow.Subtract(BirthDate).Days / daysInAYear;
+            if (result > 0)
+            {
+                _age = new Age(value: result, timePeriod: TimePeriod.Year);
+                return;
+            }
+
+            result = dateNow.Subtract(BirthDate).Days;
+            _age = new Age(value: result, timePeriod: TimePeriod.Day);
+        }
+
+        private bool isLeapYear(int year)
+        {
+            return year % 4 == 0;
         }
     }
 }

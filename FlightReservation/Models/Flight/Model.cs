@@ -1,7 +1,7 @@
 ﻿using FlightReservation.Common.Validators;
-using FlightReservation.Data.Contracts;
+using FlightReservation.Models.Contracts;
 
-namespace FlightReservation.Data.Flight
+namespace FlightReservation.Models.Flight
 {
     public class FlightModel : IFlight
     {
