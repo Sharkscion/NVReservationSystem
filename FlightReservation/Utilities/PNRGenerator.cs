@@ -1,6 +1,6 @@
 ﻿namespace FlightReservation.Utilities
 {
-    internal static class PNRGenerator
+    public static class PNRGenerator
     {
         delegate char CharGenerator();
 
@@ -24,7 +24,7 @@
                 generatedCode[i] = generator();
             }
 
-            return generatedCode.ToString() ?? string.Empty;
+            return new string(generatedCode);
         }
 
         public static char GenerateRandomLetter()

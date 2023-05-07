@@ -1,4 +1,5 @@
-﻿using FlightReservation.Models.Flight;
+﻿using FlightReservation.Models.Contracts;
+using FlightReservation.Models.Flight;
 using FlightReservation.Models.Passenger;
 using FlightReservation.Models.Reservation;
 
@@ -104,6 +105,30 @@ namespace FlightReservation.Test.Models
             Assert.Equal(initialBooking.FlightInfo, confirmedBooking.FlightInfo);
             Assert.Equal(initialBooking.FlightDate, confirmedBooking.FlightDate);
             Assert.Equal(initialBooking.Passengers.Count(), confirmedBooking.Passengers.Count());
+        }
+
+        [Fact]
+        public void RaiseError_NoPassengers()
+        {
+            var flight = new FlightModel(
+                airlineCode: "NV",
+                flightNumber: 1234,
+                departureStation: "MNL",
+                arrivalStation: "CEB",
+                departureScheduledTime: new TimeOnly(hour: 1, minute: 0),
+                arrivalScheduledTime: new TimeOnly(hour: 2, minute: 0)
+            );
+
+            var flightDate = DateTime.Now;
+
+            Action action = () =>
+                new ReservationModel(
+                    flightInfo: flight,
+                    flightDate: flightDate,
+                    passengers: new List<PassengerModel>()
+                );
+
+            Assert.Throws<NoPassengersException>(action);
         }
 
         private List<PassengerModel> generatePassengers(int count)

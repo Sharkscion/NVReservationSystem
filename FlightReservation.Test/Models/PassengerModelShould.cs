@@ -1,9 +1,17 @@
 ﻿using FlightReservation.Models;
+using FlightReservation.Models.Contracts;
 using FlightReservation.Models.Passenger;
-using FlightReservation.Utilities;
 
 namespace FlightReservation.Test.Models
 {
+    public class DateTimeProvider : IDateTimeProvider
+    {
+        public DateTime GetNow()
+        {
+            return new DateTime(2023, 5, 7);
+        }
+    }
+
     public class PassengerModelShould
     {
         public static IEnumerable<object[]> GetInvalidNames()
@@ -125,7 +133,6 @@ namespace FlightReservation.Test.Models
         public void CalculateAge_WithLeapYearBirthDate_Correctly()
         {
             var dateTimeProvider = new DateTimeProvider();
-            dateTimeProvider.DateNow = new DateTime(2023, 5, 7);
 
             DateTime leapBirthDate = new DateTime(year: 1996, month: 2, day: 29);
 
