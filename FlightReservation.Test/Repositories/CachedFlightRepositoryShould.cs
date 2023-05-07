@@ -19,7 +19,7 @@ namespace FlightReservation.Test.Repositories
 
             var repository = new CachedFlightRepository();
 
-            bool successful = repository.Create(model);
+            bool successful = repository.Save(model);
 
             Assert.True(successful);
         }
@@ -40,7 +40,7 @@ namespace FlightReservation.Test.Repositories
                     ArrivalStation = "CEB",
                 };
 
-                repository.Create(model);
+                repository.Save(model);
                 count--;
             }
 
