@@ -15,14 +15,14 @@ namespace FlightReservation.Services
             _flightRepository = flightRepository;
         }
 
-        public void Create(IFlight flight)
+        public bool Create(IFlight flight)
         {
             if (DoesExists(flight))
             {
                 throw new DuplicateFlightException($"Duplicate Flight: {flight}");
             }
 
-            _flightRepository.Save(flight);
+            return _flightRepository.Save(flight);
         }
 
         public bool DoesExists(IFlight flight)
@@ -64,17 +64,20 @@ namespace FlightReservation.Services
         public IEnumerable<IFlight> FindAvailableFlightsOn(
             DateTime flightDate,
             string airlineCode,
-            int flightNumber
+            int flightNumber,
+            IDateTimeProvider? dateTimeProvider = null
         )
         {
+            DateTime dateNow = dateTimeProvider?.GetNow() ?? DateTime.Now;
+
             var availableFlights = FindAllHaving(airlineCode, flightNumber);
 
-            if (flightDate.Date == DateTime.Now.Date)
+            if (flightDate.Date == dateNow.Date)
             {
-                availableFlights.Where(
+                return availableFlights.Where(
                     (flight) =>
-                        flight.DepartureScheduledTime.Hour > DateTime.Now.Hour
-                        && flight.DepartureScheduledTime.Minute >= DateTime.Now.Minute
+                        flight.DepartureScheduledTime.Hour > dateNow.Hour
+                        && flight.DepartureScheduledTime.Minute >= dateNow.Minute
                 );
             }
 

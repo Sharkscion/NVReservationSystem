@@ -4,7 +4,7 @@ namespace FlightReservation.Services.Contracts
 {
     public interface IFlightService
     {
-        void Create(IFlight flight);
+        bool Create(IFlight flight);
         IEnumerable<IFlight> FindAllHaving(int flightNumber);
         IEnumerable<IFlight> FindAllHaving(string airlineCode);
         IEnumerable<IFlight> FindAllHaving(string airlineCode, int flightNumber);
@@ -12,7 +12,8 @@ namespace FlightReservation.Services.Contracts
         IEnumerable<IFlight> FindAvailableFlightsOn(
             DateTime flightDate,
             string airlineCode,
-            int flightNumber
+            int flightNumber,
+            IDateTimeProvider? dateTimeProvider = null
         );
         bool DoesExists(IFlight flight);
     }
