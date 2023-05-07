@@ -12,7 +12,7 @@ namespace FlightReservation.Repositories
             _reservations = new HashSet<IReservation>();
         }
 
-        public bool Create(IReservation item)
+        public bool Save(IReservation item)
         {
             _reservations.Add(item);
             return true;
@@ -22,20 +22,5 @@ namespace FlightReservation.Repositories
         {
             return _reservations.AsQueryable();
         }
-
-        /*  public IReservation? Find(string PNR)
-          {
-              return _reservations.Where((item) => item.PNR == PNR).FirstOrDefault();
-          }
-
-          public void Save(IReservation reservation)
-          {
-              _reservations.Add(reservation);
-          }
-
-          public IEnumerable<IReservation> ViewAll()
-          {
-              return _reservations;
-          }*/
     }
 }

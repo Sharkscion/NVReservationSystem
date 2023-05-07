@@ -30,7 +30,7 @@ namespace FlightReservation.Services
             string PNR = generatePNR();
 
             IReservation confirmedReservation = reservation.FromBookingReference(PNR);
-            _reservationRepository.Create(confirmedReservation);
+            _reservationRepository.Save(confirmedReservation);
 
             return confirmedReservation.PNR;
         }

@@ -22,7 +22,7 @@ namespace FlightReservation.Services
                 throw new DuplicateFlightException($"Duplicate Flight: {flight}");
             }
 
-            _flightRepository.Create(flight);
+            _flightRepository.Save(flight);
         }
 
         public bool DoesExists(IFlight flight)
