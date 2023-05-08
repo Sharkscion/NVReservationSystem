@@ -1,20 +1,13 @@
-﻿using FlightReservation.Models.Contracts;
-using FlightReservation.UI.Common;
-using FlightReservation.UI.Views.Contracts;
-
-namespace FlightReservation.UI.Presenters.FlightMaintenance.Contracts
+﻿namespace FlightReservation.UI.Presenters.FlightMaintenance.Contracts
 {
     internal interface IAddFlightPresenter
     {
-        public void OnAirlineCodeChanged(IFormView source, ChangeEventArgs<string> args);
-        public void OnFlightNumberChanged(IFormView source, ChangeEventArgs<int> args);
-        public void OnArrivalStationChanged(IFormView source, ChangeEventArgs<string> args);
-        public void OnDepartureStationChanged(IFormView source, ChangeEventArgs<string> args);
-        public void OnArrivalScheduledTimeChanged(IFormView source, ChangeEventArgs<TimeOnly> args);
-        public void OnDepartureScheduledTimeChanged(
-            IFormView source,
-            ChangeEventArgs<TimeOnly> args
-        );
-        public void OnSubmitted(IFormView source, FlightEventArgs args);
+        void OnAirlineCodeChanged(object? source, EventArgs e);
+        void OnFlightNumberChanged(object? source, EventArgs e);
+        void OnArrivalStationChanged(object? source, EventArgs e);
+        void OnDepartureStationChanged(object? source, EventArgs e);
+        void OnArrivalScheduledTimeChanged(object? source, EventArgs e);
+        void OnDepartureScheduledTimeChanged(object? source, EventArgs e);
+        void OnSubmitted(object? source, EventArgs e);
     }
 }

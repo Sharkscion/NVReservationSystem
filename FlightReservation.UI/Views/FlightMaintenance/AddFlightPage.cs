@@ -1,5 +1,4 @@
-﻿using FlightReservation.UI.Common;
-using FlightReservation.UI.Views.Contracts;
+﻿using FlightReservation.UI.Views.Contracts;
 using FlightReservation.UI.Views.FlightMaintenance.Contracts;
 
 namespace FlightReservation.UI.Views.FlightMaintenance
@@ -12,34 +11,83 @@ namespace FlightReservation.UI.Views.FlightMaintenance
         private string _airlineCode;
         private int _flightNumber;
 
+        private string _departureStation;
+        private string _arrivalStation;
+
+        private TimeOnly _departureScheduledTime;
+        private TimeOnly _arrivalScheduledTime;
+
         public string AirlineCode
         {
             get { return _airlineCode; }
             set
             {
                 _airlineCode = value;
-                AirlineCodeChanged?.Invoke(this, new ChangeEventArgs<string>(AirlineCode));
+                OnAirlineCodeChanged();
             }
         }
 
-        public int FlightNumber { get; set; }
-        public string DepartureStation { get; set; }
-        public string ArrivalStation { get; set; }
-        public TimeOnly DepartureScheduledTime { get; set; }
-        public TimeOnly ArrivalScheduledTime { get; set; }
+        public int FlightNumber
+        {
+            get { return _flightNumber; }
+            set
+            {
+                _flightNumber = value;
+                OnFlightNumberChanged();
+            }
+        }
+        public string DepartureStation
+        {
+            get { return _departureStation; }
+            set
+            {
+                _departureStation = value;
+                OnDepartureStationChanged();
+            }
+        }
+
+        public string ArrivalStation
+        {
+            get { return _arrivalStation; }
+            set
+            {
+                _arrivalStation = value;
+                OnArrivalStationChanged();
+            }
+        }
+
+        public TimeOnly DepartureScheduledTime
+        {
+            get { return _departureScheduledTime; }
+            set
+            {
+                _departureScheduledTime = value;
+                OnScheduledDepartureTimeChanged();
+            }
+        }
+
+        public TimeOnly ArrivalScheduledTime
+        {
+            get { return _arrivalScheduledTime; }
+            set
+            {
+                _arrivalScheduledTime = value;
+                OnScheduledArrivalTimeChanged();
+            }
+        }
 
         public bool IsFormValid
         {
             get { return _isFormValid; }
         }
 
-        public event IFormView.InputChangedEventHandler<string> AirlineCodeChanged;
-        public event IFormView.InputChangedEventHandler<int> FlightNumberChanged;
-        public event IFormView.InputChangedEventHandler<string> ArrivalStationChanged;
-        public event IFormView.InputChangedEventHandler<string> DepartureStationChanged;
-        public event IFormView.InputChangedEventHandler<TimeOnly> ArrivalScheduledTimeChanged;
-        public event IFormView.InputChangedEventHandler<TimeOnly> DepartureScheduledTimeChanged;
-        public event IFormView.SubmitEventHandler<FlightEventArgs> Submitted;
+        public event EventHandler AirlineCodeChanged;
+        public event EventHandler FlightNumberChanged;
+        public event EventHandler ArrivalStationChanged;
+        public event EventHandler DepartureStationChanged;
+        public event EventHandler ArrivalScheduledTimeChanged;
+        public event EventHandler DepartureScheduledTimeChanged;
+        public event EventHandler Submitted;
 
         public AddFlightPage(string title)
             : base(title)
@@ -67,7 +115,7 @@ namespace FlightReservation.UI.Views.FlightMaintenance
                 Console.Write("Airline Code: ");
                 string? input = Console.ReadLine();
 
-                _isFormValid = input is not null && input != string.Empty;
+                _isFormValid = !string.IsNullOrEmpty(input);
                 if (!_isFormValid)
                 {
                     SetFieldError(nameof(AirlineCode), "Please enter a value...");
@@ -92,7 +140,7 @@ namespace FlightReservation.UI.Views.FlightMaintenance
                     continue;
                 }
 
-                OnFlightNumberChanged(flightNumber);
+                FlightNumber = flightNumber;
             } while (!_isFormValid);
         }
 
@@ -103,14 +151,14 @@ namespace FlightReservation.UI.Views.FlightMaintenance
                 Console.Write("Departure Station Code: ");
                 string? input = Console.ReadLine();
 
-                _isFormValid = input is not null && input != string.Empty;
+                _isFormValid = !string.IsNullOrEmpty(input);
                 if (!_isFormValid)
                 {
                     SetFieldError(nameof(DepartureStation), "Please enter a value...");
                     continue;
                 }
 
-                OnDepartureStationChanged(input);
+                DepartureStation = input;
             } while (!_isFormValid);
         }
 
@@ -121,14 +169,14 @@ namespace FlightReservation.UI.Views.FlightMaintenance
                 Console.Write("Arrival Station Code: ");
                 string? input = Console.ReadLine();
 
-                _isFormValid = input is not null && input != string.Empty;
+                _isFormValid = !string.IsNullOrEmpty(input);
                 if (!_isFormValid)
                 {
                     SetFieldError(nameof(ArrivalStation), "Please enter a value...");
                     continue;
                 }
 
-                OnArrivalStationChanged(input);
+                ArrivalStation = input;
             } while (!_isFormValid);
         }
 
@@ -149,7 +197,7 @@ namespace FlightReservation.UI.Views.FlightMaintenance
                     continue;
                 }
 
-                OnScheduledDepartureTimeChanged(parsedValue);
+                DepartureScheduledTime = parsedValue;
             } while (!_isFormValid);
         }
 
@@ -170,7 +218,7 @@ namespace FlightReservation.UI.Views.FlightMaintenance
                     continue;
                 }
 
-                OnScheduledArrivalTimeChanged(parsedValue);
+                ArrivalScheduledTime = parsedValue;
             } while (!_isFormValid);
         }
 
@@ -205,69 +253,49 @@ namespace FlightReservation.UI.Views.FlightMaintenance
         {
             _isFormValid = true;
 
-            AirlineCode = string.Empty;
-            FlightNumber = 0;
+            _airlineCode = string.Empty;
+            _flightNumber = 0;
 
-            DepartureStation = string.Empty;
-            ArrivalStation = string.Empty;
+            _departureStation = string.Empty;
+            _arrivalStation = string.Empty;
 
-            DepartureScheduledTime = new TimeOnly(hour: 0, minute: 0);
-            ArrivalScheduledTime = new TimeOnly(hour: 23, minute: 59);
+            _departureScheduledTime = new TimeOnly(hour: 0, minute: 0);
+            _arrivalScheduledTime = new TimeOnly(hour: 23, minute: 59);
         }
 
-        /*     private void OnAirlineCodeChanged(string value)
-             {
-                 _airlineCode = value;
-                 AirlineCodeChanged?.Invoke(this, new ChangeEventArgs<string>(AirlineCode));
-             }*/
-
-        private void OnFlightNumberChanged(int value)
+        private void OnAirlineCodeChanged()
         {
-            FlightNumber = value;
-            FlightNumberChanged?.Invoke(this, new ChangeEventArgs<int>(FlightNumber));
+            AirlineCodeChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void OnDepartureStationChanged(string value)
+        private void OnFlightNumberChanged()
         {
-            DepartureStation = value;
-            DepartureStationChanged?.Invoke(this, new ChangeEventArgs<string>(DepartureStation));
+            FlightNumberChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void OnArrivalStationChanged(string value)
+        private void OnDepartureStationChanged()
         {
-            ArrivalStation = value;
-            ArrivalStationChanged?.Invoke(this, new ChangeEventArgs<string>(ArrivalStation));
+            DepartureStationChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void OnScheduledDepartureTimeChanged(TimeOnly value)
+        private void OnArrivalStationChanged()
         {
-            DepartureScheduledTime = value;
-            DepartureScheduledTimeChanged?.Invoke(
-                this,
-                new ChangeEventArgs<TimeOnly>(DepartureScheduledTime)
-            );
+            ArrivalStationChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void OnScheduledArrivalTimeChanged(TimeOnly value)
+        private void OnScheduledDepartureTimeChanged()
         {
-            ArrivalScheduledTime = value;
-            ArrivalScheduledTimeChanged?.Invoke(
-                this,
-                new ChangeEventArgs<TimeOnly>(ArrivalScheduledTime)
-            );
+            DepartureScheduledTimeChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnScheduledArrivalTimeChanged()
+        {
+            ArrivalScheduledTimeChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnSubmitted()
         {
-            var args = new FlightEventArgs(
-                AirlineCode,
-                FlightNumber,
-                ArrivalStation,
-                DepartureStation,
-                ArrivalScheduledTime,
-                DepartureScheduledTime
-            );
-            Submitted?.Invoke(this, args);
+            Submitted?.Invoke(this, EventArgs.Empty);
         }
 
         public void AlertError(string header, string message)

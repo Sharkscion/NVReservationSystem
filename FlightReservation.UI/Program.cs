@@ -86,15 +86,6 @@ namespace FlightReservation.UI.Views
             _addFlightPage = new AddFlightPage("Add a Flight");
 
             var presenter = new AddFlightPresenter(view: _addFlightPage, service: _flightService);
-
-            _addFlightPage.AirlineCodeChanged += presenter.OnAirlineCodeChanged;
-            _addFlightPage.FlightNumberChanged += presenter.OnFlightNumberChanged;
-            _addFlightPage.DepartureStationChanged += presenter.OnDepartureStationChanged;
-            _addFlightPage.ArrivalStationChanged += presenter.OnArrivalStationChanged;
-            _addFlightPage.DepartureScheduledTimeChanged +=
-                presenter.OnDepartureScheduledTimeChanged;
-            _addFlightPage.ArrivalScheduledTimeChanged += presenter.OnArrivalScheduledTimeChanged;
-            _addFlightPage.Submitted += presenter.OnSubmitted;
         }
 
         private void initSearchByFlightNumberPage()
