@@ -8,6 +8,12 @@
 
         public IEnumerable<IPassenger> Passengers { get; set; }
 
-        IReservation FromBookingReference(string bookingReference);
+        IReservation CreateWith(string bookingReference);
+
+        IReservation CreateFrom(
+            DateTime flightDate,
+            IFlight flightInfo,
+            IEnumerable<IPassenger> passengers
+        );
     }
 }
