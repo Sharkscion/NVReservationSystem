@@ -5,7 +5,7 @@ using FlightReservation.UI.Test.Fakes;
 using FlightReservation.UI.Views.FlightMaintenance.Contracts;
 using Moq;
 
-namespace FlightReservation.UI.Test
+namespace FlightReservation.UI.Test.FlightMaintenance
 {
     public class SearchByAirlineCodePresenterShould : IDisposable
     {
