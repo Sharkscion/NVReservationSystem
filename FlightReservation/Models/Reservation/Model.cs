@@ -39,7 +39,7 @@ namespace FlightReservation.Models.Reservation
 
                 if (value.Count() > MAX_PASSENGER_COUNT)
                 {
-                    throw new MaxPassengerCountReachedException(
+                    throw new MoreThanMaxPassengerCountException(
                         $"Up to {MAX_PASSENGER_COUNT} passengers are allowed per booking."
                     );
                 }
@@ -80,9 +80,18 @@ namespace FlightReservation.Models.Reservation
             PNR = bookingReference;
         }
 
-        public IReservation FromBookingReference(string bookingReference)
+        public IReservation CreateWith(string bookingReference)
         {
             return new ReservationModel(bookingReference, FlightInfo, FlightDate, Passengers);
+        }
+
+        public IReservation CreateFrom(
+            DateTime flightDate,
+            IFlight flightInfo,
+            IEnumerable<IPassenger> passengers
+        )
+        {
+            return new ReservationModel(flightInfo, flightDate, passengers);
         }
     }
 }

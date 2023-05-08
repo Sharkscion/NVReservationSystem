@@ -226,5 +226,33 @@ namespace FlightReservation.Test.Models
 
             Assert.Equal("AB 1234 ABC->DEF", result);
         }
+
+        [Fact]
+        public void CreateNewInstance_FromData()
+        {
+            string airlineCode = "NV";
+            int flightNumber = 1234;
+            string departureStation = "MNL";
+            string arrivalStation = "CEB";
+            TimeOnly departureScheduledTime = new TimeOnly(hour: 1, minute: 0);
+            TimeOnly arrivalScheduledTime = new TimeOnly(hour: 2, minute: 0);
+
+            var initModel = new FlightModel();
+
+            // Action
+            var otherModel = initModel.CreateFrom(
+                airlineCode,
+                flightNumber,
+                departureStation,
+                arrivalStation,
+                departureScheduledTime,
+                arrivalScheduledTime
+            );
+
+            // Assert
+            Assert.Equal("NV 1234 MNL->CEB", otherModel.ToString());
+            Assert.Equal(departureScheduledTime, otherModel.DepartureScheduledTime);
+            Assert.Equal(arrivalScheduledTime, otherModel.ArrivalScheduledTime);
+        }
     }
 }

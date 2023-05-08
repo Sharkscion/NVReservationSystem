@@ -5,14 +5,13 @@ namespace FlightReservation.UI.Presenters.Reservation.Contracts
 {
     internal interface ICreateReservationPresenter
     {
-        public void OnFlightDateChanged(IFormView source, ChangeEventArgs<DateTime> args);
-        public void OnAirlineCodeChanged(IFormView source, ChangeEventArgs<string> args);
-        public void OnFlightNumberChanged(IFormView source, ChangeEventArgs<int> args);
-        public void OnFirstNameChanged(IFormView source, ChangeEventArgs<string> args);
-        public void OnLastNameChanged(IFormView source, ChangeEventArgs<string> args);
-        public void OnBirthDateChanged(IFormView source, ChangeEventArgs<DateTime> args);
-
-        public void OnFlightSearched(IFormView source, SearchAvailableFlightEventArgs args);
-        public void OnSubmitted(IFormView source, ReservationEventArgs args);
+        public void OnFlightDateChanged(object? source, EventArgs e);
+        public void OnAirlineCodeChanged(object? source, EventArgs e);
+        public void OnFlightNumberChanged(object? source, EventArgs e);
+        public void OnFirstNameChanged(object? source, EventArgs e);
+        public void OnLastNameChanged(object? source, EventArgs e);
+        public void OnBirthDateChanged(object? source, EventArgs e);
+        public void OnFlightSearched(object? source, EventArgs e);
+        public void OnSubmitted(object? source, ReservationEventArgs args);
     }
 }

@@ -1,4 +1,7 @@
-﻿using FlightReservation.Repositories;
+﻿using FlightReservation.Models.Flight;
+using FlightReservation.Models.Passenger;
+using FlightReservation.Models.Reservation;
+using FlightReservation.Repositories;
 using FlightReservation.Services;
 using FlightReservation.Services.Contracts;
 using FlightReservation.UI.Presenters.FlightMaintenance;
@@ -85,16 +88,11 @@ namespace FlightReservation.UI.Views
         {
             _addFlightPage = new AddFlightPage("Add a Flight");
 
-            var presenter = new AddFlightPresenter(view: _addFlightPage, service: _flightService);
-
-            _addFlightPage.AirlineCodeChanged += presenter.OnAirlineCodeChanged;
-            _addFlightPage.FlightNumberChanged += presenter.OnFlightNumberChanged;
-            _addFlightPage.DepartureStationChanged += presenter.OnDepartureStationChanged;
-            _addFlightPage.ArrivalStationChanged += presenter.OnArrivalStationChanged;
-            _addFlightPage.DepartureScheduledTimeChanged +=
-                presenter.OnDepartureScheduledTimeChanged;
-            _addFlightPage.ArrivalScheduledTimeChanged += presenter.OnArrivalScheduledTimeChanged;
-            _addFlightPage.Submitted += presenter.OnSubmitted;
+            var presenter = new AddFlightPresenter(
+                view: _addFlightPage,
+                service: _flightService,
+                model: new FlightModel()
+            );
         }
 
         private void initSearchByFlightNumberPage()
@@ -105,9 +103,6 @@ namespace FlightReservation.UI.Views
                 view: _searchByFlightNumberPage,
                 service: _flightService
             );
-
-            _searchByFlightNumberPage.FlightNumberChanged += presenter.OnFlightNumberChanged;
-            _searchByFlightNumberPage.Submitted += presenter.OnSubmitted;
         }
 
         private void initSearchByAirlineCodePage()
@@ -118,9 +113,6 @@ namespace FlightReservation.UI.Views
                 view: _searchByAirlineCodePage,
                 service: _flightService
             );
-
-            _searchByAirlineCodePage.AirlineCodeChanged += presenter.OnAirlineCodeChanged;
-            _searchByAirlineCodePage.Submitted += presenter.OnSubmitted;
         }
 
         private void initSearchByOriginDestinationPage()
@@ -133,12 +125,6 @@ namespace FlightReservation.UI.Views
                 view: _searchByOriginDestinationPage,
                 service: _flightService
             );
-
-            _searchByOriginDestinationPage.DepartureStationChanged +=
-                presenter.OnDepartureStationChanged;
-            _searchByOriginDestinationPage.ArrivalStationChanged +=
-                presenter.OnArrivalStationChanged;
-            _searchByOriginDestinationPage.Submitted += presenter.OnSubmitted;
         }
 
         private void initCreateReservationPage()
@@ -148,19 +134,11 @@ namespace FlightReservation.UI.Views
             var presenter = new CreateReservationPresenter(
                 view: _createReservationPage,
                 reservationService: _reservationService,
-                flightService: _flightService
+                flightService: _flightService,
+                reservationModel: new ReservationModel(),
+                flightModel: new FlightModel(),
+                passengerModel: new PassengerModel()
             );
-
-            _createReservationPage.AirlineCodeChanged += presenter.OnAirlineCodeChanged;
-            _createReservationPage.FlightNumberChanged += presenter.OnFlightNumberChanged;
-            _createReservationPage.FlightDateChanged += presenter.OnFlightDateChanged;
-
-            _createReservationPage.FirstNameChanged += presenter.OnFirstNameChanged;
-            _createReservationPage.LastNameChanged += presenter.OnLastNameChanged;
-            _createReservationPage.BirthDateChanged += presenter.OnBirthDateChanged;
-
-            _createReservationPage.FlightSearched += presenter.OnFlightSearched;
-            _createReservationPage.Submitted += presenter.OnSubmitted;
         }
 
         private void initSearchReservationPage()
@@ -171,9 +149,6 @@ namespace FlightReservation.UI.Views
                 view: _searchReservationPage,
                 service: _reservationService
             );
-
-            _searchReservationPage.PNRChanged += presenter.OnPNRChanged;
-            _searchReservationPage.Submitted += presenter.OnSubmitted;
         }
 
         private void initDisplayAllReservationsPage()

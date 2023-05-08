@@ -1,16 +1,16 @@
 ﻿namespace FlightReservation.Models.Reservation
 {
-    public class MaxPassengerCountReachedException : ArgumentOutOfRangeException
+    public class MoreThanMaxPassengerCountException : ArgumentOutOfRangeException
     {
         private const string DEFAULT_MESSAGE = "Max passenger count per booking has been reached.";
 
-        public MaxPassengerCountReachedException()
+        public MoreThanMaxPassengerCountException()
             : base(DEFAULT_MESSAGE) { }
 
-        public MaxPassengerCountReachedException(string? message)
+        public MoreThanMaxPassengerCountException(string? message)
             : base(message) { }
 
-        public MaxPassengerCountReachedException(string? message, Exception? innerException)
+        public MoreThanMaxPassengerCountException(string? message, Exception? innerException)
             : base(message, innerException) { }
     }
 
