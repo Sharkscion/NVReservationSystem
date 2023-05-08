@@ -163,5 +163,24 @@ namespace FlightReservation.Models.Flight
         {
             return $"{AirlineCode} {FlightNumber} {DepartureStation}->{ArrivalStation}";
         }
+
+        public IFlight CreateFrom(
+            string airlineCode,
+            int flightNumber,
+            string departureStation,
+            string arrivalStation,
+            TimeOnly departureScheduledTime,
+            TimeOnly arrivalScheduledTime
+        )
+        {
+            return new FlightModel(
+                airlineCode,
+                flightNumber,
+                arrivalStation,
+                departureStation,
+                arrivalScheduledTime,
+                departureScheduledTime
+            );
+        }
     }
 }

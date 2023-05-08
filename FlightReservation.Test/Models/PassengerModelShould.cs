@@ -144,5 +144,23 @@ namespace FlightReservation.Test.Models
 
             Assert.Equal(expectedAge, calculatedAge);
         }
+
+        [Fact]
+        public void CreateNewInstance_FromData()
+        {
+            string firstName = "John";
+            string lastName = "Doe";
+            DateTime birthDate = DateTime.Now.AddYears(-18);
+
+            var initModel = new PassengerModel();
+
+            // Action
+            var otherModel = initModel.CreateFrom(firstName, lastName, birthDate);
+
+            // Assert
+            Assert.Equal(firstName, otherModel.FirstName);
+            Assert.Equal(lastName, otherModel.LastName);
+            Assert.Equal(birthDate, otherModel.BirthDate);
+        }
     }
 }

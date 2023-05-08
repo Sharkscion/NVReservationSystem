@@ -107,5 +107,10 @@ namespace FlightReservation.Models.Passenger
         {
             return year % 4 == 0;
         }
+
+        public IPassenger CreateFrom(string firstName, string lastName, DateTime birthDate)
+        {
+            return new PassengerModel(firstName, lastName, birthDate);
+        }
     }
 }

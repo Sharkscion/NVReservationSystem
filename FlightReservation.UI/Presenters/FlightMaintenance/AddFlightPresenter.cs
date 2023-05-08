@@ -1,4 +1,5 @@
 ﻿using FlightReservation.Common.Validators;
+using FlightReservation.Models.Contracts;
 using FlightReservation.Models.Flight;
 using FlightReservation.Services.Contracts;
 using FlightReservation.UI.Presenters.FlightMaintenance.Contracts;
@@ -10,9 +11,11 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
     {
         private readonly IAddFlightView _view;
         private readonly IFlightService _service;
+        private readonly IFlight _model;
 
-        public AddFlightPresenter(IAddFlightView view, IFlightService service)
+        public AddFlightPresenter(IAddFlightView view, IFlightService service, IFlight model)
         {
+            _model = model;
             _service = service;
 
             _view = view;
@@ -120,7 +123,7 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
         {
             try
             {
-                var flight = new FlightModel(
+                var flight = _model.CreateFrom(
                     airlineCode: _view.AirlineCode,
                     flightNumber: _view.FlightNumber,
                     departureStation: _view.DepartureStation,

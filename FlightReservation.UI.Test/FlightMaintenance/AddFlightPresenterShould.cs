@@ -2,6 +2,7 @@
 using FlightReservation.Models.Flight;
 using FlightReservation.Services.Contracts;
 using FlightReservation.UI.Presenters.FlightMaintenance;
+using FlightReservation.UI.Test.Fakes;
 using FlightReservation.UI.Views.FlightMaintenance.Contracts;
 using Moq;
 
@@ -17,7 +18,7 @@ namespace FlightReservation.UI.Test.FlightMaintenance
             _mockService = new Mock<IFlightService>();
             _mockView = new Mock<IAddFlightView>();
 
-            new AddFlightPresenter(_mockView.Object, _mockService.Object);
+            new AddFlightPresenter(_mockView.Object, _mockService.Object, new FakeFlightModel());
         }
 
         [Fact]
@@ -199,7 +200,7 @@ namespace FlightReservation.UI.Test.FlightMaintenance
             _mockView.Raise(v => v.Submitted += null, this, EventArgs.Empty);
 
             _mockService.Verify(s => s.Create(It.IsAny<IFlight>()));
-            _mockView.Verify(v => v.AlertError(It.IsAny<string>(), It.IsAny<string>()));
+            _mockView.Verify(v => v.AlertError(It.IsAny<string>(), "A flight already exists."));
             _mockView.Verify(v => v.Reset());
         }
 

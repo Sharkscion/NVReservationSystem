@@ -8,5 +8,14 @@
         public string DepartureStation { get; set; }
         public TimeOnly ArrivalScheduledTime { get; set; }
         public TimeOnly DepartureScheduledTime { get; set; }
+
+        IFlight CreateFrom(
+            string airlineCode,
+            int flightNumber,
+            string departureStation,
+            string arrivalStation,
+            TimeOnly departureScheduledTime,
+            TimeOnly arrivalScheduledTime
+        );
     }
 }

@@ -42,7 +42,7 @@ namespace FlightReservation.Test.Models
 
             Action action = () => model.Passengers = passengers;
 
-            Assert.Throws<MaxPassengerCountReachedException>(action);
+            Assert.Throws<MoreThanMaxPassengerCountException>(action);
         }
 
         [Fact]
@@ -98,13 +98,41 @@ namespace FlightReservation.Test.Models
             var validBookingReference = "ABC123";
 
             // Action
-            var confirmedBooking = initialBooking.FromBookingReference(validBookingReference);
+            var confirmedBooking = initialBooking.CreateWith(validBookingReference);
 
             // Assert
             Assert.Equal(validBookingReference, confirmedBooking.PNR);
             Assert.Equal(initialBooking.FlightInfo, confirmedBooking.FlightInfo);
             Assert.Equal(initialBooking.FlightDate, confirmedBooking.FlightDate);
             Assert.Equal(initialBooking.Passengers.Count(), confirmedBooking.Passengers.Count());
+        }
+
+        [Fact]
+        public void CreateNewInstance_FromData()
+        {
+            var passengers = generatePassengers(count: 1);
+
+            var flight = new FlightModel(
+                airlineCode: "NV",
+                flightNumber: 1234,
+                departureStation: "MNL",
+                arrivalStation: "CEB",
+                departureScheduledTime: new TimeOnly(hour: 1, minute: 0),
+                arrivalScheduledTime: new TimeOnly(hour: 2, minute: 0)
+            );
+
+            var flightDate = DateTime.Now;
+
+            var initModel = new ReservationModel();
+
+            // Action
+            var otherModel = initModel.CreateFrom(flightDate, flight, passengers);
+
+            // Assert
+            Assert.Null(otherModel.PNR);
+            Assert.Equal(flight, otherModel.FlightInfo);
+            Assert.Equal(flightDate, otherModel.FlightDate);
+            Assert.Equal(passengers.Count(), otherModel.Passengers.Count());
         }
 
         [Fact]
