@@ -1,6 +1,8 @@
-﻿using FlightReservation.Models.Contracts;
+﻿
 
-namespace FlightReservation.Services.Contracts
+using FlightReservation.Common.Contracts.Models;
+
+namespace FlightReservation.Common.Contracts.Services
 {
     public interface IFlightService
     {

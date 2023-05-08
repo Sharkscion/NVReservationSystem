@@ -1,9 +1,9 @@
-﻿using FlightReservation.Models.Flight;
+﻿using FlightReservation.Common.Contracts.Services;
+using FlightReservation.Models.Flight;
 using FlightReservation.Models.Passenger;
 using FlightReservation.Models.Reservation;
 using FlightReservation.Repositories;
 using FlightReservation.Services;
-using FlightReservation.Services.Contracts;
 using FlightReservation.UI.Presenters.FlightMaintenance;
 using FlightReservation.UI.Presenters.Reservation;
 using FlightReservation.UI.Views.FlightMaintenance;

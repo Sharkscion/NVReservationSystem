@@ -1,4 +1,4 @@
-﻿using FlightReservation.Models.Contracts;
+﻿using FlightReservation.Common.Contracts.Models;
 
 namespace FlightReservation.UI.Views.Reservation.Contracts
 {

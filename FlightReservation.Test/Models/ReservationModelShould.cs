@@ -1,5 +1,4 @@
-﻿using FlightReservation.Models.Contracts;
-using FlightReservation.Models.Flight;
+﻿using FlightReservation.Models.Flight;
 using FlightReservation.Models.Passenger;
 using FlightReservation.Models.Reservation;
 

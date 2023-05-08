@@ -1,5 +1,5 @@
-﻿using FlightReservation.Models;
-using FlightReservation.Models.Contracts;
+﻿using FlightReservation.Common.Contracts.Models;
+using FlightReservation.Common.Types;
 using FlightReservation.Models.Passenger;
 
 namespace FlightReservation.Test.Models

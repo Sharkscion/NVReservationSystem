@@ -1,5 +1,5 @@
-﻿using FlightReservation.Models;
-using FlightReservation.Models.Contracts;
+﻿using FlightReservation.Common.Types;
+using FlightReservation.Common.Contracts.Models;
 
 namespace FlightReservation.UI.Test.Fakes
 {

@@ -1,5 +1,5 @@
-﻿using FlightReservation.Services;
-using FlightReservation.Services.Contracts;
+﻿using FlightReservation.Common.Contracts.Services;
+using FlightReservation.Services;
 
 namespace FlightReservation.Test.Services.Fixtures
 {

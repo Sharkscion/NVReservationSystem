@@ -1,4 +1,4 @@
-﻿namespace FlightReservation.Models.Contracts
+﻿namespace FlightReservation.Common.Contracts.Models
 {
     public interface IDateTimeProvider
     {

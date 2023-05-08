@@ -1,4 +1,4 @@
-﻿namespace FlightReservation.Models
+﻿namespace FlightReservation.Common.Types
 {
     public enum TimePeriod
     {

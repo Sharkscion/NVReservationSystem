@@ -1,5 +1,5 @@
-﻿using FlightReservation.Models.Contracts;
-using FlightReservation.Repositories.Contracts;
+﻿using FlightReservation.Common.Contracts.Models;
+using FlightReservation.Common.Contracts.Repositories;
 
 namespace FlightReservation.Repositories
 {

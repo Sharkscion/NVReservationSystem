@@ -1,7 +1,7 @@
-﻿using FlightReservation.Models.Contracts;
+﻿using FlightReservation.Common.Contracts.Models;
+using FlightReservation.Common.Contracts.Repositories;
+using FlightReservation.Common.Contracts.Services;
 using FlightReservation.Models.Reservation;
-using FlightReservation.Repositories.Contracts;
-using FlightReservation.Services.Contracts;
 using FlightReservation.Utilities;
 
 namespace FlightReservation.Services

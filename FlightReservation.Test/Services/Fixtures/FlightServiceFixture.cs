@@ -1,4 +1,4 @@
-﻿using FlightReservation.Models.Contracts;
+﻿using FlightReservation.Common.Contracts.Services;
 using FlightReservation.Services;
 
 namespace FlightReservation.Test.Services.Fixtures
@@ -7,7 +7,7 @@ namespace FlightReservation.Test.Services.Fixtures
     {
         private readonly FakeFlightRepository _repository;
 
-        public FlightService Service { get; private set; }
+        public IFlightService Service { get; private set; }
 
         public FlightServiceFixture()
         {

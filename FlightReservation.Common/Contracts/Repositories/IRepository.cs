@@ -1,4 +1,4 @@
-﻿namespace FlightReservation.Repositories.Contracts
+﻿namespace FlightReservation.Common.Contracts.Repositories
 {
     public interface IRepository<T>
     {

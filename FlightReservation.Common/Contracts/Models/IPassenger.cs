@@ -1,4 +1,7 @@
-﻿namespace FlightReservation.Models.Contracts
+﻿
+using FlightReservation.Common.Types;
+
+namespace FlightReservation.Common.Contracts.Models
 {
     public interface IPassenger
     {

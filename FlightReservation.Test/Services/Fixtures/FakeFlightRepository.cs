@@ -1,6 +1,6 @@
-﻿using FlightReservation.Models.Contracts;
+﻿using FlightReservation.Common.Contracts.Models;
+using FlightReservation.Common.Contracts.Repositories;
 using FlightReservation.Models.Flight;
-using FlightReservation.Repositories.Contracts;
 using System.Text;
 
 namespace FlightReservation.Test.Services.Fixtures
