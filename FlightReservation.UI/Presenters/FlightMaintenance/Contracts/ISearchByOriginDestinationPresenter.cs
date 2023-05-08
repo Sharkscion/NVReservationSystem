@@ -1,13 +1,9 @@
-﻿using FlightReservation.UI.Common;
-using FlightReservation.UI.Views.Contracts;
-
-namespace FlightReservation.UI.Presenters.FlightMaintenance.Contracts
+﻿namespace FlightReservation.UI.Presenters.FlightMaintenance.Contracts
 {
     internal interface ISearchByOriginDestinationPresenter
     {
-        public void OnArrivalStationChanged(IFormView source, ChangeEventArgs<string> args);
-        public void OnDepartureStationChanged(IFormView source, ChangeEventArgs<string> args);
-
-        public void OnSubmitted(IFormView source, SubmitEventArgs<Tuple<string, string>> args);
+        void OnArrivalStationChanged(object? source, EventArgs e);
+        void OnDepartureStationChanged(object? source, EventArgs e);
+        void OnSubmitted(object? source, EventArgs e);
     }
 }
