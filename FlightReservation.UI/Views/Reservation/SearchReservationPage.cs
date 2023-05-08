@@ -1,5 +1,4 @@
 ﻿using FlightReservation.Models.Contracts;
-using FlightReservation.UI.Common;
 using FlightReservation.UI.Views.Contracts;
 using FlightReservation.UI.Views.Reservation.Contracts;
 
@@ -103,7 +102,7 @@ namespace FlightReservation.UI.Views.Reservation
 
         private void OnPNRChanged()
         {
-            PNRChanged?.Invoke(this, new ChangeEventArgs<string>(PNR));
+            PNRChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnSubmitted()
