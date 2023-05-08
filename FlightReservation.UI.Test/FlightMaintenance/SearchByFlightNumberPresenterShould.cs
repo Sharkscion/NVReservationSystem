@@ -39,8 +39,8 @@ namespace FlightReservation.UI.Test.FlightMaintenance
         }
 
         [Fact]
-        public void HaveNoFlightNumberError_WhenValid() {
-
+        public void HaveNoFlightNumberError_WhenValid()
+        {
             _mockView
                 .SetupProperty(v => v.FlightNumber, 9999)
                 .Raise(v => v.FlightNumberChanged += null, this, EventArgs.Empty);
@@ -52,8 +52,8 @@ namespace FlightReservation.UI.Test.FlightMaintenance
         }
 
         [Fact]
-        public void Display_AvailableFlights_WhenSubmitted() {
-
+        public void Display_AvailableFlights_WhenSubmitted()
+        {
             int flightNumber = 9999;
             int repeatModelCount = 2;
             IEnumerable<IFlight> flights = Enumerable.Repeat(
@@ -70,18 +70,17 @@ namespace FlightReservation.UI.Test.FlightMaintenance
                 v => v.Display(It.Is<IEnumerable<IFlight>>(l => l.Count() == repeatModelCount))
             );
             _mockView.Verify(v => v.Reset());
-
         }
 
         [Fact]
-        public void Display_NoFlights_WhenSubmitted() {
-
+        public void Display_NoFlights_WhenSubmitted()
+        {
             int flightNumber = 1;
+            var noFlights = new List<IFlight>();
+
             _mockView.SetupProperty(v => v.FlightNumber, flightNumber);
 
-            _mockService
-                .Setup(service => service.FindAllHaving(flightNumber))
-                .Returns(new List<IFlight>());
+            _mockService.Setup(service => service.FindAllHaving(flightNumber)).Returns(noFlights);
 
             _mockView.Raise(v => v.Submitted += null, this, EventArgs.Empty);
 

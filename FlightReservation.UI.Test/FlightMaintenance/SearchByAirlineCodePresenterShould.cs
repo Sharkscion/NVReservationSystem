@@ -80,11 +80,11 @@ namespace FlightReservation.UI.Test.FlightMaintenance
         public void Display_NoFlights_WhenSubmitted()
         {
             string airlineCode = "1NV";
+            var noFlights = new List<IFlight>();
+
             _mockView.SetupProperty(v => v.AirlineCode, airlineCode);
 
-            _mockService
-                .Setup(service => service.FindAllHaving(airlineCode))
-                .Returns(new List<IFlight>());
+            _mockService.Setup(service => service.FindAllHaving(airlineCode)).Returns(noFlights);
 
             _mockView.Raise(v => v.Submitted += null, this, EventArgs.Empty);
 
