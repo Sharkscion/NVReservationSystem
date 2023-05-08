@@ -18,9 +18,29 @@ namespace FlightReservation.UI.Test.Fakes
             PNR = bookingReference;
         }
 
-        public IReservation FromBookingReference(string bookingReference)
+        public FakeReservationModel(
+            IFlight flightInfo,
+            DateTime flightDate,
+            IEnumerable<IPassenger> passengers
+        )
+        {
+            FlightInfo = flightInfo;
+            FlightDate = flightDate;
+            Passengers = passengers;
+        }
+
+        public IReservation CreateWith(string bookingReference)
         {
             return new FakeReservationModel(bookingReference);
+        }
+
+        public IReservation CreateFrom(
+            DateTime flightDate,
+            IFlight flightInfo,
+            IEnumerable<IPassenger> passengers
+        )
+        {
+            return new FakeReservationModel(flightInfo, flightDate, passengers);
         }
     }
 }
