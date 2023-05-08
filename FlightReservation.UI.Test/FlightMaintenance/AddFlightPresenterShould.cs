@@ -199,7 +199,7 @@ namespace FlightReservation.UI.Test.FlightMaintenance
             _mockView.Raise(v => v.Submitted += null, this, EventArgs.Empty);
 
             _mockService.Verify(s => s.Create(It.IsAny<IFlight>()));
-            _mockView.Verify(v => v.AlertError(It.IsAny<string>(), It.IsAny<string>()));
+            _mockView.Verify(v => v.AlertError(It.IsAny<string>(), "A flight already exists."));
             _mockView.Verify(v => v.Reset());
         }
 
