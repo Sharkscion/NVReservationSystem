@@ -127,12 +127,6 @@ namespace FlightReservation.UI.Views
                 view: _searchByOriginDestinationPage,
                 service: _flightService
             );
-
-            _searchByOriginDestinationPage.DepartureStationChanged +=
-                presenter.OnDepartureStationChanged;
-            _searchByOriginDestinationPage.ArrivalStationChanged +=
-                presenter.OnArrivalStationChanged;
-            _searchByOriginDestinationPage.Submitted += presenter.OnSubmitted;
         }
 
         private void initCreateReservationPage()
