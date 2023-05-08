@@ -46,7 +46,7 @@ namespace FlightReservation.UI.Views.FlightMaintenance
         public void Reset()
         {
             _isFormValid = true;
-            FlightNumber = -1;
+            _flightNumber = -1;
         }
 
         public override void ShowContent()

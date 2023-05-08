@@ -45,7 +45,7 @@ namespace FlightReservation.UI.Views.FlightMaintenance
 
         public void Reset()
         {
-            AirlineCode = string.Empty;
+            _airlineCode = string.Empty;
             _isFormValid = true;
         }
 
