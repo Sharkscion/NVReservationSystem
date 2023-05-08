@@ -150,9 +150,6 @@ namespace FlightReservation.UI.Views
                 view: _searchReservationPage,
                 service: _reservationService
             );
-
-            _searchReservationPage.PNRChanged += presenter.OnPNRChanged;
-            _searchReservationPage.Submitted += presenter.OnSubmitted;
         }
 
         private void initDisplayAllReservationsPage()

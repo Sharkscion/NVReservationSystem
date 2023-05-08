@@ -1,9 +1,7 @@
 ﻿using FlightReservation.Common.Validators;
 using FlightReservation.Models.Contracts;
 using FlightReservation.Services.Contracts;
-using FlightReservation.UI.Common;
 using FlightReservation.UI.Presenters.Reservation.Contracts;
-using FlightReservation.UI.Views.Contracts;
 using FlightReservation.UI.Views.Reservation.Contracts;
 
 namespace FlightReservation.UI.Presenters.Reservation
@@ -15,13 +13,16 @@ namespace FlightReservation.UI.Presenters.Reservation
 
         public SearchReservationPresenter(ISearchReservationView view, IReservationService service)
         {
-            _view = view;
             _service = service;
+
+            _view = view;
+            _view.PNRChanged += OnPNRChanged;
+            _view.Submitted += OnSubmitted;
         }
 
-        public void OnPNRChanged(IFormView source, ChangeEventArgs<string> args)
+        public void OnPNRChanged(object? source, EventArgs e)
         {
-            bool isValid = ReservationValidator.IsBookingReferenceFormatValid(args.Value);
+            bool isValid = ReservationValidator.IsBookingReferenceFormatValid(_view.PNR);
             if (!isValid)
             {
                 _view.SetFieldError(
@@ -31,10 +32,18 @@ namespace FlightReservation.UI.Presenters.Reservation
             }
         }
 
-        public void OnSubmitted(IFormView source, SubmitEventArgs<string> args)
+        public void OnSubmitted(object? source, EventArgs e)
         {
-            IReservation? reservation = _service.Find(PNR: args.Data);
-            _view.DisplayReservation(reservation);
+            IReservation? reservation = _service.Find(_view.PNR);
+
+            if (reservation == null)
+            {
+                _view.DisplayNoReservation();
+            }
+            else
+            {
+                _view.DisplayReservation(reservation);
+            }
             _view.Reset();
         }
     }
