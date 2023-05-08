@@ -1,7 +1,6 @@
 ﻿using FlightReservation.Models.Contracts;
 using FlightReservation.Services.Contracts;
 using FlightReservation.UI.Presenters.Reservation.Contracts;
-using FlightReservation.UI.Views.Contracts;
 using FlightReservation.UI.Views.Reservation.Contracts;
 
 namespace FlightReservation.UI.Presenters.Reservation
@@ -16,14 +15,24 @@ namespace FlightReservation.UI.Presenters.Reservation
             IReservationService service
         )
         {
-            _view = view;
             _service = service;
+
+            _view = view;
+            _view.Submitted += OnSubmitted;
         }
 
-        public void OnSubmitted(IDisplayAllReservationsView source, EventArgs args)
+        public void OnSubmitted(object? source, EventArgs e)
         {
             IEnumerable<IReservation> reservations = _service.ViewAll();
-            _view.DisplayReservations(reservations);
+
+            if (reservations.Count() > 0)
+            {
+                _view.DisplayReservations(reservations);
+            }
+            else
+            {
+                _view.DisplayNoReservations();
+            }
         }
     }
 }

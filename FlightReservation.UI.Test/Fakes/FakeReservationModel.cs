@@ -11,6 +11,8 @@ namespace FlightReservation.UI.Test.Fakes
 
         public IEnumerable<IPassenger> Passengers { get; set; }
 
+        public FakeReservationModel() { }
+
         public FakeReservationModel(string bookingReference)
         {
             PNR = bookingReference;

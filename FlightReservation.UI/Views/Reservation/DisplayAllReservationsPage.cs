@@ -9,7 +9,7 @@ namespace FlightReservation.UI.Views.Reservation
         public DisplayAllReservationsPage(string title)
             : base(title) { }
 
-        public event IDisplayAllReservationsView.SubmitEventHandler<EventArgs> Submitted;
+        public event EventHandler Submitted;
 
         public override void ShowContent()
         {
@@ -27,25 +27,6 @@ namespace FlightReservation.UI.Views.Reservation
 
             Console.WriteLine("\n-----------------------------------------------");
 
-            if (reservations.Count() == 0)
-            {
-                displayNoReservations();
-            }
-            else
-            {
-                displayAvailableReservations(reservations);
-            }
-
-            Console.WriteLine("-----------------------------------------------");
-        }
-
-        private void displayNoReservations()
-        {
-            Console.WriteLine("No available reservations to be displayed.");
-        }
-
-        private void displayAvailableReservations(IEnumerable<IReservation> reservations)
-        {
             var header = String.Format(
                 "{0,3} {1,-6} {2,3} {3,-15} {4,-15} {5, -15} {6,-15}\n",
                 "#",
@@ -86,6 +67,15 @@ namespace FlightReservation.UI.Views.Reservation
                 );
                 count++;
             }
+            Console.WriteLine("\n-----------------------------------------------");
+        }
+
+        public void DisplayNoReservations()
+        {
+            ClearScreen();
+            Console.WriteLine("\n-----------------------------------------------");
+            Console.WriteLine("No available reservations to be displayed.");
+            Console.WriteLine("-----------------------------------------------");
         }
     }
 }
