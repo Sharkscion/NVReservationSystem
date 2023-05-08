@@ -19,7 +19,7 @@ namespace FlightReservation.UI.Views.FlightMaintenance
             set
             {
                 _airlineCode = value;
-                OnAirlineCodeChanged(value);
+                OnAirlineCodeChanged();
             }
         }
 
@@ -73,7 +73,7 @@ namespace FlightReservation.UI.Views.FlightMaintenance
             } while (!_isFormValid);
         }
 
-        private void OnAirlineCodeChanged(string airlineCode)
+        private void OnAirlineCodeChanged()
         {
             AirlineCodeChanged?.Invoke(this, EventArgs.Empty);
         }

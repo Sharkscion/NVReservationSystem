@@ -6,10 +6,11 @@ namespace FlightReservation.UI.Views.FlightMaintenance.Contracts
 {
     internal interface ISearchByFlightNumberView : IFormView
     {
-        event InputChangedEventHandler<int> FlightNumberChanged;
-        event SubmitEventHandler<SubmitEventArgs<int>> Submitted;
+        event EventHandler FlightNumberChanged;
+        event EventHandler Submitted;
 
         public int FlightNumber { get; set; }
         void Display(IEnumerable<IFlight> flights);
+        void DisplayNoFlights();
     }
 }

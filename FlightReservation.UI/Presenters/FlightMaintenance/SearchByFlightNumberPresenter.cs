@@ -1,8 +1,7 @@
 ﻿using FlightReservation.Common.Validators;
+using FlightReservation.Models.Contracts;
 using FlightReservation.Services.Contracts;
-using FlightReservation.UI.Common;
 using FlightReservation.UI.Presenters.FlightMaintenance.Contracts;
-using FlightReservation.UI.Views.Contracts;
 using FlightReservation.UI.Views.FlightMaintenance.Contracts;
 
 namespace FlightReservation.UI.Presenters.FlightMaintenance
@@ -14,13 +13,16 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
 
         public SearchByFlightNumberPresenter(ISearchByFlightNumberView view, IFlightService service)
         {
-            _view = view;
             _service = service;
+
+            _view = view;
+            _view.FlightNumberChanged += OnFlightNumberChanged;
+            _view.Submitted += OnSubmitted;
         }
 
-        public void OnFlightNumberChanged(IFormView source, ChangeEventArgs<int> args)
+        public void OnFlightNumberChanged(object? source, EventArgs e)
         {
-            bool isValid = FlightValidator.IsFlightNumberValid(args.Value);
+            bool isValid = FlightValidator.IsFlightNumberValid(_view.FlightNumber);
             if (!isValid)
             {
                 _view.SetFieldError(
@@ -30,9 +32,19 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
             }
         }
 
-        public void OnSubmitted(IFormView source, SubmitEventArgs<int> args)
+        public void OnSubmitted(object? source, EventArgs e)
         {
-            _view.Display(_service.FindAllHaving(args.Data));
+            IEnumerable<IFlight> flights = _service.FindAllHaving(_view.FlightNumber);
+
+            if (flights.Count() > 0)
+            {
+                _view.Display(flights);
+            }
+            else
+            {
+                _view.DisplayNoFlights();
+            }
+
             _view.Reset();
         }
     }

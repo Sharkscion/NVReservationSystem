@@ -105,9 +105,6 @@ namespace FlightReservation.UI.Views
                 view: _searchByFlightNumberPage,
                 service: _flightService
             );
-
-            _searchByFlightNumberPage.FlightNumberChanged += presenter.OnFlightNumberChanged;
-            _searchByFlightNumberPage.Submitted += presenter.OnSubmitted;
         }
 
         private void initSearchByAirlineCodePage()

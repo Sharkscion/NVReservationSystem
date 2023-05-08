@@ -41,7 +41,7 @@ namespace FlightReservation.UI.Test.FlightMaintenance
         }
 
         [Fact]
-        public void SetNoAirlineCodeError_WhenValid()
+        public void HaveNoAirlineCodeError_WhenValid()
         {
             string airlineCode = "1NV";
 
