@@ -1,5 +1,4 @@
 ﻿using FlightReservation.Models.Contracts;
-using FlightReservation.UI.Common;
 using FlightReservation.UI.Views.Contracts;
 using FlightReservation.UI.Views.FlightMaintenance.Contracts;
 using FlightReservation.UI.Views.Utilities;
@@ -9,17 +8,36 @@ namespace FlightReservation.UI.Views.FlightMaintenance
     internal class SearchByOriginDestinationPage : BasePage, ISearchByOriginDestinationView
     {
         private bool _isFormValid;
+        private string _departureStation;
+        private string _arrivalStation;
 
-        public string DepartureStation { get; set; }
-        public string ArrivalStation { get; set; }
+        public string DepartureStation
+        {
+            get { return _departureStation; }
+            set
+            {
+                _departureStation = value;
+                OnDepartureStationCodeChanged();
+            }
+        }
+        public string ArrivalStation
+        {
+            get { return _arrivalStation; }
+            set
+            {
+                _arrivalStation = value;
+                OnArrivalStationCodeChanged();
+            }
+        }
+
         public bool IsFormValid
         {
             get { return _isFormValid; }
         }
 
-        public event IFormView.InputChangedEventHandler<string> DepartureStationChanged;
-        public event IFormView.InputChangedEventHandler<string> ArrivalStationChanged;
-        public event IFormView.SubmitEventHandler<SubmitEventArgs<Tuple<string, string>>> Submitted;
+        public event EventHandler DepartureStationChanged;
+        public event EventHandler ArrivalStationChanged;
+        public event EventHandler Submitted;
 
         public SearchByOriginDestinationPage(string title)
             : base(title)
@@ -32,26 +50,15 @@ namespace FlightReservation.UI.Views.FlightMaintenance
             ClearScreen();
 
             Console.WriteLine("\n-----------------------------------------------");
-
-            if (flights.Count() == 0)
-            {
-                Console.WriteLine(
-                    $"No flights going from {DepartureStation} to {ArrivalStation}..."
-                );
-            }
-            else
-            {
-                FlightPresenter.DisplayFlights(flights);
-            }
-
+            FlightPresenter.DisplayFlights(flights);
             Console.WriteLine("-----------------------------------------------\n");
         }
 
         public void Reset()
         {
             _isFormValid = true;
-            DepartureStation = string.Empty;
-            ArrivalStation = string.Empty;
+            _departureStation = string.Empty;
+            _arrivalStation = string.Empty;
         }
 
         public override void ShowContent()
@@ -67,15 +74,15 @@ namespace FlightReservation.UI.Views.FlightMaintenance
             {
                 Console.Write("Departure Station Code: ");
                 string? input = Console.ReadLine()?.Trim();
-                _isFormValid = input is not null && input != string.Empty;
 
+                _isFormValid = !string.IsNullOrEmpty(input);
                 if (!_isFormValid)
                 {
                     SetFieldError(nameof(DepartureStation), "Please enter a value");
                     continue;
                 }
 
-                OnDepartureStationCodeChanged(input);
+                DepartureStation = input;
             } while (!_isFormValid);
         }
 
@@ -85,36 +92,31 @@ namespace FlightReservation.UI.Views.FlightMaintenance
             {
                 Console.Write("Arrival Station Code: ");
                 string? input = Console.ReadLine()?.Trim();
-                _isFormValid = input is not null && input != string.Empty;
 
+                _isFormValid = !string.IsNullOrEmpty(input);
                 if (!_isFormValid)
                 {
                     SetFieldError(nameof(ArrivalStation), "Please enter a value");
                     continue;
                 }
 
-                OnArrivalStationCodeChanged(input);
+                ArrivalStation = input;
             } while (!_isFormValid);
         }
 
-        private void OnDepartureStationCodeChanged(string value)
+        private void OnDepartureStationCodeChanged()
         {
-            DepartureStation = value;
-            DepartureStationChanged?.Invoke(this, new ChangeEventArgs<string>(DepartureStation));
+            DepartureStationChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void OnArrivalStationCodeChanged(string value)
+        private void OnArrivalStationCodeChanged()
         {
-            ArrivalStation = value;
-            ArrivalStationChanged?.Invoke(this, new ChangeEventArgs<string>(ArrivalStation));
+            ArrivalStationChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnSubmitted()
         {
-            var data = new Tuple<string, string>(DepartureStation, ArrivalStation);
-            var args = new SubmitEventArgs<Tuple<string, string>>(data);
-
-            Submitted?.Invoke(this, args);
+            Submitted?.Invoke(this, EventArgs.Empty);
         }
 
         public void SetFieldError(string paramName, string message)
@@ -133,6 +135,15 @@ namespace FlightReservation.UI.Views.FlightMaintenance
             Console.WriteLine("*****************************************");
 
             Console.WriteLine();
+        }
+
+        public void DisplayNoFlights()
+        {
+            ClearScreen();
+
+            Console.WriteLine("\n-----------------------------------------------");
+            Console.WriteLine($"No flights going from {DepartureStation} to {ArrivalStation}...");
+            Console.WriteLine("-----------------------------------------------");
         }
     }
 }

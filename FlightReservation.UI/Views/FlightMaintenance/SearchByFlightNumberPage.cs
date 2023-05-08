@@ -1,5 +1,4 @@
 ﻿using FlightReservation.Models.Contracts;
-using FlightReservation.UI.Common;
 using FlightReservation.UI.Views.Contracts;
 using FlightReservation.UI.Views.FlightMaintenance.Contracts;
 using FlightReservation.UI.Views.Utilities;
@@ -9,8 +8,17 @@ namespace FlightReservation.UI.Views.FlightMaintenance
     internal class SearchByFlightNumberPage : BasePage, ISearchByFlightNumberView
     {
         private bool _isFormValid;
+        private int _flightNumber;
 
-        public int FlightNumber { get; set; }
+        public int FlightNumber
+        {
+            get { return _flightNumber; }
+            set
+            {
+                _flightNumber = value;
+                OnFlightNumberChanged();
+            }
+        }
 
         public bool IsFormValid
         {
@@ -23,31 +31,22 @@ namespace FlightReservation.UI.Views.FlightMaintenance
             Reset();
         }
 
-        public event IFormView.InputChangedEventHandler<int> FlightNumberChanged;
-        public event IFormView.SubmitEventHandler<SubmitEventArgs<int>> Submitted;
+        public event EventHandler FlightNumberChanged;
+        public event EventHandler Submitted;
 
         public void Display(IEnumerable<IFlight> flights)
         {
             ClearScreen();
 
             Console.WriteLine("\n-----------------------------------------------");
-
-            if (flights.Count() == 0)
-            {
-                Console.WriteLine($"No flights found with flight number ({FlightNumber})...");
-            }
-            else
-            {
-                FlightPresenter.DisplayFlights(flights);
-            }
-
+            FlightPresenter.DisplayFlights(flights);
             Console.WriteLine("-----------------------------------------------\n");
         }
 
         public void Reset()
         {
             _isFormValid = true;
-            FlightNumber = -1;
+            _flightNumber = -1;
         }
 
         public override void ShowContent()
@@ -70,20 +69,18 @@ namespace FlightReservation.UI.Views.FlightMaintenance
                     continue;
                 }
 
-                OnFlightNumberChanged(flightNumber);
+                FlightNumber = flightNumber;
             } while (!_isFormValid);
         }
 
-        private void OnFlightNumberChanged(int flightNumber)
+        private void OnFlightNumberChanged()
         {
-            FlightNumber = flightNumber;
-            FlightNumberChanged?.Invoke(this, new ChangeEventArgs<int>(FlightNumber));
+            FlightNumberChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnSubmitted()
         {
-            var args = new SubmitEventArgs<int>(FlightNumber);
-            Submitted?.Invoke(this, args);
+            Submitted?.Invoke(this, EventArgs.Empty);
         }
 
         public void SetFieldError(string paramName, string message)
@@ -102,6 +99,14 @@ namespace FlightReservation.UI.Views.FlightMaintenance
             Console.WriteLine("*****************************************");
 
             Console.WriteLine();
+        }
+
+        public void DisplayNoFlights()
+        {
+            ClearScreen();
+            Console.WriteLine("\n-----------------------------------------------");
+            Console.WriteLine($"No flights found with flight number ({FlightNumber})...");
+            Console.WriteLine("-----------------------------------------------");
         }
     }
 }

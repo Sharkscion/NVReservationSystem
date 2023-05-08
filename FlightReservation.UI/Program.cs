@@ -86,15 +86,6 @@ namespace FlightReservation.UI.Views
             _addFlightPage = new AddFlightPage("Add a Flight");
 
             var presenter = new AddFlightPresenter(view: _addFlightPage, service: _flightService);
-
-            _addFlightPage.AirlineCodeChanged += presenter.OnAirlineCodeChanged;
-            _addFlightPage.FlightNumberChanged += presenter.OnFlightNumberChanged;
-            _addFlightPage.DepartureStationChanged += presenter.OnDepartureStationChanged;
-            _addFlightPage.ArrivalStationChanged += presenter.OnArrivalStationChanged;
-            _addFlightPage.DepartureScheduledTimeChanged +=
-                presenter.OnDepartureScheduledTimeChanged;
-            _addFlightPage.ArrivalScheduledTimeChanged += presenter.OnArrivalScheduledTimeChanged;
-            _addFlightPage.Submitted += presenter.OnSubmitted;
         }
 
         private void initSearchByFlightNumberPage()
@@ -105,9 +96,6 @@ namespace FlightReservation.UI.Views
                 view: _searchByFlightNumberPage,
                 service: _flightService
             );
-
-            _searchByFlightNumberPage.FlightNumberChanged += presenter.OnFlightNumberChanged;
-            _searchByFlightNumberPage.Submitted += presenter.OnSubmitted;
         }
 
         private void initSearchByAirlineCodePage()
@@ -118,9 +106,6 @@ namespace FlightReservation.UI.Views
                 view: _searchByAirlineCodePage,
                 service: _flightService
             );
-
-            _searchByAirlineCodePage.AirlineCodeChanged += presenter.OnAirlineCodeChanged;
-            _searchByAirlineCodePage.Submitted += presenter.OnSubmitted;
         }
 
         private void initSearchByOriginDestinationPage()
@@ -133,12 +118,6 @@ namespace FlightReservation.UI.Views
                 view: _searchByOriginDestinationPage,
                 service: _flightService
             );
-
-            _searchByOriginDestinationPage.DepartureStationChanged +=
-                presenter.OnDepartureStationChanged;
-            _searchByOriginDestinationPage.ArrivalStationChanged +=
-                presenter.OnArrivalStationChanged;
-            _searchByOriginDestinationPage.Submitted += presenter.OnSubmitted;
         }
 
         private void initCreateReservationPage()

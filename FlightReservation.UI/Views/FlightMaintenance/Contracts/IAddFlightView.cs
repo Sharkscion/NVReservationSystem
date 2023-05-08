@@ -1,17 +1,16 @@
-﻿using FlightReservation.UI.Common;
-using FlightReservation.UI.Views.Contracts;
+﻿using FlightReservation.UI.Views.Contracts;
 
 namespace FlightReservation.UI.Views.FlightMaintenance.Contracts
 {
     internal interface IAddFlightView : IFormView
     {
-        event InputChangedEventHandler<string> AirlineCodeChanged;
-        event InputChangedEventHandler<int> FlightNumberChanged;
-        event InputChangedEventHandler<string> ArrivalStationChanged;
-        event InputChangedEventHandler<string> DepartureStationChanged;
-        event InputChangedEventHandler<TimeOnly> ArrivalScheduledTimeChanged;
-        event InputChangedEventHandler<TimeOnly> DepartureScheduledTimeChanged;
-        event SubmitEventHandler<FlightEventArgs> Submitted;
+        event EventHandler AirlineCodeChanged;
+        event EventHandler FlightNumberChanged;
+        event EventHandler ArrivalStationChanged;
+        event EventHandler DepartureStationChanged;
+        event EventHandler ArrivalScheduledTimeChanged;
+        event EventHandler DepartureScheduledTimeChanged;
+        event EventHandler Submitted;
 
         public string AirlineCode { get; set; }
         public int FlightNumber { get; set; }

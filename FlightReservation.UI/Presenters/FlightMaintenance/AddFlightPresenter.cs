@@ -1,9 +1,7 @@
 ﻿using FlightReservation.Common.Validators;
 using FlightReservation.Models.Flight;
 using FlightReservation.Services.Contracts;
-using FlightReservation.UI.Common;
 using FlightReservation.UI.Presenters.FlightMaintenance.Contracts;
-using FlightReservation.UI.Views.Contracts;
 using FlightReservation.UI.Views.FlightMaintenance.Contracts;
 
 namespace FlightReservation.UI.Presenters.FlightMaintenance
@@ -15,13 +13,21 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
 
         public AddFlightPresenter(IAddFlightView view, IFlightService service)
         {
-            _view = view;
             _service = service;
+
+            _view = view;
+            _view.AirlineCodeChanged += OnAirlineCodeChanged;
+            _view.FlightNumberChanged += OnFlightNumberChanged;
+            _view.DepartureStationChanged += OnDepartureStationChanged;
+            _view.ArrivalStationChanged += OnArrivalStationChanged;
+            _view.DepartureScheduledTimeChanged += OnDepartureScheduledTimeChanged;
+            _view.ArrivalScheduledTimeChanged += OnArrivalScheduledTimeChanged;
+            _view.Submitted += OnSubmitted;
         }
 
-        public void OnAirlineCodeChanged(IFormView source, ChangeEventArgs<string> args)
+        public void OnAirlineCodeChanged(object? source, EventArgs e)
         {
-            bool isValid = FlightValidator.IsAirlineCodeValid(args.Value);
+            bool isValid = FlightValidator.IsAirlineCodeValid(_view.AirlineCode);
             if (!isValid)
             {
                 _view.SetFieldError(
@@ -32,9 +38,9 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
             }
         }
 
-        public void OnArrivalStationChanged(IFormView source, ChangeEventArgs<string> args)
+        public void OnArrivalStationChanged(object? source, EventArgs e)
         {
-            bool isFormatValid = FlightValidator.IsStationFormatValid(args.Value);
+            bool isFormatValid = FlightValidator.IsStationFormatValid(_view.ArrivalStation);
             if (!isFormatValid)
             {
                 _view.SetFieldError(
@@ -45,18 +51,18 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
                 return;
             }
 
-            if (_view.DepartureStation == args.Value)
+            if (_view.DepartureStation == _view.ArrivalStation)
             {
                 _view.SetFieldError(
                     nameof(_view.ArrivalStation),
-                    "Arrival station must not be the same as the Departure Station."
+                    "Arrival station must not be the same as the departure station."
                 );
             }
         }
 
-        public void OnArrivalScheduledTimeChanged(IFormView source, ChangeEventArgs<TimeOnly> args)
+        public void OnArrivalScheduledTimeChanged(object? source, EventArgs e)
         {
-            if (_view.DepartureScheduledTime > args.Value)
+            if (_view.DepartureScheduledTime > _view.ArrivalScheduledTime)
             {
                 _view.SetFieldError(
                     nameof(_view.ArrivalScheduledTime),
@@ -65,12 +71,9 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
             }
         }
 
-        public void OnDepartureScheduledTimeChanged(
-            IFormView source,
-            ChangeEventArgs<TimeOnly> args
-        )
+        public void OnDepartureScheduledTimeChanged(object? source, EventArgs e)
         {
-            if (args.Value > _view.ArrivalScheduledTime)
+            if (_view.DepartureScheduledTime > _view.ArrivalScheduledTime)
             {
                 _view.SetFieldError(
                     nameof(_view.DepartureScheduledTime),
@@ -79,9 +82,9 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
             }
         }
 
-        public void OnDepartureStationChanged(IFormView source, ChangeEventArgs<string> args)
+        public void OnDepartureStationChanged(object? source, EventArgs e)
         {
-            bool isFormatValid = FlightValidator.IsStationFormatValid(args.Value);
+            bool isFormatValid = FlightValidator.IsStationFormatValid(_view.DepartureStation);
             if (!isFormatValid)
             {
                 _view.SetFieldError(
@@ -92,7 +95,7 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
                 return;
             }
 
-            if (_view.ArrivalStation == args.Value)
+            if (_view.ArrivalStation == _view.DepartureStation)
             {
                 _view.SetFieldError(
                     nameof(_view.DepartureStation),
@@ -101,9 +104,9 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
             }
         }
 
-        public void OnFlightNumberChanged(IFormView source, ChangeEventArgs<int> args)
+        public void OnFlightNumberChanged(object? source, EventArgs e)
         {
-            bool isValid = FlightValidator.IsFlightNumberValid(args.Value);
+            bool isValid = FlightValidator.IsFlightNumberValid(_view.FlightNumber);
             if (!isValid)
             {
                 _view.SetFieldError(
@@ -113,48 +116,28 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
             }
         }
 
-        public void OnSubmitted(IFormView source, FlightEventArgs args)
+        public void OnSubmitted(object? source, EventArgs e)
         {
             try
             {
                 var flight = new FlightModel(
-                    airlineCode: args.AirlineCode,
-                    flightNumber: args.FlightNumber,
-                    departureStation: args.DepartureStation,
-                    arrivalStation: args.ArrivalStation,
-                    departureScheduledTime: args.DepartureScheduledTime,
-                    arrivalScheduledTime: args.ArrivalScheduledTime
+                    airlineCode: _view.AirlineCode,
+                    flightNumber: _view.FlightNumber,
+                    departureStation: _view.DepartureStation,
+                    arrivalStation: _view.ArrivalStation,
+                    departureScheduledTime: _view.DepartureScheduledTime,
+                    arrivalScheduledTime: _view.ArrivalScheduledTime
                 );
 
                 _service.Create(flight);
             }
-            catch (InvalidAirlineCodeException e)
+            catch (DuplicateFlightException ex)
             {
-                _view.SetFieldError(nameof(_view.AirlineCode), e.Message);
+                _view.AlertError(header: "Failed to add a flight.", message: ex.Message);
             }
-            catch (InvalidFlightNumberException e)
+            catch (Exception ex)
             {
-                _view.SetFieldError(nameof(_view.FlightNumber), e.Message);
-            }
-            catch (InvalidMarketPairException e)
-            {
-                _view.SetFieldError(e.ParamName, message: e.Message);
-            }
-            catch (InvalidStationFormatException e)
-            {
-                _view.SetFieldError(e.ParamName, message: e.Message);
-            }
-            catch (InvalidFlightTimeException e)
-            {
-                _view.SetFieldError(e.ParamName, message: e.Message);
-            }
-            catch (DuplicateFlightException e)
-            {
-                _view.AlertError(header: "Failed to add a flight.", message: e.Message);
-            }
-            catch (Exception e)
-            {
-                _view.AlertError(header: "Failed to add a flight.", message: e.Message);
+                _view.AlertError(header: "Failed to add a flight.", message: ex.Message);
             }
             finally
             {

@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlightReservation.UI", "..\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlightReservation.Common", "..\FlightReservation.Common\FlightReservation.Common.csproj", "{BCC3F71E-E2ED-437D-9503-C47A8A4689C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightReservation.Common.Test", "..\FlightReservation.Common.Test\FlightReservation.Common.Test.csproj", "{F2FCE344-D12E-473C-973E-D41CA5F9E760}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlightReservation.Common.Test", "..\FlightReservation.Common.Test\FlightReservation.Common.Test.csproj", "{F2FCE344-D12E-473C-973E-D41CA5F9E760}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightReservation.Test", "..\FlightReservation.Test\FlightReservation.Test.csproj", "{04301AC7-6132-4266-8F9E-E249C1700311}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlightReservation.Test", "..\FlightReservation.Test\FlightReservation.Test.csproj", "{04301AC7-6132-4266-8F9E-E249C1700311}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightReservation.UI.Test", "..\FlightReservation.UI.Test\FlightReservation.UI.Test.csproj", "{739AB458-DDFE-49AD-A2AF-E7D86E1B282D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{04301AC7-6132-4266-8F9E-E249C1700311}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04301AC7-6132-4266-8F9E-E249C1700311}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04301AC7-6132-4266-8F9E-E249C1700311}.Release|Any CPU.Build.0 = Release|Any CPU
+		{739AB458-DDFE-49AD-A2AF-E7D86E1B282D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{739AB458-DDFE-49AD-A2AF-E7D86E1B282D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{739AB458-DDFE-49AD-A2AF-E7D86E1B282D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{739AB458-DDFE-49AD-A2AF-E7D86E1B282D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
