@@ -9,8 +9,19 @@ namespace FlightReservation.UI.Views.FlightMaintenance
         private const string TIME_FORMAT = "HH:mm";
 
         private bool _isFormValid;
+        private string _airlineCode;
+        private int _flightNumber;
 
-        public string AirlineCode { get; set; }
+        public string AirlineCode
+        {
+            get { return _airlineCode; }
+            set
+            {
+                _airlineCode = value;
+                AirlineCodeChanged?.Invoke(this, new ChangeEventArgs<string>(AirlineCode));
+            }
+        }
+
         public int FlightNumber { get; set; }
         public string DepartureStation { get; set; }
         public string ArrivalStation { get; set; }
@@ -63,7 +74,7 @@ namespace FlightReservation.UI.Views.FlightMaintenance
                     continue;
                 }
 
-                OnAirlineCodeChanged(input);
+                AirlineCode = input;
             } while (!_isFormValid);
         }
 
@@ -204,11 +215,11 @@ namespace FlightReservation.UI.Views.FlightMaintenance
             ArrivalScheduledTime = new TimeOnly(hour: 23, minute: 59);
         }
 
-        private void OnAirlineCodeChanged(string value)
-        {
-            AirlineCode = value;
-            AirlineCodeChanged?.Invoke(this, new ChangeEventArgs<string>(AirlineCode));
-        }
+        /*     private void OnAirlineCodeChanged(string value)
+             {
+                 _airlineCode = value;
+                 AirlineCodeChanged?.Invoke(this, new ChangeEventArgs<string>(AirlineCode));
+             }*/
 
         private void OnFlightNumberChanged(int value)
         {

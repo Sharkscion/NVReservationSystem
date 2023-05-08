@@ -118,9 +118,6 @@ namespace FlightReservation.UI.Views
                 view: _searchByAirlineCodePage,
                 service: _flightService
             );
-
-            _searchByAirlineCodePage.AirlineCodeChanged += presenter.OnAirlineCodeChanged;
-            _searchByAirlineCodePage.Submitted += presenter.OnSubmitted;
         }
 
         private void initSearchByOriginDestinationPage()

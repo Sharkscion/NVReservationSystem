@@ -1,5 +1,4 @@
 ﻿using FlightReservation.Models.Contracts;
-using FlightReservation.UI.Common;
 using FlightReservation.UI.Views.Contracts;
 using FlightReservation.UI.Views.FlightMaintenance.Contracts;
 using FlightReservation.UI.Views.Utilities;
@@ -9,11 +8,21 @@ namespace FlightReservation.UI.Views.FlightMaintenance
     internal class SearchByAirlineCodePage : BasePage, ISearchByAirlineCodeView
     {
         private bool _isFormValid;
+        private string _airlineCode;
 
-        public event IFormView.InputChangedEventHandler<string> AirlineCodeChanged;
-        public event IFormView.SubmitEventHandler<SubmitEventArgs<string>> Submitted;
+        public event EventHandler AirlineCodeChanged;
+        public event EventHandler Submitted;
 
-        public string AirlineCode { get; set; }
+        public string AirlineCode
+        {
+            get { return _airlineCode; }
+            set
+            {
+                _airlineCode = value;
+                OnAirlineCodeChanged(value);
+            }
+        }
+
         public bool IsFormValid
         {
             get { return _isFormValid; }
@@ -30,16 +39,7 @@ namespace FlightReservation.UI.Views.FlightMaintenance
             ClearScreen();
 
             Console.WriteLine("\n-----------------------------------------------");
-
-            if (flights.Count() == 0)
-            {
-                Console.WriteLine($"No flights found with airline code ({AirlineCode})...");
-            }
-            else
-            {
-                FlightPresenter.DisplayFlights(flights);
-            }
-
+            FlightPresenter.DisplayFlights(flights);
             Console.WriteLine("-----------------------------------------------\n");
         }
 
@@ -61,28 +61,26 @@ namespace FlightReservation.UI.Views.FlightMaintenance
             {
                 Console.Write("Airline Code: ");
                 string? input = Console.ReadLine()?.Trim();
-                _isFormValid = input is not null && input != string.Empty;
 
+                _isFormValid = !string.IsNullOrEmpty(input);
                 if (!_isFormValid)
                 {
                     Console.WriteLine("Please enter a value...");
                     continue;
                 }
 
-                OnAirlineCodeChanged(input);
+                AirlineCode = input;
             } while (!_isFormValid);
         }
 
         private void OnAirlineCodeChanged(string airlineCode)
         {
-            AirlineCode = airlineCode;
-            AirlineCodeChanged?.Invoke(this, new ChangeEventArgs<string>(AirlineCode));
+            AirlineCodeChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnSubmitted()
         {
-            var args = new SubmitEventArgs<string>(AirlineCode);
-            Submitted?.Invoke(this, args);
+            Submitted?.Invoke(this, EventArgs.Empty);
         }
 
         public void SetFieldError(string paramName, string message)
@@ -101,6 +99,15 @@ namespace FlightReservation.UI.Views.FlightMaintenance
             Console.WriteLine("*****************************************");
 
             Console.WriteLine();
+        }
+
+        public void DisplayNoFlights()
+        {
+            ClearScreen();
+
+            Console.WriteLine("\n-----------------------------------------------");
+            Console.WriteLine($"No flights found with airline code ({AirlineCode})...");
+            Console.WriteLine("-----------------------------------------------\n");
         }
     }
 }
