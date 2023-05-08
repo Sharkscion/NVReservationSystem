@@ -1,11 +1,9 @@
 ﻿using FlightReservation.Common.Validators;
-using FlightReservation.Models.Flight;
-using FlightReservation.Models.Passenger;
+using FlightReservation.Models.Contracts;
 using FlightReservation.Models.Reservation;
 using FlightReservation.Services.Contracts;
 using FlightReservation.UI.Common;
 using FlightReservation.UI.Presenters.Reservation.Contracts;
-using FlightReservation.UI.Views.Contracts;
 using FlightReservation.UI.Views.Reservation.Contracts;
 
 namespace FlightReservation.UI.Presenters.Reservation
@@ -15,21 +13,42 @@ namespace FlightReservation.UI.Presenters.Reservation
         private readonly ICreateReservationView _view;
         private readonly IReservationService _reservationService;
         private readonly IFlightService _flightService;
+        private readonly IFlight _flightModel;
+        private readonly IPassenger _passengerModel;
+        private readonly IReservation _reservationModel;
 
         public CreateReservationPresenter(
             ICreateReservationView view,
             IReservationService reservationService,
-            IFlightService flightService
+            IFlightService flightService,
+            IReservation reservationModel,
+            IFlight flightModel,
+            IPassenger passengerModel
         )
         {
-            _view = view;
             _reservationService = reservationService;
             _flightService = flightService;
+
+            _flightModel = flightModel;
+            _passengerModel = passengerModel;
+            _reservationModel = reservationModel;
+
+            _view = view;
+            _view.AirlineCodeChanged += OnAirlineCodeChanged;
+            _view.FlightNumberChanged += OnFlightNumberChanged;
+            _view.FlightDateChanged += OnFlightDateChanged;
+
+            _view.FirstNameChanged += OnFirstNameChanged;
+            _view.LastNameChanged += OnLastNameChanged;
+            _view.BirthDateChanged += OnBirthDateChanged;
+
+            _view.FlightSearched += OnFlightSearched;
+            _view.Submitted += OnSubmitted;
         }
 
-        public void OnAirlineCodeChanged(IFormView source, ChangeEventArgs<string> args)
+        public void OnAirlineCodeChanged(object? source, EventArgs e)
         {
-            bool isValid = FlightValidator.IsAirlineCodeValid(args.Value);
+            bool isValid = FlightValidator.IsAirlineCodeValid(_view.AirlineCode);
             if (!isValid)
             {
                 _view.SetFieldError(
@@ -39,27 +58,27 @@ namespace FlightReservation.UI.Presenters.Reservation
             }
         }
 
-        public void OnBirthDateChanged(IFormView source, ChangeEventArgs<DateTime> args)
+        public void OnBirthDateChanged(object? source, EventArgs e)
         {
-            bool isValid = PassengerValidator.IsBirthDateValid(args.Value);
+            bool isValid = PassengerValidator.IsBirthDateValid(_view.BirthDate);
             if (!isValid)
             {
                 _view.SetFieldError("BirthDate", "Passenger should at least be 16 days old.");
             }
         }
 
-        public void OnFirstNameChanged(IFormView source, ChangeEventArgs<string> args)
+        public void OnFirstNameChanged(object? source, EventArgs e)
         {
-            bool isValid = PassengerValidator.IsNameValid(args.Value);
+            bool isValid = PassengerValidator.IsNameValid(_view.FirstName);
             if (!isValid)
             {
                 _view.SetFieldError("FirstName", "Name should at least be 20 letters.");
             }
         }
 
-        public void OnFlightDateChanged(IFormView source, ChangeEventArgs<DateTime> args)
+        public void OnFlightDateChanged(object? source, EventArgs e)
         {
-            bool isValid = ReservationValidator.IsFlightDateValid(args.Value);
+            bool isValid = ReservationValidator.IsFlightDateValid(_view.FlightDate);
             if (!isValid)
             {
                 _view.SetFieldError(
@@ -69,9 +88,9 @@ namespace FlightReservation.UI.Presenters.Reservation
             }
         }
 
-        public void OnFlightNumberChanged(IFormView source, ChangeEventArgs<int> args)
+        public void OnFlightNumberChanged(object? source, EventArgs e)
         {
-            bool isValid = FlightValidator.IsFlightNumberValid(args.Value);
+            bool isValid = FlightValidator.IsFlightNumberValid(_view.FlightNumber);
             if (!isValid)
             {
                 _view.SetFieldError(
@@ -81,32 +100,41 @@ namespace FlightReservation.UI.Presenters.Reservation
             }
         }
 
-        public void OnFlightSearched(IFormView source, SearchAvailableFlightEventArgs args)
+        public void OnFlightSearched(object? source, EventArgs e)
         {
-            var availableFlights = _flightService.FindAvailableFlightsOn(
-                flightDate: args.FlightDate,
-                airlineCode: args.AirlineCode,
-                flightNumber: args.FlightNumber
+            IEnumerable<IFlight> availableFlights = _flightService.FindAvailableFlightsOn(
+                flightDate: _view.FlightDate,
+                airlineCode: _view.AirlineCode,
+                flightNumber: _view.FlightNumber
             );
-            _view.DisplayAvailableFlights(availableFlights);
+
+            if (availableFlights.Count() > 0)
+            {
+                _view.DisplayAvailableFlights(availableFlights);
+                _view.ShowFlightSelection(availableFlights);
+            }
+            else
+            {
+                _view.DisplayNoFlights();
+            }
         }
 
-        public void OnLastNameChanged(IFormView source, ChangeEventArgs<string> args)
+        public void OnLastNameChanged(object? source, EventArgs e)
         {
-            bool isValid = PassengerValidator.IsNameValid(args.Value);
+            bool isValid = PassengerValidator.IsNameValid(_view.LastName);
             if (!isValid)
             {
                 _view.SetFieldError("LastName", "Name should at least be 20 letters.");
             }
         }
 
-        public void OnSubmitted(IFormView source, ReservationEventArgs args)
+        public void OnSubmitted(object? source, ReservationEventArgs args)
         {
             string errorHeader = "Failed to create reservation.";
 
             try
             {
-                var flightInfo = new FlightModel(
+                var flightInfo = _flightModel.CreateFrom(
                     airlineCode: args.FlightInfo.AirlineCode,
                     flightNumber: args.FlightInfo.FlightNumber,
                     departureStation: args.FlightInfo.DepartureStation,
@@ -117,14 +145,14 @@ namespace FlightReservation.UI.Presenters.Reservation
 
                 var passengers = args.Passengers.Select(
                     (item) =>
-                        new PassengerModel(
+                        _passengerModel.CreateFrom(
                             firstName: item.FirstName,
                             lastName: item.LastName,
                             birthDate: item.BirthDate
                         )
                 );
 
-                var reservation = new ReservationModel(
+                var reservation = _reservationModel.CreateFrom(
                     flightDate: args.FlightDate,
                     flightInfo: flightInfo,
                     passengers: passengers
@@ -132,18 +160,6 @@ namespace FlightReservation.UI.Presenters.Reservation
 
                 string bookingReference = _reservationService.Create(reservation);
                 _view.DisplayBookingConfirmation(bookingReference);
-            }
-            catch (InvalidFlightDateException e)
-            {
-                _view.SetFieldError(nameof(_view.FlightDate), e.Message);
-            }
-            catch (InvalidNameException e)
-            {
-                _view.AlertError(errorHeader, "A passenger contains an invalid name." + e.Message);
-            }
-            catch (AgeLimitException e)
-            {
-                _view.AlertError(errorHeader, e.Message);
             }
             catch (InvalidPNRException e)
             {
@@ -153,7 +169,7 @@ namespace FlightReservation.UI.Presenters.Reservation
             {
                 _view.AlertError(errorHeader, e.Message);
             }
-            catch (MaxPassengerCountReachedException e)
+            catch (MoreThanMaxPassengerCountException e)
             {
                 _view.AlertError(errorHeader, e.Message);
             }
