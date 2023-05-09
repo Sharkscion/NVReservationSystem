@@ -190,7 +190,7 @@ namespace FlightReservation.UI.Views.Reservation
             string message =
                 FlightDate.Date != DateTime.Now.Date
                     ? $"No ({flightDesignator}) flights scheduled on {FlightDate.ToShortDateString()}"
-                    : $"No ({flightDesignator}) flights scheduled at least 1 hour from the current time: {FlightDate.ToLongDateString()}";
+                    : $"No ({flightDesignator}) flights scheduled at least 1 hour from the current time: {FlightDate.ToString("MM/dd/yyyy HH:mm")}";
 
             AlertError(header: "No Available Flights", message: message);
         }

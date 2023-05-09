@@ -1,5 +1,4 @@
 ﻿using FlightReservation.Common.Contracts.Models;
-using FlightReservation.Models.Flight;
 using FlightReservation.Test.Services.Fixtures;
 
 namespace FlightReservation.Test.Services
