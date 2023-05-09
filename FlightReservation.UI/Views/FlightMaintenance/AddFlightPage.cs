@@ -318,7 +318,8 @@ namespace FlightReservation.UI.Views.FlightMaintenance
         {
             ClearScreen();
 
-            Console.WriteLine(Title);
+            Console.WriteLine("-------------------------------------------");
+            Console.WriteLine($"    [{Title}] Flight Summary");
             Console.WriteLine("-------------------------------------------");
             Console.WriteLine($"Airline Code: {AirlineCode}");
             Console.WriteLine($"Flight Number: {FlightNumber}");

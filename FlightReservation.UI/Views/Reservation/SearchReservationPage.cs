@@ -54,16 +54,22 @@ namespace FlightReservation.UI.Views.Reservation
         {
             ClearScreen();
 
-            Console.WriteLine("\n-------------------------------------------");
-            Console.WriteLine($"No reservation found with a booking reference '{PNR}'...");
-            Console.WriteLine("-------------------------------------------");
+            Console.WriteLine("\n------------------------------------------------------------");
+            Console.WriteLine($" No reservation found with a booking reference '{PNR}'...");
+            Console.WriteLine("--------------------------------------------------------------");
         }
 
         public void DisplayReservation(IReservation reservation)
         {
             ClearScreen();
 
-            Console.WriteLine("\n-------------------------------------------");
+            Console.WriteLine(
+                "---------------------------------------------------------------------"
+            );
+            Console.WriteLine($"Reservation Details of Booking Reference ({PNR})");
+            Console.WriteLine(
+                "---------------------------------------------------------------------"
+            );
 
             Console.WriteLine($"Flight Date: {reservation.FlightDate.ToShortDateString()}");
             Console.WriteLine();
@@ -79,21 +85,27 @@ namespace FlightReservation.UI.Views.Reservation
                 + "-"
                 + reservation.FlightInfo.ArrivalScheduledTime.ToString("HH:mm");
 
-            Console.WriteLine($"Booked Flight Details_______");
-            Console.WriteLine($"{flightDesignator} {originDestination} {flightTime}");
+            Console.WriteLine($"[Booked Flight Details]");
+            Console.WriteLine($"Flight Designator: {flightDesignator}");
+            Console.WriteLine($"From/To: {originDestination}");
+            Console.WriteLine($"Flight Time: {flightTime}");
             Console.WriteLine();
 
             int count = 1;
             foreach (var passenger in reservation.Passengers)
             {
-                Console.WriteLine($"Passenger #{count}_________________");
+                Console.WriteLine($"[Passenger #{count}]");
                 Console.WriteLine($"Name: {passenger.FirstName} {passenger.LastName}");
                 Console.WriteLine($"Birth Date: {passenger.BirthDate.ToShortDateString()}");
                 Console.WriteLine($"Age: {passenger.Age}");
                 Console.WriteLine();
+
+                count++;
             }
 
-            Console.WriteLine("-------------------------------------------");
+            Console.WriteLine(
+                "---------------------------------------------------------------------"
+            );
         }
         #endregion
 

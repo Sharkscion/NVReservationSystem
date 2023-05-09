@@ -82,18 +82,19 @@ namespace FlightReservation.UI.Views.FlightMaintenance
         {
             ClearScreen();
 
-            Console.WriteLine("\n-----------------------------------------------");
+            Console.WriteLine();
+            Console.WriteLine($"    Flights with airline code ({AirlineCode})");
+
             FlightPresenter.DisplayFlights(flights);
-            Console.WriteLine("-----------------------------------------------\n");
         }
 
         public void DisplayNoFlights()
         {
             ClearScreen();
 
-            Console.WriteLine("\n-----------------------------------------------");
+            Console.WriteLine("\n--------------------------------------------------------------");
             Console.WriteLine($"No flights found with airline code ({AirlineCode})...");
-            Console.WriteLine("-----------------------------------------------\n");
+            Console.WriteLine("--------------------------------------------------------------");
         }
         #endregion
 

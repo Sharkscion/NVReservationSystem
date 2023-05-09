@@ -72,7 +72,9 @@
             do
             {
                 ClearScreen();
-                Console.WriteLine(Title);
+
+                displayTitle();
+
                 ShowContent();
                 DisplayNavigationMenus();
                 option = getSelectedOption();
@@ -89,6 +91,7 @@
         #endregion
 
         #region Private & Protected Methods
+
         protected char getYesOrNoInput(string question)
         {
             while (true)
@@ -109,14 +112,23 @@
             }
         }
 
+        private void displayTitle()
+        {
+            Console.WriteLine();
+            Console.WriteLine("-------------------------------------");
+            Console.WriteLine($"    {Title}");
+            Console.WriteLine("-------------------------------------");
+        }
+
         private string getSelectedOption()
         {
             while (true)
             {
+                Console.WriteLine();
                 Console.Write("Choose an Option: ");
                 string input = Console.ReadLine()?.Trim().ToUpper() ?? string.Empty;
 
-                var isInputValid = validateInput(rawInput: input);
+                var isInputValid = validateInput(input);
 
                 if (isInputValid)
                 {
@@ -127,10 +139,10 @@
             }
         }
 
-        private bool validateInput(string? rawInput)
+        private bool validateInput(string? input)
         {
-            bool hasCommand = NavigationMenus.Any((item) => item.Key == rawInput);
-            return hasCommand || rawInput == REPEAT_COMMAND;
+            bool hasCommand = NavigationMenus.Any((item) => item.Key == input);
+            return hasCommand || input == REPEAT_COMMAND;
         }
         #endregion
     }

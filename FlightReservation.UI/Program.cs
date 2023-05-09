@@ -14,6 +14,7 @@ namespace FlightReservation.UI.Views
     internal class Program
     {
         const string EXIT_COMMAND = "X";
+        const string MAIN_SCREEN_COMMAND = "M";
         const string BACK_COMMAND = "B";
 
         private readonly IReservationService _reservationService;
@@ -163,12 +164,14 @@ namespace FlightReservation.UI.Views
                 command: BACK_COMMAND,
                 menu: _flightMaintenanceScreen
             );
+            _searchFlightScreen.AddNavigationMenu(command: MAIN_SCREEN_COMMAND, menu: _mainScreen);
             _searchFlightScreen.AddNavigationMenu(command: EXIT_COMMAND, menu: _exitView);
         }
 
         private void constructAddFlightPage()
         {
             _addFlightPage.AddNavigationMenu(command: BACK_COMMAND, menu: _flightMaintenanceScreen);
+            _addFlightPage.AddNavigationMenu(command: MAIN_SCREEN_COMMAND, menu: _mainScreen);
             _addFlightPage.AddNavigationMenu(command: EXIT_COMMAND, menu: _exitView);
         }
 
@@ -177,6 +180,10 @@ namespace FlightReservation.UI.Views
             _searchByFlightNumberPage.AddNavigationMenu(
                 command: BACK_COMMAND,
                 menu: _searchFlightScreen
+            );
+            _searchByFlightNumberPage.AddNavigationMenu(
+                command: MAIN_SCREEN_COMMAND,
+                menu: _mainScreen
             );
             _searchByFlightNumberPage.AddNavigationMenu(command: EXIT_COMMAND, menu: _exitView);
         }
@@ -187,6 +194,10 @@ namespace FlightReservation.UI.Views
                 command: BACK_COMMAND,
                 menu: _searchFlightScreen
             );
+            _searchByAirlineCodePage.AddNavigationMenu(
+                command: MAIN_SCREEN_COMMAND,
+                menu: _mainScreen
+            );
             _searchByAirlineCodePage.AddNavigationMenu(command: EXIT_COMMAND, menu: _exitView);
         }
 
@@ -195,6 +206,10 @@ namespace FlightReservation.UI.Views
             _searchByOriginDestinationPage.AddNavigationMenu(
                 command: BACK_COMMAND,
                 menu: _searchFlightScreen
+            );
+            _searchByOriginDestinationPage.AddNavigationMenu(
+                command: MAIN_SCREEN_COMMAND,
+                menu: _mainScreen
             );
             _searchByOriginDestinationPage.AddNavigationMenu(
                 command: EXIT_COMMAND,
@@ -208,6 +223,10 @@ namespace FlightReservation.UI.Views
                 command: BACK_COMMAND,
                 menu: _reservationScreen
             );
+            _createReservationPage.AddNavigationMenu(
+                command: MAIN_SCREEN_COMMAND,
+                menu: _mainScreen
+            );
             _createReservationPage.AddNavigationMenu(command: EXIT_COMMAND, menu: _exitView);
         }
 
@@ -217,6 +236,10 @@ namespace FlightReservation.UI.Views
                 command: BACK_COMMAND,
                 menu: _reservationScreen
             );
+            _viewReservationsPage.AddNavigationMenu(
+                command: MAIN_SCREEN_COMMAND,
+                menu: _mainScreen
+            );
             _viewReservationsPage.AddNavigationMenu(command: EXIT_COMMAND, menu: _exitView);
         }
 
@@ -225,6 +248,10 @@ namespace FlightReservation.UI.Views
             _searchReservationPage.AddNavigationMenu(
                 command: BACK_COMMAND,
                 menu: _reservationScreen
+            );
+            _searchReservationPage.AddNavigationMenu(
+                command: MAIN_SCREEN_COMMAND,
+                menu: _mainScreen
             );
             _searchReservationPage.AddNavigationMenu(command: EXIT_COMMAND, menu: _exitView);
         }

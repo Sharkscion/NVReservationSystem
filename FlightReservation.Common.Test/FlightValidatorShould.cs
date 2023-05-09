@@ -4,7 +4,6 @@ namespace FlightReservation.Common.Test;
 
 public class FlightValidatorShould
 {
-
     #region Test Methods
     [Theory]
     [InlineData(null)]

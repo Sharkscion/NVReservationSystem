@@ -24,7 +24,11 @@ namespace FlightReservation.UI.Views
         #region Implementations of IView
         public void Execute()
         {
-            Console.WriteLine("Good bye!");
+            ClearScreen();
+            Console.WriteLine("---------------------------");
+            Console.WriteLine("Good Bye!");
+            Console.WriteLine("---------------------------");
+
             Environment.Exit(0);
         }
 

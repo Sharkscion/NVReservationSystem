@@ -6,8 +6,9 @@ namespace FlightReservation.UI.Views.Utilities
     {
         public static void DisplayFlights(IEnumerable<IFlight> flights)
         {
+            Console.WriteLine("\n------------------------------------------------------------");
             var header = String.Format(
-                "{0,3} {1,5} {2,-15} {3,-15} {4,-15}\n",
+                "{0,3} {1,5} {2,-15} {3,-15} {4,-15}",
                 "#",
                 "Code",
                 "Flight Number",
@@ -15,13 +16,14 @@ namespace FlightReservation.UI.Views.Utilities
                 "Flight Time"
             );
             Console.WriteLine(header);
+            Console.WriteLine("------------------------------------------------------------");
 
             int count = 1;
 
             foreach (var flight in flights)
             {
                 string output = String.Format(
-                    "{0,3} {1,5} {2,-15} {3,-15} {4,-15}\n",
+                    "{0,3} {1,5} {2,-15} {3,-15} {4,-15}",
                     count,
                     flight.AirlineCode,
                     flight.FlightNumber,
@@ -32,6 +34,7 @@ namespace FlightReservation.UI.Views.Utilities
 
                 count++;
             }
+            Console.WriteLine("------------------------------------------------------------");
         }
     }
 }

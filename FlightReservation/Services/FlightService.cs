@@ -116,14 +116,22 @@ namespace FlightReservation.Services
 
             if (flightDate.Date == dateNow.Date)
             {
-                return availableFlights.Where(
+                availableFlights = availableFlights.Where(
                     (flight) =>
-                        flight.DepartureScheduledTime.Hour > dateNow.Hour
-                        && flight.DepartureScheduledTime.Minute >= dateNow.Minute
+                        new DateTime(
+                            dateNow.Year,
+                            dateNow.Month,
+                            dateNow.Day,
+                            flight.DepartureScheduledTime.Hour,
+                            flight.DepartureScheduledTime.Minute,
+                            0
+                        )
+                            .Subtract(dateNow)
+                            .Hours >= 1
                 );
             }
 
-            return availableFlights;
+            return availableFlights.OrderBy(f => f.DepartureScheduledTime);
         }
         #endregion
     }

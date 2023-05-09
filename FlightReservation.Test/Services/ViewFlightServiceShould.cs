@@ -1,4 +1,5 @@
 ﻿using FlightReservation.Common.Contracts.Models;
+using FlightReservation.Models.Flight;
 using FlightReservation.Test.Services.Fixtures;
 
 namespace FlightReservation.Test.Services
@@ -93,13 +94,20 @@ namespace FlightReservation.Test.Services
                 dateTimeProvider
             );
 
-            Assert.Equal(2, flights.Count());
-            Assert.Contains(
+            Assert.Collection(
                 flights,
                 item =>
-                    item.AirlineCode == airlineCode
-                    && item.FlightNumber == flightNumber
-                    && item.DepartureScheduledTime.Hour > dateTimeProvider.GetNow().Hour
+                {
+                    Assert.Equal(airlineCode, item.AirlineCode);
+                    Assert.Equal(flightNumber, item.FlightNumber);
+                    Assert.Equal(14, item.DepartureScheduledTime.Hour);
+                },
+                item =>
+                {
+                    Assert.Equal(airlineCode, item.AirlineCode);
+                    Assert.Equal(flightNumber, item.FlightNumber);
+                    Assert.Equal(20, item.DepartureScheduledTime.Hour);
+                }
             );
         }
         #endregion

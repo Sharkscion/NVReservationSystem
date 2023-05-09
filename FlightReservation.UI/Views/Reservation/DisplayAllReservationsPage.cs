@@ -28,19 +28,24 @@ namespace FlightReservation.UI.Views.Reservation
         {
             ClearScreen();
 
-            Console.WriteLine("\n-----------------------------------------------");
+            Console.WriteLine(
+                "\n-------------------------------------------------------------------------------"
+            );
 
             var header = String.Format(
-                "{0,3} {1,-6} {2,3} {3,-15} {4,-15} {5, -15} {6,-15}\n",
+                "{0,3} {1,-6} {2,5} {3,-15} {4,-18} {5, -10} {6,-15}",
                 "#",
                 "PNR",
                 "Pax",
                 "Flight Date",
-                "Flight Desinator",
-                "From -> To",
+                "Flight Designator",
+                "From->To",
                 "Flight Time"
             );
             Console.WriteLine(header);
+            Console.WriteLine(
+                "-------------------------------------------------------------------------------"
+            );
 
             int count = 1;
             foreach (var reservation in reservations)
@@ -50,7 +55,7 @@ namespace FlightReservation.UI.Views.Reservation
 
                 var originDestination =
                     reservation.FlightInfo.DepartureStation
-                    + " -> "
+                    + "->"
                     + reservation.FlightInfo.ArrivalStation;
 
                 var flightTime =
@@ -59,7 +64,7 @@ namespace FlightReservation.UI.Views.Reservation
                     + reservation.FlightInfo.ArrivalScheduledTime.ToString("HH:mm");
 
                 var output = String.Format(
-                    "{0,3} {1,-6} {2,3} {3,-15} {4,-15} {5, -15} {6,-15}\n",
+                    "{0,3} {1,-6} {2,5} {3,-15} {4,-18} {5, -10} {6,-15}\n",
                     count,
                     reservation.PNR,
                     reservation.Passengers.Count(),
@@ -68,16 +73,20 @@ namespace FlightReservation.UI.Views.Reservation
                     originDestination,
                     flightTime
                 );
+
+                Console.WriteLine(output);
                 count++;
             }
-            Console.WriteLine("\n-----------------------------------------------");
+            Console.WriteLine(
+                "-------------------------------------------------------------------------------"
+            );
         }
 
         public void DisplayNoReservations()
         {
             ClearScreen();
             Console.WriteLine("\n-----------------------------------------------");
-            Console.WriteLine("No available reservations to be displayed.");
+            Console.WriteLine(" No available reservations to be displayed.");
             Console.WriteLine("-----------------------------------------------");
         }
         #endregion
