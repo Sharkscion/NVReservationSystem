@@ -8,7 +8,7 @@ namespace FlightReservation.Test.Services
     {
         public DateTime GetNow()
         {
-            return new DateTime(year: 2023, month: 5, day: 7, hour: 12, minute: 0, second: 0);
+            return new DateTime(year: 2023, month: 5, day: 7, hour: 12, minute: 30, second: 0);
         }
     }
 
@@ -100,13 +100,15 @@ namespace FlightReservation.Test.Services
                 {
                     Assert.Equal(airlineCode, item.AirlineCode);
                     Assert.Equal(flightNumber, item.FlightNumber);
-                    Assert.Equal(14, item.DepartureScheduledTime.Hour);
+                    Assert.Equal(13, item.DepartureScheduledTime.Hour);
+                    Assert.Equal(30, item.DepartureScheduledTime.Minute);
                 },
                 item =>
                 {
                     Assert.Equal(airlineCode, item.AirlineCode);
                     Assert.Equal(flightNumber, item.FlightNumber);
                     Assert.Equal(20, item.DepartureScheduledTime.Hour);
+                    Assert.Equal(0, item.DepartureScheduledTime.Minute);
                 }
             );
         }
