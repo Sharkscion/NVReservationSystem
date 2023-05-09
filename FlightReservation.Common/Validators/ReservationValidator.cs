@@ -2,8 +2,16 @@
 
 namespace FlightReservation.Common.Validators
 {
+    /// <summary>
+    /// Utility class for validating reservation details that are common
+    /// or invariant across the system.
+    /// </summary>
     public static class ReservationValidator
     {
+        #region Public Methods
+        /// <summary>
+        /// Validates that the flight date is not past-dated.
+        /// </summary>
         public static bool IsFlightDateValid(DateTime value)
         {
             bool isOnOrAfterToday = value.Date >= DateTime.Now.Date;
@@ -15,6 +23,12 @@ namespace FlightReservation.Common.Validators
             return true;
         }
 
+        /// <summary>
+        ///  Validates the booking reference/PNR that is matches the required specifications:
+        ///  - 6 characters in length
+        ///  - Alphanumeric
+        ///  - First character is a letter
+        /// </summary>
         public static bool IsBookingReferenceFormatValid(string value)
         {
             if (string.IsNullOrEmpty(value?.Trim()))
@@ -30,5 +44,6 @@ namespace FlightReservation.Common.Validators
 
             return true;
         }
+        #endregion
     }
 }

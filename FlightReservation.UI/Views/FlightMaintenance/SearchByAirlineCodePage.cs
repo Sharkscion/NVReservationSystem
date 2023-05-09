@@ -1,4 +1,4 @@
-﻿using FlightReservation.Models.Contracts;
+﻿using FlightReservation.Common.Contracts.Models;
 using FlightReservation.UI.Views.Contracts;
 using FlightReservation.UI.Views.FlightMaintenance.Contracts;
 using FlightReservation.UI.Views.Utilities;
@@ -7,19 +7,19 @@ namespace FlightReservation.UI.Views.FlightMaintenance
 {
     internal class SearchByAirlineCodePage : BasePage, ISearchByAirlineCodeView
     {
+        #region Declarations
         private bool _isFormValid;
         private string _airlineCode;
+        #endregion
 
-        public event EventHandler AirlineCodeChanged;
-        public event EventHandler Submitted;
-
+        #region Properties
         public string AirlineCode
         {
             get { return _airlineCode; }
             set
             {
                 _airlineCode = value;
-                OnAirlineCodeChanged();
+                onAirlineCodeChanged();
             }
         }
 
@@ -27,60 +27,35 @@ namespace FlightReservation.UI.Views.FlightMaintenance
         {
             get { return _isFormValid; }
         }
+        #endregion
 
+        #region Constructors
         public SearchByAirlineCodePage(string title)
             : base(title)
         {
             Reset();
         }
+        #endregion
 
-        public void Display(IEnumerable<IFlight> flights)
+        #region Events
+        public event EventHandler AirlineCodeChanged;
+        public event EventHandler Submitted;
+        #endregion
+
+
+        #region Overridden Methods
+        public override void ShowContent()
         {
-            ClearScreen();
-
-            Console.WriteLine("\n-----------------------------------------------");
-            FlightPresenter.DisplayFlights(flights);
-            Console.WriteLine("-----------------------------------------------\n");
+            getAirlineCode();
+            onSubmitted();
         }
+        #endregion
 
+        #region Implementations of IFormView
         public void Reset()
         {
             _airlineCode = string.Empty;
             _isFormValid = true;
-        }
-
-        public override void ShowContent()
-        {
-            getAirlineCode();
-            OnSubmitted();
-        }
-
-        private void getAirlineCode()
-        {
-            do
-            {
-                Console.Write("Airline Code: ");
-                string? input = Console.ReadLine()?.Trim();
-
-                _isFormValid = !string.IsNullOrEmpty(input);
-                if (!_isFormValid)
-                {
-                    Console.WriteLine("Please enter a value...");
-                    continue;
-                }
-
-                AirlineCode = input;
-            } while (!_isFormValid);
-        }
-
-        private void OnAirlineCodeChanged()
-        {
-            AirlineCodeChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void OnSubmitted()
-        {
-            Submitted?.Invoke(this, EventArgs.Empty);
         }
 
         public void SetFieldError(string paramName, string message)
@@ -100,6 +75,17 @@ namespace FlightReservation.UI.Views.FlightMaintenance
 
             Console.WriteLine();
         }
+        #endregion
+
+        #region Implementations of ISearchByAirlineCodeView
+        public void Display(IEnumerable<IFlight> flights)
+        {
+            ClearScreen();
+
+            Console.WriteLine("\n-----------------------------------------------");
+            FlightPresenter.DisplayFlights(flights);
+            Console.WriteLine("-----------------------------------------------\n");
+        }
 
         public void DisplayNoFlights()
         {
@@ -109,5 +95,38 @@ namespace FlightReservation.UI.Views.FlightMaintenance
             Console.WriteLine($"No flights found with airline code ({AirlineCode})...");
             Console.WriteLine("-----------------------------------------------\n");
         }
+        #endregion
+
+        #region Private Methods
+        private void getAirlineCode()
+        {
+            do
+            {
+                Console.Write("Airline Code: ");
+                string? input = Console.ReadLine()?.Trim();
+
+                _isFormValid = !string.IsNullOrEmpty(input);
+                if (!_isFormValid)
+                {
+                    Console.WriteLine("Please enter a value...");
+                    continue;
+                }
+
+                AirlineCode = input;
+            } while (!_isFormValid);
+        }
+        #endregion
+
+        #region Event Invocation Methods
+        private void onAirlineCodeChanged()
+        {
+            AirlineCodeChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void onSubmitted()
+        {
+            Submitted?.Invoke(this, EventArgs.Empty);
+        }
+        #endregion
     }
 }

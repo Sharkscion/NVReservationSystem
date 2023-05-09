@@ -1,4 +1,4 @@
-﻿using FlightReservation.Models.Contracts;
+﻿using FlightReservation.Common.Contracts.Models;
 using FlightReservation.Models.Flight;
 using FlightReservation.Models.Passenger;
 using FlightReservation.Models.Reservation;
@@ -8,15 +8,21 @@ namespace FlightReservation.Test.Services
 {
     public class ReservationServiceShould : IClassFixture<ReservationServiceFixture>
     {
+        #region Declarations
         private readonly ReservationServiceFixture _fixture;
 
+        #endregion
+
+        #region Constructors
         public ReservationServiceShould(ReservationServiceFixture fixture)
         {
             _fixture = fixture;
         }
+        #endregion
 
+        #region Test Methods
         [Fact]
-        public void Create_AReservation()
+        public void CreateReservation()
         {
             var flight = new FlightModel
             {
@@ -46,7 +52,7 @@ namespace FlightReservation.Test.Services
         }
 
         [Fact]
-        public void RaiseError_WhenBookedFlight_DoesNotExists()
+        public void RaiseError_WhenBookedFlightDoesNotExists()
         {
             var noneExistingFlight = new FlightModel
             {
@@ -76,7 +82,7 @@ namespace FlightReservation.Test.Services
         }
 
         [Fact]
-        public void Return_AllManagedReservations()
+        public void ReturnAllReservations_WhenRetrieved()
         {
             IEnumerable<IReservation> reservations = _fixture.ReservationService.ViewAll();
 
@@ -85,7 +91,7 @@ namespace FlightReservation.Test.Services
         }
 
         [Fact]
-        public void ReturnReservation_MatchingPNR()
+        public void ReturnReservation_WhenPNRExists()
         {
             IReservation? reservation = _fixture.ReservationService.Find("ABC123");
 
@@ -94,11 +100,12 @@ namespace FlightReservation.Test.Services
         }
 
         [Fact]
-        public void ReturnNull_NoMatchingPNR()
+        public void ReturnNull_WhenNoMatchingPNR()
         {
             IReservation? reservation = _fixture.ReservationService.Find("NONE");
 
             Assert.Null(reservation);
         }
+        #endregion
     }
 }

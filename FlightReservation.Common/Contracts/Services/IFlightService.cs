@@ -1,9 +1,13 @@
-﻿using FlightReservation.Models.Contracts;
+﻿using FlightReservation.Common.Contracts.Models;
 
-namespace FlightReservation.Services.Contracts
+namespace FlightReservation.Common.Contracts.Services
 {
+    /// <summary>
+    /// Contract for managing business logics related to a flight entity.
+    /// </summary>
     public interface IFlightService
     {
+        #region Functions
         bool Create(IFlight flight);
         IEnumerable<IFlight> FindAllHaving(int flightNumber);
         IEnumerable<IFlight> FindAllHaving(string airlineCode);
@@ -16,5 +20,6 @@ namespace FlightReservation.Services.Contracts
             IDateTimeProvider? dateTimeProvider = null
         );
         bool DoesExists(IFlight flight);
+        #endregion
     }
 }

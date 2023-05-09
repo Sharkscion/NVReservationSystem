@@ -1,10 +1,11 @@
-﻿using FlightReservation.Models.Contracts;
+﻿using FlightReservation.Common.Contracts.Models;
 using System.Diagnostics.CodeAnalysis;
 
 namespace FlightReservation.Comparers
 {
     internal class FlightEqualityComparer : IEqualityComparer<IFlight>
     {
+        #region Implementation of IEqualityComparer
         public bool Equals(IFlight? x, IFlight? y)
         {
             return x.AirlineCode == y.AirlineCode
@@ -20,5 +21,6 @@ namespace FlightReservation.Comparers
                 + obj.DepartureStation.GetHashCode()
                 + obj.ArrivalStation.GetHashCode();
         }
+        #endregion
     }
 }

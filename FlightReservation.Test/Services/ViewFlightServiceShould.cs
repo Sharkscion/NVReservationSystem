@@ -1,4 +1,4 @@
-﻿using FlightReservation.Models.Contracts;
+﻿using FlightReservation.Common.Contracts.Models;
 using FlightReservation.Test.Services.Fixtures;
 
 namespace FlightReservation.Test.Services
@@ -13,15 +13,21 @@ namespace FlightReservation.Test.Services
 
     public class ViewFlightServiceShould : IClassFixture<FlightServiceFixture>
     {
+        #region Declarations
         private readonly FlightServiceFixture _fixture;
 
+        #endregion
+
+        #region Constructors
         public ViewFlightServiceShould(FlightServiceFixture fixture)
         {
             _fixture = fixture;
         }
+        #endregion
 
+        #region Test Methods
         [Fact]
-        public void ReturnFlights_MatchingAirlineCode()
+        public void ReturnFlights_WhenFlightMatchAirlineCode()
         {
             string airlineCode = "NV";
 
@@ -32,7 +38,7 @@ namespace FlightReservation.Test.Services
         }
 
         [Fact]
-        public void ReturnFlights_MatchingFlightNumber()
+        public void ReturnFlights_WhenFlightMatchFlightNumber()
         {
             int flightNumber = 1;
 
@@ -43,7 +49,7 @@ namespace FlightReservation.Test.Services
         }
 
         [Fact]
-        public void ReturnFlights_MatchingOriginDestination()
+        public void ReturnFlights_WhenFlightMatchOriginDestination()
         {
             string origin = "MNL";
             string destination = "CEB";
@@ -58,7 +64,7 @@ namespace FlightReservation.Test.Services
         }
 
         [Fact]
-        public void ReturnFlights_MatchingFlightDesignator()
+        public void ReturnFlights_WhenFlightMatchFlightDesignator()
         {
             string airlineCode = "NV";
             int flightNumber = 1;
@@ -73,7 +79,7 @@ namespace FlightReservation.Test.Services
         }
 
         [Fact]
-        public void ReturnFlights_AvailableToday()
+        public void ReturnFlights_WhenFlightsAvailableToday()
         {
             var dateTimeProvider = new DateTimeProvider();
             DateTime flightDate = dateTimeProvider.GetNow();
@@ -96,5 +102,6 @@ namespace FlightReservation.Test.Services
                     && item.DepartureScheduledTime.Hour > dateTimeProvider.GetNow().Hour
             );
         }
+        #endregion
     }
 }

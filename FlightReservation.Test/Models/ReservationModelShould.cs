@@ -1,5 +1,4 @@
-﻿using FlightReservation.Models.Contracts;
-using FlightReservation.Models.Flight;
+﻿using FlightReservation.Models.Flight;
 using FlightReservation.Models.Passenger;
 using FlightReservation.Models.Reservation;
 
@@ -7,8 +6,17 @@ namespace FlightReservation.Test.Models
 {
     public class ReservationModelShould
     {
+        #region Data Generators
+        public static IEnumerable<object[]> GetValidFlightDates()
+        {
+            yield return new object[] { DateTime.Now };
+            yield return new object[] { DateTime.Now.AddDays(1) };
+        }
+        #endregion
+
+        #region Test Methods
         [Fact]
-        public void RaiseError_InvalidFlightDate()
+        public void RaiseError_WhenInvalidFlightDate()
         {
             var model = new ReservationModel();
 
@@ -17,15 +25,9 @@ namespace FlightReservation.Test.Models
             Assert.Throws<InvalidFlightDateException>(action);
         }
 
-        public static IEnumerable<object[]> GetValidFlightDates()
-        {
-            yield return new object[] { DateTime.Now };
-            yield return new object[] { DateTime.Now.AddDays(1) };
-        }
-
         [Theory]
         [MemberData(nameof(GetValidFlightDates))]
-        public void Set_ValidFlightDate(DateTime value)
+        public void SetFlightDate_WhenValid(DateTime value)
         {
             var model = new ReservationModel();
 
@@ -35,7 +37,7 @@ namespace FlightReservation.Test.Models
         }
 
         [Fact]
-        public void RaiseError_MoreThanMaxPassengerCount()
+        public void RaiseError_WhenMoreThanMaxPassengerCount()
         {
             var passengers = generatePassengers(count: 6);
             var model = new ReservationModel();
@@ -46,7 +48,7 @@ namespace FlightReservation.Test.Models
         }
 
         [Fact]
-        public void RaiseError_InvalidBookingReference()
+        public void RaiseError_WhenInvalidBookingReference()
         {
             var passengers = generatePassengers(count: 1);
             var flight = new FlightModel(
@@ -74,7 +76,7 @@ namespace FlightReservation.Test.Models
         }
 
         [Fact]
-        public void CreateNewInstance_WithValidBookingReference()
+        public void CreateNewInstance_WhenBookingReferenceProvided()
         {
             var passengers = generatePassengers(count: 1);
 
@@ -108,7 +110,7 @@ namespace FlightReservation.Test.Models
         }
 
         [Fact]
-        public void CreateNewInstance_FromData()
+        public void CreateNewInstance_WhenDataProvided()
         {
             var passengers = generatePassengers(count: 1);
 
@@ -136,7 +138,7 @@ namespace FlightReservation.Test.Models
         }
 
         [Fact]
-        public void RaiseError_NoPassengers()
+        public void RaiseError_WhenNoPassengers()
         {
             var flight = new FlightModel(
                 airlineCode: "NV",
@@ -158,7 +160,9 @@ namespace FlightReservation.Test.Models
 
             Assert.Throws<NoPassengersException>(action);
         }
+        #endregion
 
+        #region Utility Methods
         private List<PassengerModel> generatePassengers(int count)
         {
             var passengers = new List<PassengerModel>();
@@ -177,5 +181,6 @@ namespace FlightReservation.Test.Models
 
             return passengers;
         }
+        #endregion
     }
 }

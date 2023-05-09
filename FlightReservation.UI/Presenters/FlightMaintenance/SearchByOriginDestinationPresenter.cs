@@ -1,6 +1,6 @@
-﻿using FlightReservation.Common.Validators;
-using FlightReservation.Models.Contracts;
-using FlightReservation.Services.Contracts;
+﻿using FlightReservation.Common.Contracts.Models;
+using FlightReservation.Common.Contracts.Services;
+using FlightReservation.Common.Validators;
 using FlightReservation.UI.Presenters.FlightMaintenance.Contracts;
 using FlightReservation.UI.Views.FlightMaintenance.Contracts;
 
@@ -8,9 +8,12 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
 {
     internal class SearchByOriginDestinationPresenter : ISearchByOriginDestinationPresenter
     {
+        #region Declarations
         private readonly ISearchByOriginDestinationView _view;
         private readonly IFlightService _service;
+        #endregion
 
+        #region Constructors
         public SearchByOriginDestinationPresenter(
             ISearchByOriginDestinationView view,
             IFlightService service
@@ -23,12 +26,10 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
             _view.ArrivalStationChanged += OnArrivalStationChanged;
             _view.Submitted += OnSubmitted;
         }
+        #endregion
 
-        private void _view_ArrivalStationChanged(object? sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
 
+        #region Implementations of ISearchByOriginDestinationPresenter
         public void OnArrivalStationChanged(object? source, EventArgs e)
         {
             bool isValid = FlightValidator.IsStationFormatValid(_view.ArrivalStation);
@@ -89,5 +90,6 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
 
             _view.Reset();
         }
+        #endregion
     }
 }

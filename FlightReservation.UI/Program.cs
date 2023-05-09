@@ -1,9 +1,9 @@
-﻿using FlightReservation.Models.Flight;
+﻿using FlightReservation.Common.Contracts.Services;
+using FlightReservation.Models.Flight;
 using FlightReservation.Models.Passenger;
 using FlightReservation.Models.Reservation;
 using FlightReservation.Repositories;
 using FlightReservation.Services;
-using FlightReservation.Services.Contracts;
 using FlightReservation.UI.Presenters.FlightMaintenance;
 using FlightReservation.UI.Presenters.Reservation;
 using FlightReservation.UI.Views.FlightMaintenance;
@@ -19,33 +19,36 @@ namespace FlightReservation.UI.Views
         private readonly IReservationService _reservationService;
         private readonly IFlightService _flightService;
 
-        private ExitView _exitView;
+        private readonly ExitView _exitView;
 
-        private MainScreen _mainScreen;
-        private ReservationScreen _reservationScreen;
-        private FlightMaintenanceScreen _flightMaintenanceScreen;
+        private readonly MainScreen _mainScreen;
+        private readonly ReservationScreen _reservationScreen;
+        private readonly FlightMaintenanceScreen _flightMaintenanceScreen;
 
-        private AddFlightPage _addFlightPage;
-        private SearchFlightScreen _searchFlightScreen;
-        private SearchByAirlineCodePage _searchByAirlineCodePage;
-        private SearchByFlightNumberPage _searchByFlightNumberPage;
-        private SearchByOriginDestinationPage _searchByOriginDestinationPage;
+        private readonly AddFlightPage _addFlightPage;
+        private readonly SearchFlightScreen _searchFlightScreen;
+        private readonly SearchByAirlineCodePage _searchByAirlineCodePage;
+        private readonly SearchByFlightNumberPage _searchByFlightNumberPage;
+        private readonly SearchByOriginDestinationPage _searchByOriginDestinationPage;
 
-        private CreateReservationPage _createReservationPage;
-        private DisplayAllReservationsPage _viewReservationsPage;
-        private SearchReservationPage _searchReservationPage;
+        private readonly CreateReservationPage _createReservationPage;
+        private readonly DisplayAllReservationsPage _viewReservationsPage;
+        private readonly SearchReservationPage _searchReservationPage;
 
         public Program()
         {
+            // Initiate Program Repositories
             var cachedFlightRepository = new CachedFlightRepository();
             var cachedReservationRepository = new CachedReservationRepository();
 
+            // Initiate Program Services
             _flightService = new FlightService(cachedFlightRepository);
             _reservationService = new ReservationService(
                 cachedReservationRepository,
                 flightService: _flightService
             );
 
+            // Initiate Main Views
             _exitView = new ExitView();
             _mainScreen = new MainScreen("Main Screen");
 
@@ -53,14 +56,56 @@ namespace FlightReservation.UI.Views
             _flightMaintenanceScreen = new FlightMaintenanceScreen("Flight Maintenance Screen");
             _searchFlightScreen = new SearchFlightScreen("Search a Flight");
 
-            initAddFlightPage();
-            initSearchByAirlineCodePage();
-            initSearchByFlightNumberPage();
-            initSearchByOriginDestinationPage();
+            // Initiate Flight Maintenance Views and Its Presenters
+            _addFlightPage = new AddFlightPage("Add a Flight");
+            new AddFlightPresenter(
+                view: _addFlightPage,
+                service: _flightService,
+                model: new FlightModel()
+            );
 
-            initCreateReservationPage();
-            initSearchReservationPage();
-            initDisplayAllReservationsPage();
+            _searchByFlightNumberPage = new SearchByFlightNumberPage("Search by Flight Number");
+            new SearchByFlightNumberPresenter(
+                view: _searchByFlightNumberPage,
+                service: _flightService
+            );
+
+            _searchByAirlineCodePage = new SearchByAirlineCodePage("Search by Airline Code");
+            new SearchByAirlineCodePresenter(
+                view: _searchByAirlineCodePage,
+                service: _flightService
+            );
+
+            _searchByOriginDestinationPage = new SearchByOriginDestinationPage(
+                "Search by Origin & Destination"
+            );
+            new SearchByOriginDestinationPresenter(
+                view: _searchByOriginDestinationPage,
+                service: _flightService
+            );
+
+            // Initiate Reservation Views and Its Presenters
+            _createReservationPage = new CreateReservationPage("Create a Reservation");
+            new CreateReservationPresenter(
+                view: _createReservationPage,
+                reservationService: _reservationService,
+                flightService: _flightService,
+                reservationModel: new ReservationModel(),
+                flightModel: new FlightModel(),
+                passengerModel: new PassengerModel()
+            );
+
+            _searchReservationPage = new SearchReservationPage("Search a Reservation");
+            new SearchReservationPresenter(
+                view: _searchReservationPage,
+                service: _reservationService
+            );
+
+            _viewReservationsPage = new DisplayAllReservationsPage("View Reservations");
+            new DisplayAllReservationsPresenter(
+                view: _viewReservationsPage,
+                service: _reservationService
+            );
         }
 
         static void Main(string[] args)
@@ -82,85 +127,6 @@ namespace FlightReservation.UI.Views
             program.constructSearchReservationPage();
 
             program.run();
-        }
-
-        private void initAddFlightPage()
-        {
-            _addFlightPage = new AddFlightPage("Add a Flight");
-
-            var presenter = new AddFlightPresenter(
-                view: _addFlightPage,
-                service: _flightService,
-                model: new FlightModel()
-            );
-        }
-
-        private void initSearchByFlightNumberPage()
-        {
-            _searchByFlightNumberPage = new SearchByFlightNumberPage("Search by Flight Number");
-
-            var presenter = new SearchByFlightNumberPresenter(
-                view: _searchByFlightNumberPage,
-                service: _flightService
-            );
-        }
-
-        private void initSearchByAirlineCodePage()
-        {
-            _searchByAirlineCodePage = new SearchByAirlineCodePage("Search by Airline Code");
-
-            var presenter = new SearchByAirlineCodePresenter(
-                view: _searchByAirlineCodePage,
-                service: _flightService
-            );
-        }
-
-        private void initSearchByOriginDestinationPage()
-        {
-            _searchByOriginDestinationPage = new SearchByOriginDestinationPage(
-                "Search by Origin & Destination"
-            );
-
-            var presenter = new SearchByOriginDestinationPresenter(
-                view: _searchByOriginDestinationPage,
-                service: _flightService
-            );
-        }
-
-        private void initCreateReservationPage()
-        {
-            _createReservationPage = new CreateReservationPage("Create a Reservation");
-
-            var presenter = new CreateReservationPresenter(
-                view: _createReservationPage,
-                reservationService: _reservationService,
-                flightService: _flightService,
-                reservationModel: new ReservationModel(),
-                flightModel: new FlightModel(),
-                passengerModel: new PassengerModel()
-            );
-        }
-
-        private void initSearchReservationPage()
-        {
-            _searchReservationPage = new SearchReservationPage("Search a Reservation");
-
-            var presenter = new SearchReservationPresenter(
-                view: _searchReservationPage,
-                service: _reservationService
-            );
-        }
-
-        private void initDisplayAllReservationsPage()
-        {
-            _viewReservationsPage = new DisplayAllReservationsPage("View Reservations");
-
-            var presenter = new DisplayAllReservationsPresenter(
-                view: _viewReservationsPage,
-                service: _reservationService
-            );
-
-            _viewReservationsPage.Submitted += presenter.OnSubmitted;
         }
 
         private void constructMainScreen()

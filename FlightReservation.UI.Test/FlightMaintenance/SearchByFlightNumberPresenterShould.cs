@@ -1,5 +1,5 @@
-﻿using FlightReservation.Models.Contracts;
-using FlightReservation.Services.Contracts;
+﻿using FlightReservation.Common.Contracts.Models;
+using FlightReservation.Common.Contracts.Services;
 using FlightReservation.UI.Presenters.FlightMaintenance;
 using FlightReservation.UI.Test.Fakes;
 using FlightReservation.UI.Views.FlightMaintenance.Contracts;
@@ -9,9 +9,12 @@ namespace FlightReservation.UI.Test.FlightMaintenance
 {
     public class SearchByFlightNumberPresenterShould : IDisposable
     {
+        #region Declarations
         private readonly Mock<ISearchByFlightNumberView> _mockView;
         private readonly Mock<IFlightService> _mockService;
+        #endregion
 
+        #region Constructors
         public SearchByFlightNumberPresenterShould()
         {
             _mockView = new Mock<ISearchByFlightNumberView>();
@@ -19,7 +22,9 @@ namespace FlightReservation.UI.Test.FlightMaintenance
 
             new SearchByFlightNumberPresenter(_mockView.Object, _mockService.Object);
         }
+        #endregion
 
+        #region Test Methods
         [Fact]
         public void SetFlightNumberError_WhenInvalid()
         {
@@ -87,11 +92,14 @@ namespace FlightReservation.UI.Test.FlightMaintenance
             _mockView.Verify(v => v.DisplayNoFlights());
             _mockView.Verify(v => v.Reset());
         }
+        #endregion
 
+        #region Implementations of IDisposable
         public void Dispose()
         {
             _mockService.Reset();
             _mockView.Reset();
         }
+        #endregion
     }
 }

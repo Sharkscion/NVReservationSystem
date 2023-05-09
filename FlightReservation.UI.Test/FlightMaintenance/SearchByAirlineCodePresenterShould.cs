@@ -1,5 +1,5 @@
-using FlightReservation.Models.Contracts;
-using FlightReservation.Services.Contracts;
+using FlightReservation.Common.Contracts.Models;
+using FlightReservation.Common.Contracts.Services;
 using FlightReservation.UI.Presenters.FlightMaintenance;
 using FlightReservation.UI.Test.Fakes;
 using FlightReservation.UI.Views.FlightMaintenance.Contracts;
@@ -9,9 +9,12 @@ namespace FlightReservation.UI.Test.FlightMaintenance
 {
     public class SearchByAirlineCodePresenterShould : IDisposable
     {
+        #region Declarations
         private readonly Mock<ISearchByAirlineCodeView> _mockView;
         private readonly Mock<IFlightService> _mockService;
+        #endregion
 
+        #region Constructors
         public SearchByAirlineCodePresenterShould()
         {
             _mockView = new Mock<ISearchByAirlineCodeView>();
@@ -19,7 +22,9 @@ namespace FlightReservation.UI.Test.FlightMaintenance
 
             new SearchByAirlineCodePresenter(_mockView.Object, _mockService.Object);
         }
+        #endregion
 
+        #region Test Methods
         [Fact]
         public void SetAirlineCodeError_WhenInvalid()
         {
@@ -56,7 +61,7 @@ namespace FlightReservation.UI.Test.FlightMaintenance
         }
 
         [Fact]
-        public void Display_AvailableFlights_WhenSubmitted()
+        public void DisplayAvailableFlights_WhenSubmitted()
         {
             string airlineCode = "1NV";
             int repeatModelCount = 2;
@@ -77,7 +82,7 @@ namespace FlightReservation.UI.Test.FlightMaintenance
         }
 
         [Fact]
-        public void Display_NoFlights_WhenSubmitted()
+        public void DisplayNoFlights_WhenSubmitted()
         {
             string airlineCode = "1NV";
             var noFlights = new List<IFlight>();
@@ -91,11 +96,14 @@ namespace FlightReservation.UI.Test.FlightMaintenance
             _mockView.Verify(v => v.DisplayNoFlights());
             _mockView.Verify(v => v.Reset());
         }
+        #endregion
 
+        #region Implementations of IDisposable
         public void Dispose()
         {
             _mockView.Reset();
             _mockService.Reset();
         }
+        #endregion
     }
 }

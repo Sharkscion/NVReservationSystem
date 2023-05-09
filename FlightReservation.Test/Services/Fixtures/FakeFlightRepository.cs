@@ -1,14 +1,17 @@
-﻿using FlightReservation.Models.Contracts;
+﻿using FlightReservation.Common.Contracts.Models;
+using FlightReservation.Common.Contracts.Repositories;
 using FlightReservation.Models.Flight;
-using FlightReservation.Repositories.Contracts;
 using System.Text;
 
 namespace FlightReservation.Test.Services.Fixtures
 {
-    public class FakeFlightRepository : IFlightRepository, IDisposable
+    public class FakeFlightRepository : IDisposable, IFlightRepository
     {
+        #region Declarations
         private readonly HashSet<IFlight> _flights;
+        #endregion
 
+        #region Constructors
         public FakeFlightRepository()
         {
             _flights = new HashSet<IFlight>
@@ -61,12 +64,17 @@ namespace FlightReservation.Test.Services.Fixtures
             };
         }
 
+        #endregion
+
+        #region Implementation of IDisposable
         public void Dispose()
         {
             _flights.Clear();
         }
+        #endregion
 
-        public IQueryable<IFlight> List()
+        #region Implementation of IFlightRepository
+        public IQueryable<IFlight> GetAll()
         {
             return _flights.AsQueryable();
         }
@@ -76,5 +84,6 @@ namespace FlightReservation.Test.Services.Fixtures
             _flights.Append(item);
             return true;
         }
+        #endregion
     }
 }

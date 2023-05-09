@@ -1,7 +1,7 @@
-﻿using FlightReservation.Common.Validators;
-using FlightReservation.Models.Contracts;
+﻿using FlightReservation.Common.Contracts.Models;
+using FlightReservation.Common.Contracts.Services;
+using FlightReservation.Common.Validators;
 using FlightReservation.Models.Flight;
-using FlightReservation.Services.Contracts;
 using FlightReservation.UI.Presenters.FlightMaintenance.Contracts;
 using FlightReservation.UI.Views.FlightMaintenance.Contracts;
 
@@ -9,10 +9,13 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
 {
     internal class AddFlightPresenter : IAddFlightPresenter
     {
+        #region Declarations
         private readonly IAddFlightView _view;
         private readonly IFlightService _service;
         private readonly IFlight _model;
+        #endregion
 
+        #region Constructors
         public AddFlightPresenter(IAddFlightView view, IFlightService service, IFlight model)
         {
             _model = model;
@@ -27,7 +30,9 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
             _view.ArrivalScheduledTimeChanged += OnArrivalScheduledTimeChanged;
             _view.Submitted += OnSubmitted;
         }
+        #endregion
 
+        #region Implementations of IAddFlightPresenter
         public void OnAirlineCodeChanged(object? source, EventArgs e)
         {
             bool isValid = FlightValidator.IsAirlineCodeValid(_view.AirlineCode);
@@ -147,5 +152,6 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
                 _view.Reset();
             }
         }
+        #endregion
     }
 }

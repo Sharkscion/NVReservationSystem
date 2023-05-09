@@ -1,7 +1,7 @@
-﻿using FlightReservation.Common.Validators;
-using FlightReservation.Models.Contracts;
+﻿using FlightReservation.Common.Contracts.Models;
+using FlightReservation.Common.Contracts.Services;
+using FlightReservation.Common.Validators;
 using FlightReservation.Models.Reservation;
-using FlightReservation.Services.Contracts;
 using FlightReservation.UI.Common;
 using FlightReservation.UI.Presenters.Reservation.Contracts;
 using FlightReservation.UI.Views.Reservation.Contracts;
@@ -10,13 +10,16 @@ namespace FlightReservation.UI.Presenters.Reservation
 {
     internal class CreateReservationPresenter : ICreateReservationPresenter
     {
+        #region Declarations
         private readonly ICreateReservationView _view;
         private readonly IReservationService _reservationService;
         private readonly IFlightService _flightService;
         private readonly IFlight _flightModel;
         private readonly IPassenger _passengerModel;
         private readonly IReservation _reservationModel;
+        #endregion
 
+        #region Constructors
         public CreateReservationPresenter(
             ICreateReservationView view,
             IReservationService reservationService,
@@ -45,7 +48,9 @@ namespace FlightReservation.UI.Presenters.Reservation
             _view.FlightSearched += OnFlightSearched;
             _view.Submitted += OnSubmitted;
         }
+        #endregion
 
+        #region Implementations of ICreateReservationPresenter
         public void OnAirlineCodeChanged(object? source, EventArgs e)
         {
             bool isValid = FlightValidator.IsAirlineCodeValid(_view.AirlineCode);
@@ -182,5 +187,6 @@ namespace FlightReservation.UI.Presenters.Reservation
                 _view.Reset();
             }
         }
+        #endregion
     }
 }

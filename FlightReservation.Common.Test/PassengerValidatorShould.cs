@@ -4,36 +4,59 @@ namespace FlightReservation.Common.Test
 {
     public class PassengerValidatorShould
     {
-        public static IEnumerable<object[]> GetBirthDates()
+        #region Data Generators
+        public static IEnumerable<object[]> GetValidBirthDates()
         {
-            yield return new object[] { DateTime.Now, false };
-            yield return new object[] { DateTime.Now.AddDays(-15), false };
-            yield return new object[] { DateTime.Now.AddDays(-16), true };
-            yield return new object[] { DateTime.Now.AddYears(-18), true };
+            yield return new object[] { DateTime.Now.AddDays(-16) };
+            yield return new object[] { DateTime.Now.AddYears(-18) };
         }
 
+        public static IEnumerable<object[]> GetInvalidBirthDates()
+        {
+            yield return new object[] { DateTime.Now };
+            yield return new object[] { DateTime.Now.AddDays(-15) };
+        }
+        #endregion
+
+        #region Test Methods
         [Theory]
-        [MemberData(nameof(GetBirthDates))]
-        public void ValidateBirthDate(DateTime value, bool expectedResult)
+        [MemberData(nameof(GetInvalidBirthDates))]
+        public void ReturnFalse_WhenInvalidBirthDate(DateTime value)
         {
             bool result = PassengerValidator.IsBirthDateValid(value);
-            Assert.Equal(expectedResult, result);
+            Assert.False(result);
         }
 
         [Theory]
-        [InlineData(null, false)]
-        [InlineData("", false)]
-        [InlineData(" ", false)]
-        [InlineData("Name Space", false)]
-        [InlineData("Name1", false)]
-        [InlineData("Name", true)]
-        [InlineData("abcdefghijklmnopqrst", true)]
-        // More than 20 characters
-        [InlineData("abcdefghijklmnopqrstu", false)]
-        public void ValidateName(string value, bool expectedResult)
+        [MemberData(nameof(GetValidBirthDates))]
+        public void ReturnTrue_WhenValidBirthDate(DateTime value)
+        {
+            bool result = PassengerValidator.IsBirthDateValid(value);
+            Assert.True(result);
+        }
+
+        [Theory]
+        [InlineData("Name")]
+        [InlineData("abcdefghijklmnopqrst")]
+        public void ReturnTrue_WhenValidName(string value)
         {
             bool result = PassengerValidator.IsNameValid(value);
-            Assert.Equal(expectedResult, result);
+            Assert.True(result);
         }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData("Name Space")]
+        [InlineData("Name1")]
+        // More than 20 characters
+        [InlineData("abcdefghijklmnopqrstu")]
+        public void ReturnFalse_WhenInvalidName(string value)
+        {
+            bool result = PassengerValidator.IsNameValid(value);
+            Assert.False(result);
+        }
+        #endregion
     }
 }

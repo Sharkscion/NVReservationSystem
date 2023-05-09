@@ -1,6 +1,6 @@
-﻿using FlightReservation.Models.Contracts;
+﻿using FlightReservation.Common.Contracts.Models;
+using FlightReservation.Common.Contracts.Services;
 using FlightReservation.Models.Flight;
-using FlightReservation.Services.Contracts;
 using FlightReservation.UI.Presenters.FlightMaintenance;
 using FlightReservation.UI.Test.Fakes;
 using FlightReservation.UI.Views.FlightMaintenance.Contracts;
@@ -10,9 +10,12 @@ namespace FlightReservation.UI.Test.FlightMaintenance
 {
     public class AddFlightPresenterShould : IDisposable
     {
+        #region Declarations
         private readonly Mock<IAddFlightView> _mockView;
         private readonly Mock<IFlightService> _mockService;
+        #endregion
 
+        #region Constructors
         public AddFlightPresenterShould()
         {
             _mockService = new Mock<IFlightService>();
@@ -20,7 +23,9 @@ namespace FlightReservation.UI.Test.FlightMaintenance
 
             new AddFlightPresenter(_mockView.Object, _mockService.Object, new FakeFlightModel());
         }
+        #endregion
 
+        #region Test Methods
         [Fact]
         public void SetAirlineCodeError_WhenInvalid()
         {
@@ -181,7 +186,7 @@ namespace FlightReservation.UI.Test.FlightMaintenance
         }
 
         [Fact]
-        public void DisplayError_WhenFlightDuplicate_Submitted()
+        public void DisplayError_WhenFlightDuplicate()
         {
             _mockView.SetupProperty(v => v.AirlineCode, "NV");
             _mockView.SetupProperty(v => v.FlightNumber, 1);
@@ -227,11 +232,14 @@ namespace FlightReservation.UI.Test.FlightMaintenance
             _mockView.Verify(v => v.AlertError(It.IsAny<string>(), It.IsAny<string>()));
             _mockView.Verify(v => v.Reset());
         }
+        #endregion
 
+        #region Implementations of IDisposable
         public void Dispose()
         {
             _mockView.Reset();
             _mockService.Reset();
         }
+        #endregion
     }
 }

@@ -1,4 +1,4 @@
-﻿using FlightReservation.Models.Contracts;
+﻿using FlightReservation.Common.Contracts.Models;
 using FlightReservation.UI.Views.Contracts;
 using FlightReservation.UI.Views.Reservation.Contracts;
 
@@ -6,16 +6,19 @@ namespace FlightReservation.UI.Views.Reservation
 {
     internal class SearchReservationPage : BasePage, ISearchReservationView
     {
+        #region Declarations
         private bool _isFormValid;
         private string _PNR;
+        #endregion
 
+        #region Properties
         public string PNR
         {
             get { return _PNR; }
             set
             {
                 _PNR = value;
-                OnPNRChanged();
+                onPNRChanged();
             }
         }
 
@@ -23,15 +26,38 @@ namespace FlightReservation.UI.Views.Reservation
         {
             get { return _isFormValid; }
         }
+        #endregion
 
+        #region Events
+        public event EventHandler PNRChanged;
+        public event EventHandler Submitted;
+        #endregion
+
+        #region Constructors
         public SearchReservationPage(string title)
             : base(title)
         {
             Reset();
         }
+        #endregion
 
-        public event EventHandler PNRChanged;
-        public event EventHandler Submitted;
+        #region Overridden Methods
+        public override void ShowContent()
+        {
+            getPNR();
+            onSubmitted();
+        }
+        #endregion
+
+        #region Implementations of ISearchReservationView
+        public void DisplayNoReservation()
+        {
+            ClearScreen();
+
+            Console.WriteLine("\n-------------------------------------------");
+            Console.WriteLine($"No reservation found with a booking reference '{PNR}'...");
+            Console.WriteLine("-------------------------------------------");
+        }
 
         public void DisplayReservation(IReservation reservation)
         {
@@ -69,45 +95,13 @@ namespace FlightReservation.UI.Views.Reservation
 
             Console.WriteLine("-------------------------------------------");
         }
+        #endregion
 
+        #region Implementations of IFormView
         public void Reset()
         {
             _isFormValid = true;
             _PNR = string.Empty;
-        }
-
-        public override void ShowContent()
-        {
-            getPNR();
-            OnSubmitted();
-        }
-
-        private void getPNR()
-        {
-            do
-            {
-                Console.Write("Booking Reference: ");
-                string? input = Console.ReadLine()?.Trim();
-
-                _isFormValid = !string.IsNullOrEmpty(input);
-                if (!_isFormValid)
-                {
-                    SetFieldError(nameof(PNR), "Please enter a value...");
-                    continue;
-                }
-
-                PNR = input;
-            } while (!_isFormValid);
-        }
-
-        private void OnPNRChanged()
-        {
-            PNRChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void OnSubmitted()
-        {
-            Submitted?.Invoke(this, EventArgs.Empty);
         }
 
         public void SetFieldError(string paramName, string message)
@@ -126,14 +120,38 @@ namespace FlightReservation.UI.Views.Reservation
             Console.WriteLine("*****************************************");
             Console.WriteLine();
         }
+        #endregion
 
-        public void DisplayNoReservation()
+        #region Private Methods
+        private void getPNR()
         {
-            ClearScreen();
+            do
+            {
+                Console.Write("Booking Reference: ");
+                string? input = Console.ReadLine()?.Trim();
 
-            Console.WriteLine("\n-------------------------------------------");
-            Console.WriteLine($"No reservation found with a booking reference '{PNR}'...");
-            Console.WriteLine("-------------------------------------------");
+                _isFormValid = !string.IsNullOrEmpty(input);
+                if (!_isFormValid)
+                {
+                    SetFieldError(nameof(PNR), "Please enter a value...");
+                    continue;
+                }
+
+                PNR = input;
+            } while (!_isFormValid);
         }
+        #endregion
+
+        #region Event Invocation Methods
+        private void onPNRChanged()
+        {
+            PNRChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void onSubmitted()
+        {
+            Submitted?.Invoke(this, EventArgs.Empty);
+        }
+        #endregion
     }
 }

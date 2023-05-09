@@ -1,4 +1,4 @@
-﻿using FlightReservation.Models.Contracts;
+﻿using FlightReservation.Common.Contracts.Models;
 using FlightReservation.UI.Views.Contracts;
 using FlightReservation.UI.Views.Reservation.Contracts;
 
@@ -6,21 +6,24 @@ namespace FlightReservation.UI.Views.Reservation
 {
     internal class DisplayAllReservationsPage : BasePage, IDisplayAllReservationsView
     {
-        public DisplayAllReservationsPage(string title)
-            : base(title) { }
-
+        #region Events
         public event EventHandler Submitted;
 
+        #endregion
+
+        #region Constructors
+        public DisplayAllReservationsPage(string title)
+            : base(title) { }
+        #endregion
+
+        #region Overridden Methods
         public override void ShowContent()
         {
-            OnSubmitted();
+            onSubmitted();
         }
+        #endregion
 
-        public void OnSubmitted()
-        {
-            Submitted?.Invoke(this, EventArgs.Empty);
-        }
-
+        #region Implementations of IDisplayAllReservationsView
         public void DisplayReservations(IEnumerable<IReservation> reservations)
         {
             ClearScreen();
@@ -77,5 +80,13 @@ namespace FlightReservation.UI.Views.Reservation
             Console.WriteLine("No available reservations to be displayed.");
             Console.WriteLine("-----------------------------------------------");
         }
+        #endregion
+
+        #region Event Invocation Methods
+        private void onSubmitted()
+        {
+            Submitted?.Invoke(this, EventArgs.Empty);
+        }
+        #endregion
     }
 }

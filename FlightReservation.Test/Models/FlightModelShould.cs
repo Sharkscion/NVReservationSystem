@@ -4,6 +4,7 @@ namespace FlightReservation.Test.Models
 {
     public class FlightModelShould
     {
+        #region Data Generators
         public static IEnumerable<object[]> GetInvalidStations()
         {
             yield return new object[] { null };
@@ -34,7 +35,9 @@ namespace FlightReservation.Test.Models
                 new TimeOnly(hour: 2, minute: 0)
             };
         }
+        #endregion
 
+        #region Test Methods
         [Theory]
         [InlineData(null)]
         [InlineData("")]
@@ -42,7 +45,7 @@ namespace FlightReservation.Test.Models
         [InlineData("55")]
         [InlineData("5j")]
         [InlineData("A4CB")]
-        public void RaiseError_InvalidAirlineCode(string value)
+        public void RaiseError_WhenInvalidAirlineCode(string value)
         {
             var model = new FlightModel();
 
@@ -54,7 +57,7 @@ namespace FlightReservation.Test.Models
         [Theory]
         [InlineData("NV")]
         [InlineData("4AC")]
-        public void Set_ValidAirlineCode(string value)
+        public void SetAirlineCode_WhenValid(string value)
         {
             var model = new FlightModel();
             model.AirlineCode = value;
@@ -65,7 +68,7 @@ namespace FlightReservation.Test.Models
         [Theory]
         [InlineData(0)]
         [InlineData(10000)]
-        public void RaiseError_InvalidFlightNumber(int value)
+        public void RaiseError_WhenInvalidFlightNumber(int value)
         {
             var model = new FlightModel();
 
@@ -78,7 +81,7 @@ namespace FlightReservation.Test.Models
         [InlineData(1)]
         [InlineData(123)]
         [InlineData(9999)]
-        public void Set_ValidFlightNumber(int value)
+        public void SetFlightNumber_WhenValid(int value)
         {
             var model = new FlightModel();
             model.FlightNumber = value;
@@ -88,7 +91,7 @@ namespace FlightReservation.Test.Models
 
         [Theory]
         [MemberData(nameof(GetInvalidStations))]
-        public void RaiseError_InvalidDepartureStation(string value)
+        public void RaiseError_WhenInvalidDepartureStation(string value)
         {
             var model = new FlightModel();
 
@@ -99,7 +102,7 @@ namespace FlightReservation.Test.Models
         }
 
         [Fact]
-        public void RaiseError_DepartureStationMatchesArrivalStation()
+        public void RaiseError_WhenDepartureStationMatchesArrivalStation()
         {
             var model = new FlightModel();
             model.ArrivalStation = "ABC";
@@ -112,7 +115,7 @@ namespace FlightReservation.Test.Models
 
         [Theory]
         [MemberData(nameof(GetValidStations))]
-        public void Set_ValidDepartureStation(string value)
+        public void SetDepartureStation_WhenValid(string value)
         {
             var model = new FlightModel();
 
@@ -123,7 +126,7 @@ namespace FlightReservation.Test.Models
 
         [Theory]
         [MemberData(nameof(GetInvalidStations))]
-        public void RaiseError_InvalidArrivalStation(string value)
+        public void RaiseError_WhenInvalidArrivalStation(string value)
         {
             var model = new FlightModel();
 
@@ -134,7 +137,7 @@ namespace FlightReservation.Test.Models
         }
 
         [Fact]
-        public void RaiseError_ArrivalStationMatchesDepartureStation()
+        public void RaiseError_WhenArrivalStationMatchesDepartureStation()
         {
             var model = new FlightModel();
             model.DepartureStation = "ABC";
@@ -147,7 +150,7 @@ namespace FlightReservation.Test.Models
 
         [Theory]
         [MemberData(nameof(GetValidStations))]
-        public void Set_ValidArrivalStation(string value)
+        public void SetArrivalStation_WhenValid(string value)
         {
             var model = new FlightModel();
 
@@ -158,7 +161,7 @@ namespace FlightReservation.Test.Models
 
         [Theory]
         [MemberData(nameof(GetInvalidDepartureArrivalScheduledTimePairs))]
-        public void RaiseError_InvalidDepartureScheduledTime(
+        public void RaiseError_WhenInvalidDepartureScheduledTime(
             TimeOnly departureScheduledTime,
             TimeOnly arrivalScheduledTime
         )
@@ -173,7 +176,7 @@ namespace FlightReservation.Test.Models
         }
 
         [Fact]
-        public void Set_ValidDepartureScheduledTime()
+        public void SetDepartureScheduledTime_WhenValid()
         {
             var model = new FlightModel();
             model.ArrivalScheduledTime = new TimeOnly(hour: 2, minute: 0);
@@ -185,7 +188,7 @@ namespace FlightReservation.Test.Models
 
         [Theory]
         [MemberData(nameof(GetInvalidDepartureArrivalScheduledTimePairs))]
-        public void RaiseError_InvalidArrivalScheduledTime(
+        public void RaiseError_WhenInvalidArrivalScheduledTime(
             TimeOnly departureScheduledTime,
             TimeOnly arrivalScheduledTime
         )
@@ -200,7 +203,7 @@ namespace FlightReservation.Test.Models
         }
 
         [Fact]
-        public void Set_ValidArrivalScheduledTime()
+        public void SetArrivalScheduledTime_WhenValid()
         {
             var model = new FlightModel();
             model.DepartureScheduledTime = new TimeOnly(hour: 1, minute: 0);
@@ -211,7 +214,7 @@ namespace FlightReservation.Test.Models
         }
 
         [Fact]
-        public void Display_CorrectFlightFormat()
+        public void DisplayCorrectFlightFormat_WhenToStringCalled()
         {
             var model = new FlightModel(
                 airlineCode: "AB",
@@ -228,7 +231,7 @@ namespace FlightReservation.Test.Models
         }
 
         [Fact]
-        public void CreateNewInstance_FromData()
+        public void CreateNewInstance_WhenDataSupplied()
         {
             string airlineCode = "NV";
             int flightNumber = 1234;
@@ -254,5 +257,6 @@ namespace FlightReservation.Test.Models
             Assert.Equal(departureScheduledTime, otherModel.DepartureScheduledTime);
             Assert.Equal(arrivalScheduledTime, otherModel.ArrivalScheduledTime);
         }
+        #endregion
     }
 }

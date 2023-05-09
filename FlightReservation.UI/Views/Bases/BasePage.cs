@@ -2,9 +2,12 @@
 {
     internal abstract class BasePage : IView, IViewWithNavigation
     {
+        #region Declarations
         protected const string REPEAT_COMMAND = "R";
         protected IDictionary<string, IView> _navigationMenus;
+        #endregion
 
+        #region Properties
         public IDictionary<string, IView> NavigationMenus
         {
             get { return _navigationMenus; }
@@ -12,7 +15,9 @@
         }
 
         public string Title { get; set; }
+        #endregion
 
+        #region Constructors
         public BasePage()
         {
             _navigationMenus = new Dictionary<string, IView>();
@@ -23,7 +28,10 @@
         {
             Title = title;
         }
+        #endregion
 
+
+        #region Implementations of IViewWithNavigation
         public void AddNavigationMenu(string command, IView menu)
         {
             if (_navigationMenus.Any((menu) => menu.Key == command))
@@ -49,6 +57,13 @@
                 Console.WriteLine($"[{menu.Key}] {menu.Value.Title}");
             }
         }
+        #endregion
+
+        #region Implementations of IView
+        public void ClearScreen()
+        {
+            Console.Clear();
+        }
 
         public virtual void Execute()
         {
@@ -64,6 +79,34 @@
             } while (option == REPEAT_COMMAND);
 
             NavigationMenus[option].Execute();
+        }
+
+        #endregion
+
+        #region Abstract Methods
+        public abstract void ShowContent();
+
+        #endregion
+
+        #region Private & Protected Methods
+        protected char getYesOrNoInput(string question)
+        {
+            while (true)
+            {
+                Console.Write($"{question} [Y|N]? ");
+                string? input = Console.ReadLine()?.Trim().ToUpper();
+
+                switch (input)
+                {
+                    case "Y":
+                        return 'Y';
+                    case "N":
+                        return 'N';
+                    default:
+                        Console.WriteLine("Please enter a valid option...\n");
+                        break;
+                }
+            }
         }
 
         private string getSelectedOption()
@@ -89,32 +132,6 @@
             bool hasCommand = NavigationMenus.Any((item) => item.Key == rawInput);
             return hasCommand || rawInput == REPEAT_COMMAND;
         }
-
-        public abstract void ShowContent();
-
-        public void ClearScreen()
-        {
-            Console.Clear();
-        }
-
-        protected char getYesOrNoInput(string question)
-        {
-            while (true)
-            {
-                Console.Write($"{question} [Y|N]? ");
-                string? input = Console.ReadLine()?.Trim().ToUpper();
-
-                switch (input)
-                {
-                    case "Y":
-                        return 'Y';
-                    case "N":
-                        return 'N';
-                    default:
-                        Console.WriteLine("Please enter a valid option...\n");
-                        break;
-                }
-            }
-        }
+        #endregion
     }
 }

@@ -8,9 +8,12 @@
 
     internal abstract class BaseScreen : IView, IViewWithNavigation
     {
+        #region Declarations
         private IDictionary<string, IView> _navigationMenus;
         private ISet<IView> _pages;
+        #endregion
 
+        #region Properties
         public string Title { get; set; }
 
         public ISet<IView> Pages
@@ -24,7 +27,9 @@
             get { return _navigationMenus; }
             private set { _navigationMenus = value; }
         }
+        #endregion
 
+        #region Constructors
         public BaseScreen()
         {
             _pages = new HashSet<IView>();
@@ -36,26 +41,9 @@
         {
             Title = title;
         }
+        #endregion
 
         public void AddPage(IView page) => _pages.Add(page);
-
-        public virtual void AddNavigationMenu(string command, IView menu)
-        {
-            if (_navigationMenus.Any((menu) => menu.Key == command))
-            {
-                throw new InvalidOperationException($"Command [{command}] already exists.");
-            }
-            _navigationMenus.Add(key: command.ToUpper(), value: menu);
-        }
-
-        public virtual void Execute()
-        {
-            ClearScreen();
-            Console.WriteLine(Title);
-            DisplayPages();
-            DisplayNavigationMenus();
-            runSelectedOption();
-        }
 
         public virtual void DisplayPages()
         {
@@ -66,12 +54,35 @@
             Console.WriteLine();
         }
 
+        public virtual void AddNavigationMenu(string command, IView menu)
+        {
+            if (_navigationMenus.Any((menu) => menu.Key == command))
+            {
+                throw new InvalidOperationException($"Command [{command}] already exists.");
+            }
+            _navigationMenus.Add(key: command.ToUpper(), value: menu);
+        }
+
         public virtual void DisplayNavigationMenus()
         {
             foreach (var menu in NavigationMenus)
             {
                 Console.WriteLine($"[{menu.Key}] {menu.Value.Title}");
             }
+        }
+
+        public void ClearScreen()
+        {
+            Console.Clear();
+        }
+
+        public virtual void Execute()
+        {
+            ClearScreen();
+            Console.WriteLine(Title);
+            DisplayPages();
+            DisplayNavigationMenus();
+            runSelectedOption();
         }
 
         private void runSelectedOption()
@@ -126,11 +137,6 @@
 
             bool hasCommand = NavigationMenus.Any((item) => item.Key == rawInput);
             return (hasCommand, ViewType.Navigation);
-        }
-
-        public void ClearScreen()
-        {
-            Console.Clear();
         }
     }
 }

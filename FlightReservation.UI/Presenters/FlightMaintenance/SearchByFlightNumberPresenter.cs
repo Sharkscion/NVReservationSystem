@@ -1,6 +1,6 @@
-﻿using FlightReservation.Common.Validators;
-using FlightReservation.Models.Contracts;
-using FlightReservation.Services.Contracts;
+﻿using FlightReservation.Common.Contracts.Models;
+using FlightReservation.Common.Contracts.Services;
+using FlightReservation.Common.Validators;
 using FlightReservation.UI.Presenters.FlightMaintenance.Contracts;
 using FlightReservation.UI.Views.FlightMaintenance.Contracts;
 
@@ -8,9 +8,12 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
 {
     internal class SearchByFlightNumberPresenter : ISearchByFlightNumberPresenter
     {
+        #region Declarations
         private readonly ISearchByFlightNumberView _view;
         private readonly IFlightService _service;
+        #endregion
 
+        #region Constructors
         public SearchByFlightNumberPresenter(ISearchByFlightNumberView view, IFlightService service)
         {
             _service = service;
@@ -19,7 +22,9 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
             _view.FlightNumberChanged += OnFlightNumberChanged;
             _view.Submitted += OnSubmitted;
         }
+        #endregion
 
+        #region Implementations of ISearchByFlightNumberPresenter
         public void OnFlightNumberChanged(object? source, EventArgs e)
         {
             bool isValid = FlightValidator.IsFlightNumberValid(_view.FlightNumber);
@@ -47,5 +52,6 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
 
             _view.Reset();
         }
+        #endregion
     }
 }

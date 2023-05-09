@@ -1,17 +1,21 @@
-﻿using FlightReservation.Common.Validators;
-using FlightReservation.Models.Contracts;
+﻿using FlightReservation.Common.Contracts.Models;
+using FlightReservation.Common.Types;
+using FlightReservation.Common.Validators;
 
 namespace FlightReservation.Models.Passenger
 {
     public class PassengerModel : IPassenger
     {
+        #region Declarations
         private readonly IDateTimeProvider? _dateTimeProvider;
 
         private string _firstName;
         private string _lastName;
         private DateTime _birthdate;
         private Age _age;
+        #endregion
 
+        #region Properties
         public string FirstName
         {
             get { return _firstName; }
@@ -65,7 +69,9 @@ namespace FlightReservation.Models.Passenger
         {
             get { return _age; }
         }
+        #endregion
 
+        #region Constructors
         public PassengerModel() { }
 
         public PassengerModel(IDateTimeProvider dateTimeProvider)
@@ -80,7 +86,19 @@ namespace FlightReservation.Models.Passenger
             LastName = lastName;
             BirthDate = birthDate;
         }
+        #endregion
 
+        #region Public Methods
+        /// <summary>
+        /// Create a new passenger instance from the given details.
+        /// </summary>
+        public IPassenger CreateFrom(string firstName, string lastName, DateTime birthDate)
+        {
+            return new PassengerModel(firstName, lastName, birthDate);
+        }
+        #endregion
+
+        #region Private Methods
         private void calculateAge()
         {
             DateTime dateNow = _dateTimeProvider?.GetNow() ?? DateTime.Now;
@@ -107,10 +125,6 @@ namespace FlightReservation.Models.Passenger
         {
             return year % 4 == 0;
         }
-
-        public IPassenger CreateFrom(string firstName, string lastName, DateTime birthDate)
-        {
-            return new PassengerModel(firstName, lastName, birthDate);
-        }
+        #endregion
     }
 }

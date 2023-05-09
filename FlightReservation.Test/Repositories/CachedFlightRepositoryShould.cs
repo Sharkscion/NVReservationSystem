@@ -1,4 +1,4 @@
-﻿using FlightReservation.Models.Contracts;
+﻿using FlightReservation.Common.Contracts.Models;
 using FlightReservation.Models.Flight;
 using FlightReservation.Repositories;
 
@@ -6,8 +6,9 @@ namespace FlightReservation.Test.Repositories
 {
     public class CachedFlightRepositoryShould
     {
+        #region Test Methods
         [Fact]
-        public void Save_CreatedFlight()
+        public void SaveFlight_WhenCreated()
         {
             var model = new FlightModel
             {
@@ -25,7 +26,7 @@ namespace FlightReservation.Test.Repositories
         }
 
         [Fact]
-        public void Return_AllFlightsInMemory()
+        public void ReturnAllFlights_WhenRetrieved()
         {
             int count = 5;
             var repository = new CachedFlightRepository();
@@ -44,10 +45,11 @@ namespace FlightReservation.Test.Repositories
                 count--;
             }
 
-            IEnumerable<IFlight> flights = repository.List();
+            IEnumerable<IFlight> flights = repository.GetAll();
 
             Assert.True(flights.Count() == 5);
             Assert.Contains(flights, item => item.FlightNumber == 5);
         }
+        #endregion
     }
 }

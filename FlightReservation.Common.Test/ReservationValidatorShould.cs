@@ -4,33 +4,56 @@ namespace FlightReservation.Common.Test
 {
     public class ReservationValidatorShould
     {
-        public static IEnumerable<object[]> GetFlightDates()
+        #region Data Generators
+        public static IEnumerable<object[]> GetInvalidFlightDates()
         {
-            yield return new object[] { DateTime.Now.AddDays(-1), false };
-            yield return new object[] { DateTime.Now, true };
-            yield return new object[] { DateTime.Now.AddDays(1), true };
+            yield return new object[] { DateTime.Now.AddDays(-1) };
         }
 
+        public static IEnumerable<object[]> GetValidFlightDates()
+        {
+            yield return new object[] { DateTime.Now };
+            yield return new object[] { DateTime.Now.AddDays(1) };
+        }
+        #endregion
+
+        #region Test Methods
         [Theory]
-        [MemberData(nameof(GetFlightDates))]
-        public void ValidateFlightDate(DateTime value, bool expectedResult)
+        [MemberData(nameof(GetValidFlightDates))]
+        public void ReturnTrue_WhenValidFlightDate(DateTime value)
         {
             bool result = ReservationValidator.IsFlightDateValid(value);
-            Assert.Equal(expectedResult, result);
+            Assert.True(result);
         }
 
         [Theory]
-        [InlineData(null, false)]
-        [InlineData("ABC", false)]
-        [InlineData("abcdef", false)]
-        [InlineData("1ABCDE", false)]
-        [InlineData("ABCDEFG", false)]
-        [InlineData("ABCDEF", true)]
-        [InlineData("A2CDE3", true)]
-        public void ValidateBookingReference(string value, bool expectedResult)
+        [MemberData(nameof(GetInvalidFlightDates))]
+        public void ReturnFalse_WhenInvalidFlightDate(DateTime value)
+        {
+            bool result = ReservationValidator.IsFlightDateValid(value);
+            Assert.False(result);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("ABC")]
+        [InlineData("abcdef")]
+        [InlineData("1ABCDE")]
+        [InlineData("ABCDEFG")]
+        public void ReturnTrue_WhenValidBookingReference(string value)
         {
             bool result = ReservationValidator.IsBookingReferenceFormatValid(value);
-            Assert.Equal(expectedResult, result);
+            Assert.False(result);
         }
+
+        [Theory]
+        [InlineData("ABCDEF")]
+        [InlineData("A2CDE3")]
+        public void ReturnFalse_WhenInvalidBookingReference(string value)
+        {
+            bool result = ReservationValidator.IsBookingReferenceFormatValid(value);
+            Assert.True(result);
+        }
+        #endregion
     }
 }

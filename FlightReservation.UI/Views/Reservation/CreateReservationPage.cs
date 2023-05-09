@@ -1,4 +1,4 @@
-﻿using FlightReservation.Models.Contracts;
+﻿using FlightReservation.Common.Contracts.Models;
 using FlightReservation.UI.Common;
 using FlightReservation.UI.Views.Contracts;
 using FlightReservation.UI.Views.Reservation.Contracts;
@@ -9,6 +9,7 @@ namespace FlightReservation.UI.Views.Reservation
 {
     internal class CreateReservationPage : BasePage, ICreateReservationView
     {
+        #region Declarations
         private const int MAX_PAX_COUNT = 5;
         private const string DATE_FORMAT = "MM/dd/yyyy";
 
@@ -25,14 +26,16 @@ namespace FlightReservation.UI.Views.Reservation
         private string _firstName;
         private string _lastName;
         private DateTime _birthDate;
+        #endregion
 
+        #region Properties
         public DateTime FlightDate
         {
             get { return _flightDate; }
             set
             {
                 _flightDate = value;
-                OnFlightDateChanged();
+                onFlightDateChanged();
             }
         }
         public string AirlineCode
@@ -41,7 +44,7 @@ namespace FlightReservation.UI.Views.Reservation
             set
             {
                 _airlineCode = value;
-                OnAirlineCodeChanged();
+                onAirlineCodeChanged();
             }
         }
 
@@ -51,7 +54,7 @@ namespace FlightReservation.UI.Views.Reservation
             set
             {
                 _flightNumber = value;
-                OnFlightNumberChanged();
+                onFlightNumberChanged();
             }
         }
 
@@ -66,7 +69,7 @@ namespace FlightReservation.UI.Views.Reservation
             set
             {
                 _firstName = value;
-                OnFirstNameChanged();
+                onFirstNameChanged();
             }
         }
 
@@ -76,7 +79,7 @@ namespace FlightReservation.UI.Views.Reservation
             set
             {
                 _lastName = value;
-                OnLastNameChanged();
+                onLastNameChanged();
             }
         }
 
@@ -86,17 +89,12 @@ namespace FlightReservation.UI.Views.Reservation
             set
             {
                 _birthDate = value;
-                OnBirthDateChanged();
+                onBirthDateChanged();
             }
         }
+        #endregion
 
-        public CreateReservationPage(string title)
-            : base(title)
-        {
-            _dateCulture = new CultureInfo("en-US");
-            Reset();
-        }
-
+        #region Events
         public event EventHandler FlightDateChanged;
         public event EventHandler AirlineCodeChanged;
         public event EventHandler FlightNumberChanged;
@@ -106,7 +104,34 @@ namespace FlightReservation.UI.Views.Reservation
 
         public event EventHandler FlightSearched;
         public event EventHandler<ReservationEventArgs> Submitted;
+        #endregion
 
+        #region Constructors
+        public CreateReservationPage(string title)
+            : base(title)
+        {
+            _dateCulture = new CultureInfo("en-US");
+            Reset();
+        }
+        #endregion
+
+        #region Overridden Methods
+        public override void ShowContent()
+        {
+            searchReservationFlights();
+
+            if (!_isFormValid)
+            {
+                return;
+            }
+
+            getBookingPassengers();
+            displaySummary();
+            submitForm();
+        }
+        #endregion
+
+        #region Implementations of IFormView
         public void AlertError(string header, string message)
         {
             _isFormValid = false;
@@ -117,21 +142,6 @@ namespace FlightReservation.UI.Views.Reservation
             Console.WriteLine(message);
             Console.WriteLine("*****************************************");
             Console.WriteLine();
-        }
-
-        public void DisplayBookingConfirmation(string bookingReference)
-        {
-            ClearScreen();
-
-            Console.WriteLine("*****************************************");
-            Console.WriteLine("Booking Confirmed!");
-            Console.WriteLine($"Booking Reference: {bookingReference}");
-            Console.WriteLine("*****************************************");
-        }
-
-        public void DisplayAvailableFlights(IEnumerable<IFlight> flights)
-        {
-            FlightPresenter.DisplayFlights(flights);
         }
 
         public void Reset()
@@ -150,20 +160,79 @@ namespace FlightReservation.UI.Views.Reservation
             _passengers = new List<PassengerEventArgs>();
         }
 
-        public override void ShowContent()
+        public void SetFieldError(string paramName, string message)
         {
-            searchReservationFlights();
+            _isFormValid = false;
+            Console.WriteLine(message);
+            Console.WriteLine();
+        }
+        #endregion
 
-            if (!_isFormValid)
-            {
-                return;
-            }
+        #region Implementations of ICreateReservationView
+        public void DisplayBookingConfirmation(string bookingReference)
+        {
+            ClearScreen();
 
-            getBookingPassengers();
-            displaySummary();
-            submitForm();
+            Console.WriteLine("*****************************************");
+            Console.WriteLine("Booking Confirmed!");
+            Console.WriteLine($"Booking Reference: {bookingReference}");
+            Console.WriteLine("*****************************************");
         }
 
+        public void DisplayAvailableFlights(IEnumerable<IFlight> flights)
+        {
+            FlightPresenter.DisplayFlights(flights);
+        }
+
+        public void DisplayNoFlights()
+        {
+            string flightDesignator = AirlineCode + " " + FlightNumber;
+            AlertError(
+                header: "No Available Flights",
+                message: $"No ({flightDesignator}) flights scheduled on {FlightDate.ToShortDateString()}"
+            );
+        }
+
+        public void ShowFlightSelection(IEnumerable<IFlight> flights)
+        {
+            IFlight? selectedFlight = null;
+            do
+            {
+                Console.Write("Choose a Flight: ");
+                string? input = Console.ReadLine();
+                _isFormValid = int.TryParse(input, out int flightIndex);
+                if (!_isFormValid)
+                {
+                    Console.WriteLine("Please enter a numeric value...");
+                    Console.WriteLine();
+                    continue;
+                }
+
+                flightIndex -= 1;
+                _isFormValid = flightIndex >= 0 && flightIndex < flights.Count();
+                if (!_isFormValid)
+                {
+                    Console.WriteLine("Please enter a valid option...");
+                    Console.WriteLine();
+                    continue;
+                }
+
+                selectedFlight = flights.ElementAt(flightIndex);
+            } while (!_isFormValid);
+
+            _selectedFlight = new FlightEventArgs()
+            {
+                AirlineCode = selectedFlight.AirlineCode,
+                FlightNumber = selectedFlight.FlightNumber,
+                DepartureStation = selectedFlight.DepartureStation,
+                ArrivalStation = selectedFlight.ArrivalStation,
+                DepartureScheduledTime = selectedFlight.DepartureScheduledTime,
+                ArrivalScheduledTime = selectedFlight.ArrivalScheduledTime,
+            };
+        }
+        #endregion
+
+        #region Private Methods
         private void searchReservationFlights()
         {
             Console.WriteLine();
@@ -173,7 +242,7 @@ namespace FlightReservation.UI.Views.Reservation
             getAirlineCode();
             getFlightNumber();
 
-            OnFlightSearched();
+            onFlightSearched();
         }
 
         private void getFlightDate()
@@ -252,7 +321,7 @@ namespace FlightReservation.UI.Views.Reservation
                 getLastName();
                 getBirthDate();
 
-                OnAddPassenger();
+                onAddPassenger();
 
                 if (_paxCount > 1)
                 {
@@ -372,41 +441,43 @@ namespace FlightReservation.UI.Views.Reservation
 
             if (option == 'Y')
             {
-                OnSubmitted();
+                onSubmitted();
             }
         }
+        #endregion
 
-        private void OnFlightDateChanged()
+        #region Event Invocation Methods
+        private void onFlightDateChanged()
         {
             FlightDateChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void OnAirlineCodeChanged()
+        private void onAirlineCodeChanged()
         {
             AirlineCodeChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void OnFlightNumberChanged()
+        private void onFlightNumberChanged()
         {
             FlightNumberChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void OnFirstNameChanged()
+        private void onFirstNameChanged()
         {
             FirstNameChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void OnLastNameChanged()
+        private void onLastNameChanged()
         {
             LastNameChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void OnBirthDateChanged()
+        private void onBirthDateChanged()
         {
             BirthDateChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void OnAddPassenger()
+        private void onAddPassenger()
         {
             var args = new PassengerEventArgs()
             {
@@ -418,7 +489,7 @@ namespace FlightReservation.UI.Views.Reservation
             _passengers.Add(args);
         }
 
-        private void OnSubmitted()
+        private void onSubmitted()
         {
             var args = new ReservationEventArgs()
             {
@@ -430,63 +501,10 @@ namespace FlightReservation.UI.Views.Reservation
             Submitted?.Invoke(this, args);
         }
 
-        private void OnFlightSearched()
+        private void onFlightSearched()
         {
             FlightSearched?.Invoke(this, EventArgs.Empty);
         }
-
-        public void SetFieldError(string paramName, string message)
-        {
-            _isFormValid = false;
-            Console.WriteLine(message);
-            Console.WriteLine();
-        }
-
-        public void DisplayNoFlights()
-        {
-            string flightDesignator = AirlineCode + " " + FlightNumber;
-            AlertError(
-                header: "No Available Flights",
-                message: $"No ({flightDesignator}) flights scheduled on {FlightDate.ToShortDateString()}"
-            );
-        }
-
-        public void ShowFlightSelection(IEnumerable<IFlight> flights)
-        {
-            IFlight? selectedFlight = null;
-            do
-            {
-                Console.Write("Choose a Flight: ");
-                string? input = Console.ReadLine();
-                _isFormValid = int.TryParse(input, out int flightIndex);
-                if (!_isFormValid)
-                {
-                    Console.WriteLine("Please enter a numeric value...");
-                    Console.WriteLine();
-                    continue;
-                }
-
-                flightIndex -= 1;
-                _isFormValid = flightIndex >= 0 && flightIndex < flights.Count();
-                if (!_isFormValid)
-                {
-                    Console.WriteLine("Please enter a valid option...");
-                    Console.WriteLine();
-                    continue;
-                }
-
-                selectedFlight = flights.ElementAt(flightIndex);
-            } while (!_isFormValid);
-
-            _selectedFlight = new FlightEventArgs()
-            {
-                AirlineCode = selectedFlight.AirlineCode,
-                FlightNumber = selectedFlight.FlightNumber,
-                DepartureStation = selectedFlight.DepartureStation,
-                ArrivalStation = selectedFlight.ArrivalStation,
-                DepartureScheduledTime = selectedFlight.DepartureScheduledTime,
-                ArrivalScheduledTime = selectedFlight.ArrivalScheduledTime,
-            };
-        }
+        #endregion
     }
 }

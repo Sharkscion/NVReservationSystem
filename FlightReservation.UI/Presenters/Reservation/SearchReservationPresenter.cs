@@ -1,6 +1,6 @@
-﻿using FlightReservation.Common.Validators;
-using FlightReservation.Models.Contracts;
-using FlightReservation.Services.Contracts;
+﻿using FlightReservation.Common.Contracts.Models;
+using FlightReservation.Common.Contracts.Services;
+using FlightReservation.Common.Validators;
 using FlightReservation.UI.Presenters.Reservation.Contracts;
 using FlightReservation.UI.Views.Reservation.Contracts;
 
@@ -8,9 +8,12 @@ namespace FlightReservation.UI.Presenters.Reservation
 {
     internal class SearchReservationPresenter : ISearchReservationPresenter
     {
+        #region Declarations
         private readonly ISearchReservationView _view;
         private readonly IReservationService _service;
+        #endregion
 
+        #region Constructors
         public SearchReservationPresenter(ISearchReservationView view, IReservationService service)
         {
             _service = service;
@@ -20,6 +23,9 @@ namespace FlightReservation.UI.Presenters.Reservation
             _view.Submitted += OnSubmitted;
         }
 
+        #endregion
+
+        #region Implementations of ISearchReservationPresenter
         public void OnPNRChanged(object? source, EventArgs e)
         {
             bool isValid = ReservationValidator.IsBookingReferenceFormatValid(_view.PNR);
@@ -46,5 +52,6 @@ namespace FlightReservation.UI.Presenters.Reservation
             }
             _view.Reset();
         }
+        #endregion
     }
 }
