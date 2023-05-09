@@ -2,10 +2,6 @@
 {
     public static class PNRGenerator
     {
-        #region Delegates
-        delegate char CharGenerator();
-        #endregion
-
         #region Functions
         /// <summary>
         /// Generates an alphanumeric random string.
@@ -15,10 +11,10 @@
         {
             char[] generatedCode = new char[length];
 
-            CharGenerator[] generators =
+            Func<char>[] generators =
             {
-                new CharGenerator(GenerateRandomLetter),
-                new CharGenerator(GenerateRandomNumericCharacter),
+                GenerateRandomLetter,
+                GenerateRandomNumericCharacter,
             };
 
             Random randomGeneratorIndex = new Random();
@@ -27,7 +23,7 @@
 
             for (int i = 1; i < length; i++)
             {
-                CharGenerator generator = generators[randomGeneratorIndex.Next(generators.Length)];
+                Func<char> generator = generators[randomGeneratorIndex.Next(generators.Length)];
                 generatedCode[i] = generator();
             }
 
