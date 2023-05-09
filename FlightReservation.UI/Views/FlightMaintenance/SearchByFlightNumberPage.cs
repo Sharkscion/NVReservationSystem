@@ -55,17 +55,18 @@ namespace FlightReservation.UI.Views.FlightMaintenance
         {
             ClearScreen();
 
-            Console.WriteLine("\n-----------------------------------------------");
+            Console.WriteLine();
+            Console.WriteLine($"    Flights with flight number ({FlightNumber})");
+
             FlightPresenter.DisplayFlights(flights);
-            Console.WriteLine("-----------------------------------------------\n");
         }
 
         public void DisplayNoFlights()
         {
             ClearScreen();
-            Console.WriteLine("\n-----------------------------------------------");
+            Console.WriteLine("\n--------------------------------------------------------------");
             Console.WriteLine($"No flights found with flight number ({FlightNumber})...");
-            Console.WriteLine("-----------------------------------------------");
+            Console.WriteLine("--------------------------------------------------------------");
         }
         #endregion
 

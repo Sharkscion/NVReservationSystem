@@ -67,18 +67,19 @@ namespace FlightReservation.UI.Views.FlightMaintenance
         {
             ClearScreen();
 
-            Console.WriteLine("\n-----------------------------------------------");
+            Console.WriteLine();
+            Console.WriteLine($"    Flights from {DepartureStation} to {ArrivalStation}");
+
             FlightPresenter.DisplayFlights(flights);
-            Console.WriteLine("-----------------------------------------------\n");
         }
 
         public void DisplayNoFlights()
         {
             ClearScreen();
 
-            Console.WriteLine("\n-----------------------------------------------");
+            Console.WriteLine("\n--------------------------------------------------------------");
             Console.WriteLine($"No flights going from {DepartureStation} to {ArrivalStation}...");
-            Console.WriteLine("-----------------------------------------------");
+            Console.WriteLine("--------------------------------------------------------------");
         }
         #endregion
 

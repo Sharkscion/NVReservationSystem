@@ -43,17 +43,8 @@
         }
         #endregion
 
-        public void AddPage(IView page) => _pages.Add(page);
 
-        public virtual void DisplayPages()
-        {
-            foreach (var page in Pages.Select((value, index) => new { value, index }))
-            {
-                Console.WriteLine($"[{page.index}] {page.value.Title}");
-            }
-            Console.WriteLine();
-        }
-
+        #region Implementations of IViewWithNavigation
         public virtual void AddNavigationMenu(string command, IView menu)
         {
             if (_navigationMenus.Any((menu) => menu.Key == command))
@@ -70,7 +61,9 @@
                 Console.WriteLine($"[{menu.Key}] {menu.Value.Title}");
             }
         }
+        #endregion
 
+        #region Implementations of IView
         public void ClearScreen()
         {
             Console.Clear();
@@ -79,10 +72,35 @@
         public virtual void Execute()
         {
             ClearScreen();
-            Console.WriteLine(Title);
+
+            displayTitle();
             DisplayPages();
             DisplayNavigationMenus();
             runSelectedOption();
+        }
+        #endregion
+
+        #region Public Methods
+        public virtual void AddPage(IView page) => _pages.Add(page);
+
+        public virtual void DisplayPages()
+        {
+            foreach (var page in Pages.Select((value, index) => new { value, index }))
+            {
+                Console.WriteLine($"[{page.index}] {page.value.Title}");
+            }
+            Console.WriteLine();
+        }
+        #endregion
+
+        #region Private Methods
+
+        private void displayTitle()
+        {
+            Console.WriteLine();
+            Console.WriteLine("-------------------------------------");
+            Console.WriteLine($"    {Title}");
+            Console.WriteLine("-------------------------------------");
         }
 
         private void runSelectedOption()
@@ -110,6 +128,7 @@
         {
             while (true)
             {
+                Console.WriteLine();
                 Console.Write("Choose an Option: ");
                 string input = Console.ReadLine()?.Trim().ToUpper() ?? string.Empty;
 
@@ -138,5 +157,6 @@
             bool hasCommand = NavigationMenus.Any((item) => item.Key == rawInput);
             return (hasCommand, ViewType.Navigation);
         }
+        #endregion
     }
 }

@@ -11,7 +11,7 @@ namespace FlightReservation.Comparers
             return x.AirlineCode == y.AirlineCode
                 && x.FlightNumber == y.FlightNumber
                 && x.DepartureStation == y.DepartureStation
-                && x.DepartureStation == y.DepartureStation;
+                && x.ArrivalStation == y.ArrivalStation;
         }
 
         public int GetHashCode([DisallowNull] IFlight obj)

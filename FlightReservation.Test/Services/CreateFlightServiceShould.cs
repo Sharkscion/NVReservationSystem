@@ -54,10 +54,10 @@ namespace FlightReservation.Test.Services
         {
             var model = new FlightModel
             {
-                AirlineCode = "NO",
+                AirlineCode = "NV",
                 FlightNumber = 2,
-                DepartureStation = "MNL",
-                ArrivalStation = "CEB",
+                DepartureStation = "SLC",
+                ArrivalStation = "SIN",
             };
 
             bool exists = _fixture.Service.DoesExists(model);

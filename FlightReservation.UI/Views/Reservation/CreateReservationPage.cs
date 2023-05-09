@@ -174,8 +174,8 @@ namespace FlightReservation.UI.Views.Reservation
             ClearScreen();
 
             Console.WriteLine("*****************************************");
-            Console.WriteLine("Booking Confirmed!");
-            Console.WriteLine($"Booking Reference: {bookingReference}");
+            Console.WriteLine(" Booking Confirmed!");
+            Console.WriteLine($" Booking Reference: {bookingReference}");
             Console.WriteLine("*****************************************");
         }
 
@@ -187,10 +187,12 @@ namespace FlightReservation.UI.Views.Reservation
         public void DisplayNoFlights()
         {
             string flightDesignator = AirlineCode + " " + FlightNumber;
-            AlertError(
-                header: "No Available Flights",
-                message: $"No ({flightDesignator}) flights scheduled on {FlightDate.ToShortDateString()}"
-            );
+            string message =
+                FlightDate.Date != DateTime.Now.Date
+                    ? $"No ({flightDesignator}) flights scheduled on {FlightDate.ToShortDateString()}"
+                    : $"No ({flightDesignator}) flights scheduled at least 1 hour from the current time: {FlightDate.ToLongDateString()}";
+
+            AlertError(header: "No Available Flights", message: message);
         }
 
         public void ShowFlightSelection(IEnumerable<IFlight> flights)
@@ -417,14 +419,16 @@ namespace FlightReservation.UI.Views.Reservation
                 + "-"
                 + _selectedFlight.ArrivalScheduledTime.ToString("HH:mm");
 
-            Console.WriteLine($"Selected Flight Details_______");
-            Console.WriteLine($"{flightDesignator} {originDestination} {flightTime}");
+            Console.WriteLine($"[Selected Flight Details]");
+            Console.WriteLine($"Flight Designator: {flightDesignator}");
+            Console.WriteLine($"From/To: {originDestination}");
+            Console.WriteLine($"Flight Time: {flightTime}");
             Console.WriteLine();
 
             int count = 1;
             foreach (var passenger in _passengers)
             {
-                Console.WriteLine($"Passenger #{count}_________________");
+                Console.WriteLine($"[Passenger #{count}]");
                 Console.WriteLine($"Name: {passenger.FirstName} {passenger.LastName}");
                 Console.WriteLine($"Birth Date: {passenger.BirthDate.ToShortDateString()}");
                 Console.WriteLine();
