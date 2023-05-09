@@ -8,8 +8,9 @@ namespace FlightReservation.Test.Repositories
 {
     public class CachedReservationRepositoryShould
     {
+        #region Test Methods
         [Fact]
-        public void Save_CreatedReservation()
+        public void SaveReservation_WhenCreated()
         {
             // Arrange
             var flight = new FlightModel
@@ -42,7 +43,7 @@ namespace FlightReservation.Test.Repositories
         }
 
         [Fact]
-        public void Return_AllReservationsInMemory()
+        public void ReturnAllReservations_WhenRetrieved()
         {
             // Arrange
             var flight = new FlightModel
@@ -76,11 +77,12 @@ namespace FlightReservation.Test.Repositories
             }
 
             // Act
-            IEnumerable<IReservation> reservations = repository.List();
+            IEnumerable<IReservation> reservations = repository.GetAll();
 
             // Assert
             Assert.Equal(4, reservations.Count());
             Assert.Contains(reservations, item => item.PNR == "ABC123");
         }
+        #endregion
     }
 }

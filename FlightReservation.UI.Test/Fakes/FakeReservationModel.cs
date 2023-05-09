@@ -4,13 +4,14 @@ namespace FlightReservation.UI.Test.Fakes
 {
     internal class FakeReservationModel : IReservation
     {
+        #region Properties
         public IFlight FlightInfo { get; set; }
         public DateTime FlightDate { get; set; }
-
         public string PNR { get; }
-
         public IEnumerable<IPassenger> Passengers { get; set; }
+        #endregion
 
+        #region Constructors
         public FakeReservationModel() { }
 
         public FakeReservationModel(string bookingReference)
@@ -28,7 +29,9 @@ namespace FlightReservation.UI.Test.Fakes
             FlightDate = flightDate;
             Passengers = passengers;
         }
+        #endregion
 
+        #region Public Methods
         public IReservation CreateWith(string bookingReference)
         {
             return new FakeReservationModel(bookingReference);
@@ -42,5 +45,6 @@ namespace FlightReservation.UI.Test.Fakes
         {
             return new FakeReservationModel(flightInfo, flightDate, passengers);
         }
+        #endregion
     }
 }

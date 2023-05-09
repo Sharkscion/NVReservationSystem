@@ -2,8 +2,15 @@
 {
     public static class PNRGenerator
     {
+        #region Delegates
         delegate char CharGenerator();
+        #endregion
 
+        #region Functions
+        /// <summary>
+        /// Generates an alphanumeric random string.
+        /// </summary>
+        /// <param name="length">Lenght of the string to be generated.</param>
         public static string Generate(int length)
         {
             char[] generatedCode = new char[length];
@@ -27,6 +34,9 @@
             return new string(generatedCode);
         }
 
+        /// <summary>
+        /// Generates a random letter.
+        /// </summary>
         public static char GenerateRandomLetter()
         {
             int lowerBound = 65;
@@ -36,6 +46,9 @@
             return (char)random.Next(lowerBound, upperBound + 1);
         }
 
+        /// <summary>
+        /// Generates a random numeric character.
+        /// </summary>
         public static char GenerateRandomNumericCharacter()
         {
             int lowerBound = 48;
@@ -44,5 +57,6 @@
             Random random = new Random();
             return (char)random.Next(lowerBound, upperBound + 1);
         }
+        #endregion
     }
 }

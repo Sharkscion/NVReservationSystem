@@ -9,9 +9,12 @@ namespace FlightReservation.UI.Test.FlightMaintenance
 {
     public class SearchByOriginDestinationShould : IDisposable
     {
+        #region Declarations
         private readonly Mock<ISearchByOriginDestinationView> _mockView;
         private readonly Mock<IFlightService> _mockService;
+        #endregion
 
+        #region Constructors
         public SearchByOriginDestinationShould()
         {
             _mockView = new Mock<ISearchByOriginDestinationView>();
@@ -19,7 +22,9 @@ namespace FlightReservation.UI.Test.FlightMaintenance
 
             new SearchByOriginDestinationPresenter(_mockView.Object, _mockService.Object);
         }
+        #endregion
 
+        #region Test Methods
         [Fact]
         public void SetOriginError_WhenInvalidFormat()
         {
@@ -119,7 +124,7 @@ namespace FlightReservation.UI.Test.FlightMaintenance
         }
 
         [Fact]
-        public void Display_AvailableFlights_WhenSubmitted()
+        public void DisplayAvailableFlights_WhenSubmitted()
         {
             string origin = "MNL";
             string destination = "CEB";
@@ -145,7 +150,7 @@ namespace FlightReservation.UI.Test.FlightMaintenance
         }
 
         [Fact]
-        public void Display_NoFlights_WhenSubmitted()
+        public void DisplayNoFlights_WhenSubmitted()
         {
             string origin = "MNL";
             string destination = "CEB";
@@ -163,11 +168,14 @@ namespace FlightReservation.UI.Test.FlightMaintenance
             _mockView.Verify(v => v.DisplayNoFlights());
             _mockView.Verify(v => v.Reset());
         }
+        #endregion
 
+        #region Implementations of IDisposable
         public void Dispose()
         {
             _mockView.Reset();
             _mockService.Reset();
         }
+        #endregion
     }
 }

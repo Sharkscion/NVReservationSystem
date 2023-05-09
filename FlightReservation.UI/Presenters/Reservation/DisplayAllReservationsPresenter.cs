@@ -7,9 +7,12 @@ namespace FlightReservation.UI.Presenters.Reservation
 {
     internal class DisplayAllReservationsPresenter : IDisplayAllReservationsPresenter
     {
+        #region Declarations
         private readonly IDisplayAllReservationsView _view;
         private readonly IReservationService _service;
+        #endregion
 
+        #region Constructors
         public DisplayAllReservationsPresenter(
             IDisplayAllReservationsView view,
             IReservationService service
@@ -20,7 +23,9 @@ namespace FlightReservation.UI.Presenters.Reservation
             _view = view;
             _view.Submitted += OnSubmitted;
         }
+        #endregion
 
+        #region Implementations of IDisplayAllReservationsPresenter
         public void OnSubmitted(object? source, EventArgs e)
         {
             IEnumerable<IReservation> reservations = _service.ViewAll();
@@ -34,5 +39,6 @@ namespace FlightReservation.UI.Presenters.Reservation
                 _view.DisplayNoReservations();
             }
         }
+        #endregion
     }
 }

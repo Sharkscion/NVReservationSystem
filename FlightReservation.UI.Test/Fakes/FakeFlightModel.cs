@@ -4,13 +4,16 @@ namespace FlightReservation.UI.Test.Fakes
 {
     internal class FakeFlightModel : IFlight
     {
+        #region Properties
         public string AirlineCode { get; set; }
         public int FlightNumber { get; set; }
         public string ArrivalStation { get; set; }
         public string DepartureStation { get; set; }
         public TimeOnly ArrivalScheduledTime { get; set; }
         public TimeOnly DepartureScheduledTime { get; set; }
+        #endregion
 
+        #region Constructors
         public FakeFlightModel() { }
 
         public FakeFlightModel(
@@ -29,7 +32,9 @@ namespace FlightReservation.UI.Test.Fakes
             ArrivalScheduledTime = arrivalScheduledTime;
             DepartureScheduledTime = departureScheduledTime;
         }
+        #endregion
 
+        #region Public Methods
         public IFlight CreateFrom(
             string airlineCode,
             int flightNumber,
@@ -48,5 +53,6 @@ namespace FlightReservation.UI.Test.Fakes
                 departureScheduledTime
             );
         }
+        #endregion
     }
 }

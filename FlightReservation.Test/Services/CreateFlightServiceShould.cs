@@ -5,15 +5,20 @@ namespace FlightReservation.Test.Services
 {
     public class CreateFlightServiceShould : IClassFixture<FlightServiceFixture>
     {
+        #region Declarations
         private readonly FlightServiceFixture _fixture;
+        #endregion
 
+        #region Constructors
         public CreateFlightServiceShould(FlightServiceFixture fixture)
         {
             _fixture = fixture;
         }
+        #endregion
 
+        #region Test Methods
         [Fact]
-        public void Create_AFlight()
+        public void CreateFlight()
         {
             var model = new FlightModel
             {
@@ -29,7 +34,7 @@ namespace FlightReservation.Test.Services
         }
 
         [Fact]
-        public void ReturnTrue_WhenFlight_Exists()
+        public void ReturnTrue_WhenFlightExists()
         {
             var model = new FlightModel
             {
@@ -45,7 +50,7 @@ namespace FlightReservation.Test.Services
         }
 
         [Fact]
-        public void ReturnFalse_WhenFlight_DoesNotExists()
+        public void ReturnFalse_WhenFlightDoesNotExists()
         {
             var model = new FlightModel
             {
@@ -61,7 +66,7 @@ namespace FlightReservation.Test.Services
         }
 
         [Fact]
-        public void RaiseError_OnDuplicateFlight()
+        public void RaiseError_WhenDuplicateFlight()
         {
             var existingFlight = new FlightModel
             {
@@ -75,5 +80,6 @@ namespace FlightReservation.Test.Services
 
             Assert.Throws<DuplicateFlightException>(action);
         }
+        #endregion
     }
 }

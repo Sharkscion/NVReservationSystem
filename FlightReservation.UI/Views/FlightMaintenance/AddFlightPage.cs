@@ -5,6 +5,7 @@ namespace FlightReservation.UI.Views.FlightMaintenance
 {
     internal class AddFlightPage : BasePage, IAddFlightView
     {
+        #region Declarations
         private const string TIME_FORMAT = "HH:mm";
 
         private bool _isFormValid;
@@ -16,14 +17,16 @@ namespace FlightReservation.UI.Views.FlightMaintenance
 
         private TimeOnly _departureScheduledTime;
         private TimeOnly _arrivalScheduledTime;
+        #endregion
 
+        #region Properties
         public string AirlineCode
         {
             get { return _airlineCode; }
             set
             {
                 _airlineCode = value;
-                OnAirlineCodeChanged();
+                onAirlineCodeChanged();
             }
         }
 
@@ -33,7 +36,7 @@ namespace FlightReservation.UI.Views.FlightMaintenance
             set
             {
                 _flightNumber = value;
-                OnFlightNumberChanged();
+                onFlightNumberChanged();
             }
         }
         public string DepartureStation
@@ -42,7 +45,7 @@ namespace FlightReservation.UI.Views.FlightMaintenance
             set
             {
                 _departureStation = value;
-                OnDepartureStationChanged();
+                onDepartureStationChanged();
             }
         }
 
@@ -52,7 +55,7 @@ namespace FlightReservation.UI.Views.FlightMaintenance
             set
             {
                 _arrivalStation = value;
-                OnArrivalStationChanged();
+                onArrivalStationChanged();
             }
         }
 
@@ -62,7 +65,7 @@ namespace FlightReservation.UI.Views.FlightMaintenance
             set
             {
                 _departureScheduledTime = value;
-                OnScheduledDepartureTimeChanged();
+                onScheduledDepartureTimeChanged();
             }
         }
 
@@ -72,7 +75,7 @@ namespace FlightReservation.UI.Views.FlightMaintenance
             set
             {
                 _arrivalScheduledTime = value;
-                OnScheduledArrivalTimeChanged();
+                onScheduledArrivalTimeChanged();
             }
         }
 
@@ -80,7 +83,9 @@ namespace FlightReservation.UI.Views.FlightMaintenance
         {
             get { return _isFormValid; }
         }
+        #endregion
 
+        #region Events
         public event EventHandler AirlineCodeChanged;
         public event EventHandler FlightNumberChanged;
         public event EventHandler ArrivalStationChanged;
@@ -88,13 +93,17 @@ namespace FlightReservation.UI.Views.FlightMaintenance
         public event EventHandler ArrivalScheduledTimeChanged;
         public event EventHandler DepartureScheduledTimeChanged;
         public event EventHandler Submitted;
+        #endregion
 
+        #region Constructors
         public AddFlightPage(string title)
             : base(title)
         {
             Reset();
         }
+        #endregion
 
+        #region Implementation of BasePage Methods
         public override void ShowContent()
         {
             getAirlineCode();
@@ -107,7 +116,80 @@ namespace FlightReservation.UI.Views.FlightMaintenance
             displaySummary();
             submitForm();
         }
+        #endregion
 
+        #region Implementations of IFormView
+        public void AlertError(string header, string message)
+        {
+            Console.WriteLine();
+            Console.WriteLine("*****************************************");
+            Console.WriteLine(header);
+            Console.WriteLine(message);
+            Console.WriteLine("*****************************************");
+
+            Console.WriteLine();
+        }
+
+        public void SetFieldError(string paramName, string message)
+        {
+            _isFormValid = false;
+            Console.WriteLine(message);
+            Console.WriteLine();
+        }
+
+        public void Reset()
+        {
+            _isFormValid = true;
+
+            _airlineCode = string.Empty;
+            _flightNumber = 0;
+
+            _departureStation = string.Empty;
+            _arrivalStation = string.Empty;
+
+            _departureScheduledTime = new TimeOnly(hour: 0, minute: 0);
+            _arrivalScheduledTime = new TimeOnly(hour: 23, minute: 59);
+        }
+        #endregion
+
+        #region Event Invocation Methods
+        private void onAirlineCodeChanged()
+        {
+            AirlineCodeChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void onFlightNumberChanged()
+        {
+            FlightNumberChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void onDepartureStationChanged()
+        {
+            DepartureStationChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void onArrivalStationChanged()
+        {
+            ArrivalStationChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void onScheduledDepartureTimeChanged()
+        {
+            DepartureScheduledTimeChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void onScheduledArrivalTimeChanged()
+        {
+            ArrivalScheduledTimeChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void onSubmitted()
+        {
+            Submitted?.Invoke(this, EventArgs.Empty);
+        }
+        #endregion
+
+        #region Private Methods
         private void getAirlineCode()
         {
             do
@@ -228,7 +310,7 @@ namespace FlightReservation.UI.Views.FlightMaintenance
 
             if (option == 'Y')
             {
-                OnSubmitted();
+                onSubmitted();
             }
         }
 
@@ -248,72 +330,6 @@ namespace FlightReservation.UI.Views.FlightMaintenance
             Console.WriteLine($"Scheduled Arrival Time: {ArrivalScheduledTime.ToString("HH:mm")}");
             Console.WriteLine("-------------------------------------------");
         }
-
-        public void Reset()
-        {
-            _isFormValid = true;
-
-            _airlineCode = string.Empty;
-            _flightNumber = 0;
-
-            _departureStation = string.Empty;
-            _arrivalStation = string.Empty;
-
-            _departureScheduledTime = new TimeOnly(hour: 0, minute: 0);
-            _arrivalScheduledTime = new TimeOnly(hour: 23, minute: 59);
-        }
-
-        private void OnAirlineCodeChanged()
-        {
-            AirlineCodeChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void OnFlightNumberChanged()
-        {
-            FlightNumberChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void OnDepartureStationChanged()
-        {
-            DepartureStationChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void OnArrivalStationChanged()
-        {
-            ArrivalStationChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void OnScheduledDepartureTimeChanged()
-        {
-            DepartureScheduledTimeChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void OnScheduledArrivalTimeChanged()
-        {
-            ArrivalScheduledTimeChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void OnSubmitted()
-        {
-            Submitted?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void AlertError(string header, string message)
-        {
-            Console.WriteLine();
-            Console.WriteLine("*****************************************");
-            Console.WriteLine(header);
-            Console.WriteLine(message);
-            Console.WriteLine("*****************************************");
-
-            Console.WriteLine();
-        }
-
-        public void SetFieldError(string paramName, string message)
-        {
-            _isFormValid = false;
-            Console.WriteLine(message);
-            Console.WriteLine();
-        }
+        #endregion
     }
 }

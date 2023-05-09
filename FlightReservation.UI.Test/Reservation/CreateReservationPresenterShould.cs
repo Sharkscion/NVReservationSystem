@@ -11,10 +11,13 @@ namespace FlightReservation.UI.Test.Reservation
 {
     public class CreateReservationPresenterShould : IDisposable
     {
+        #region Declarations
         private readonly Mock<ICreateReservationView> _mockView;
         private readonly Mock<IReservationService> _mockReservationService;
         private readonly Mock<IFlightService> _mockFlightService;
+        #endregion
 
+        #region Constructors
         public CreateReservationPresenterShould()
         {
             _mockView = new Mock<ICreateReservationView>();
@@ -30,7 +33,9 @@ namespace FlightReservation.UI.Test.Reservation
                 passengerModel: new FakePassengerModel()
             );
         }
+        #endregion
 
+        #region Test Methods
         [Fact]
         private void SetAirlineCodeError_WhenInvalid()
         {
@@ -116,7 +121,7 @@ namespace FlightReservation.UI.Test.Reservation
         }
 
         [Fact]
-        private void Dislpay_AvailableFlights_WhenSearched()
+        private void DislpayAvailableFlights_WhenSearched()
         {
             DateTime flightDate = DateTime.Now;
             string airlineCode = "NV";
@@ -153,7 +158,7 @@ namespace FlightReservation.UI.Test.Reservation
         }
 
         [Fact]
-        private void Dislpay_NoFlights_WhenSearched()
+        private void DislpayNoFlights_WhenSearched()
         {
             DateTime flightDate = DateTime.Now;
             string airlineCode = "NV";
@@ -197,7 +202,7 @@ namespace FlightReservation.UI.Test.Reservation
         }
 
         [Fact]
-        private void AlertError_WhenBookedFlight_DoesNotExists()
+        private void AlertError_WhenBookedFlightDoesNotExists()
         {
             // Arrange mocked service to create reservation
             _mockReservationService
@@ -231,14 +236,18 @@ namespace FlightReservation.UI.Test.Reservation
             _mockView.Verify(v => v.AlertError(It.IsAny<string>(), It.IsAny<string>()));
             _mockView.Verify(v => v.Reset());
         }
+        #endregion
 
+        #region Implementations of IDisposable
         public void Dispose()
         {
             _mockFlightService.Reset();
             _mockReservationService.Reset();
             _mockView.Reset();
         }
+        #endregion
 
+        #region Private Methods
         private ReservationEventArgs generateReservationEventArgs()
         {
             // Arrange reservation event args to be raised
@@ -266,5 +275,6 @@ namespace FlightReservation.UI.Test.Reservation
 
             return eventArgs;
         }
+        #endregion
     }
 }

@@ -5,13 +5,16 @@ namespace FlightReservation.Models.Flight
 {
     public class FlightModel : IFlight
     {
+        #region Declarations
         private string _airlineCode;
         private int _flightNumber;
         private string _arrivalStation;
         private string _departureStation;
         private TimeOnly _arrivalScheduledTime;
         private TimeOnly _departureScheduledTime;
+        #endregion
 
+        #region Properties
         public string AirlineCode
         {
             get { return _airlineCode; }
@@ -135,7 +138,9 @@ namespace FlightReservation.Models.Flight
                 _departureScheduledTime = value;
             }
         }
+        #endregion
 
+        #region Constructors
         public FlightModel()
         {
             ArrivalScheduledTime = new TimeOnly(hour: 23, minute: 59);
@@ -158,12 +163,17 @@ namespace FlightReservation.Models.Flight
             ArrivalScheduledTime = arrivalScheduledTime;
             DepartureScheduledTime = departureScheduledTime;
         }
+        #endregion
 
+        #region Public Methods
         public override string ToString()
         {
             return $"{AirlineCode} {FlightNumber} {DepartureStation}->{ArrivalStation}";
         }
 
+        /// <summary>
+        /// Create a new flight instance from the given details.
+        /// </summary>
         public IFlight CreateFrom(
             string airlineCode,
             int flightNumber,
@@ -182,5 +192,6 @@ namespace FlightReservation.Models.Flight
                 departureScheduledTime
             );
         }
+        #endregion
     }
 }

@@ -14,6 +14,7 @@ namespace FlightReservation.Test.Models
 
     public class PassengerModelShould
     {
+        #region Data Generators
         public static IEnumerable<object[]> GetInvalidNames()
         {
             yield return new object[] { null };
@@ -31,9 +32,30 @@ namespace FlightReservation.Test.Models
             yield return new object[] { "abcdefghijklmnopqrst" };
         }
 
+        public static IEnumerable<object[]> GetInvalidBirthDates()
+        {
+            yield return new object[] { DateTime.Now };
+            yield return new object[] { DateTime.Now.AddDays(-15) };
+        }
+
+        public static IEnumerable<object[]> GetValidBirthDates()
+        {
+            yield return new object[] { DateTime.Now.AddDays(-16) };
+            yield return new object[] { DateTime.Now.AddYears(-18) };
+        }
+
+        public static IEnumerable<object[]> GetBirthDatesAndAgePairs()
+        {
+            yield return new object[] { DateTime.Now.AddDays(-16), "16 Days" };
+            yield return new object[] { DateTime.Now.AddYears(-18), "18 Years" };
+        }
+        #endregion
+
+        #region Test Methods
+
         [Theory]
         [MemberData(nameof(GetInvalidNames))]
-        public void RaiseError_InvalidFirstName(string value)
+        public void RaiseError_WhenInvalidFirstName(string value)
         {
             var model = new PassengerModel();
 
@@ -45,7 +67,7 @@ namespace FlightReservation.Test.Models
 
         [Theory]
         [MemberData(nameof(GetValidNames))]
-        public void Set_ValidFirstName(string value)
+        public void SetFirstName_WhenValid(string value)
         {
             var model = new PassengerModel();
 
@@ -56,7 +78,7 @@ namespace FlightReservation.Test.Models
 
         [Theory]
         [MemberData(nameof(GetInvalidNames))]
-        public void RaiseError_InvalidLastName(string value)
+        public void RaiseError_WhenInvalidLastName(string value)
         {
             var model = new PassengerModel();
 
@@ -68,7 +90,7 @@ namespace FlightReservation.Test.Models
 
         [Theory]
         [MemberData(nameof(GetValidNames))]
-        public void Set_ValidLastName(string value)
+        public void SetLastName_WhenValid(string value)
         {
             var model = new PassengerModel();
 
@@ -77,15 +99,9 @@ namespace FlightReservation.Test.Models
             Assert.Equal(value, model.LastName);
         }
 
-        public static IEnumerable<object[]> GetInvalidBirthDates()
-        {
-            yield return new object[] { DateTime.Now };
-            yield return new object[] { DateTime.Now.AddDays(-15) };
-        }
-
         [Theory]
         [MemberData(nameof(GetInvalidBirthDates))]
-        public void RaiseError_InvalidBirthDate(DateTime value)
+        public void RaiseError_WhenInvalidBirthDate(DateTime value)
         {
             var model = new PassengerModel();
 
@@ -94,15 +110,9 @@ namespace FlightReservation.Test.Models
             Assert.Throws<AgeLimitException>(action);
         }
 
-        public static IEnumerable<object[]> GetValidBirthDates()
-        {
-            yield return new object[] { DateTime.Now.AddDays(-16) };
-            yield return new object[] { DateTime.Now.AddYears(-18) };
-        }
-
         [Theory]
         [MemberData(nameof(GetValidBirthDates))]
-        public void Set_ValidBirthDate(DateTime value)
+        public void SetBirthDate_WhenValid(DateTime value)
         {
             var model = new PassengerModel();
 
@@ -111,15 +121,12 @@ namespace FlightReservation.Test.Models
             Assert.Equal(value, model.BirthDate);
         }
 
-        public static IEnumerable<object[]> GetBirthDatesAndAgePairs()
-        {
-            yield return new object[] { DateTime.Now.AddDays(-16), "16 Days" };
-            yield return new object[] { DateTime.Now.AddYears(-18), "18 Years" };
-        }
-
         [Theory]
         [MemberData(nameof(GetBirthDatesAndAgePairs))]
-        public void CalculateAge_Correctly(DateTime birthDate, string expectedAgeString)
+        public void CalculateCorrectAge_WhenBirthDateSupplied(
+            DateTime birthDate,
+            string expectedAgeString
+        )
         {
             var model = new PassengerModel();
             model.BirthDate = birthDate;
@@ -130,7 +137,7 @@ namespace FlightReservation.Test.Models
         }
 
         [Fact]
-        public void CalculateAge_WithLeapYearBirthDate_Correctly()
+        public void CalculateCorrectAge_WhenBirthDateHasLeapYear()
         {
             var dateTimeProvider = new DateTimeProvider();
 
@@ -146,7 +153,7 @@ namespace FlightReservation.Test.Models
         }
 
         [Fact]
-        public void CreateNewInstance_FromData()
+        public void CreateNewInstance_WhenDataProvided()
         {
             string firstName = "John";
             string lastName = "Doe";
@@ -162,5 +169,6 @@ namespace FlightReservation.Test.Models
             Assert.Equal(lastName, otherModel.LastName);
             Assert.Equal(birthDate, otherModel.BirthDate);
         }
+        #endregion
     }
 }

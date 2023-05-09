@@ -2,8 +2,19 @@
 
 namespace FlightReservation.Common.Validators
 {
+    /// <summary>
+    /// Utility class for validating flight details that are common
+    /// or invariant across the system.
+    /// </summary>
     public static class FlightValidator
     {
+        #region Public Methods
+        /// <summary>
+        /// Validates the airline code format if it matches the required specifications:
+        /// - 2-3 characters in length
+        /// - Alphanumeric but numeric characters are optional
+        /// - Numeric character only appears once
+        /// </summary>
         public static bool IsAirlineCodeValid(string value)
         {
             if (string.IsNullOrEmpty(value?.Trim()))
@@ -26,6 +37,9 @@ namespace FlightReservation.Common.Validators
             return true;
         }
 
+        /// <summary>
+        /// Validates the flight number if it is from 1 - 9999.
+        /// </summary>
         public static bool IsFlightNumberValid(int value)
         {
             bool isWithinRange = value > 0 && value < 10000;
@@ -38,6 +52,11 @@ namespace FlightReservation.Common.Validators
             return true;
         }
 
+        /// <summary>
+        /// Validates the station if it matches the required specifications:
+        /// - 3 alphanumeric characters, numeric characters are optional
+        /// - First character must be a letter
+        /// </summary>
         public static bool IsStationFormatValid(string value)
         {
             if (string.IsNullOrEmpty(value?.Trim()))
@@ -53,5 +72,6 @@ namespace FlightReservation.Common.Validators
 
             return true;
         }
+        #endregion
     }
 }

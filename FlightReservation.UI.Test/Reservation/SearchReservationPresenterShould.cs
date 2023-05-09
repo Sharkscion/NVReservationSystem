@@ -9,9 +9,12 @@ namespace FlightReservation.UI.Test.Reservation
 {
     public class SearchReservationPresenterShould : IDisposable
     {
+        #region Declarations
         private readonly Mock<ISearchReservationView> _mockView;
         private readonly Mock<IReservationService> _mockService;
+        #endregion
 
+        #region Constructors
         public SearchReservationPresenterShould()
         {
             _mockView = new Mock<ISearchReservationView>();
@@ -19,7 +22,9 @@ namespace FlightReservation.UI.Test.Reservation
 
             new SearchReservationPresenter(_mockView.Object, _mockService.Object);
         }
+        #endregion
 
+        #region Test Methods
         [Fact]
         public void SetPNRError_WhenInvalid()
         {
@@ -39,7 +44,7 @@ namespace FlightReservation.UI.Test.Reservation
         }
 
         [Fact]
-        public void Display_AvailableReservation_WhenSubmitted()
+        public void DisplayAvailableReservation_WhenSubmitted()
         {
             string PNR = "ABC123";
             _mockView.SetupProperty(v => v.PNR, PNR);
@@ -52,7 +57,7 @@ namespace FlightReservation.UI.Test.Reservation
         }
 
         [Fact]
-        public void Display_NoReservation_WhenSubmitted()
+        public void DisplayNoReservation_WhenSubmitted()
         {
             string PNR = "NOPNR1";
             _mockView.SetupProperty(v => v.PNR, PNR);
@@ -63,11 +68,14 @@ namespace FlightReservation.UI.Test.Reservation
             _mockView.Verify(v => v.DisplayNoReservation());
             _mockView.Verify(v => v.Reset());
         }
+        #endregion
 
+        #region Implementations of IDisposable
         public void Dispose()
         {
             _mockView.Reset();
             _mockService.Reset();
         }
+        #endregion
     }
 }

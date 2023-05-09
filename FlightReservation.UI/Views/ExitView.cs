@@ -4,8 +4,12 @@ namespace FlightReservation.UI.Views
 {
     internal class ExitView : IView
     {
+        #region Properties
         public string Title { get; set; }
 
+        #endregion
+
+        #region Constructors
         public ExitView()
         {
             Title = "Quit";
@@ -15,7 +19,9 @@ namespace FlightReservation.UI.Views
         {
             Title = title;
         }
+        #endregion
 
+        #region Implementations of IView
         public void Execute()
         {
             Console.WriteLine("Good bye!");
@@ -26,5 +32,6 @@ namespace FlightReservation.UI.Views
         {
             Console.Clear();
         }
+        #endregion
     }
 }

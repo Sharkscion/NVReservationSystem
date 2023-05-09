@@ -5,11 +5,14 @@ namespace FlightReservation.Models.Reservation
 {
     public class ReservationModel : IReservation
     {
+        #region Declarations
         private const int MAX_PASSENGER_COUNT = 5;
 
         private IEnumerable<IPassenger> _passengers;
         private DateTime _flightDate;
+        #endregion
 
+        #region Properties
         public IFlight FlightInfo { get; set; }
         public DateTime FlightDate
         {
@@ -47,7 +50,9 @@ namespace FlightReservation.Models.Reservation
                 _passengers = value;
             }
         }
+        #endregion
 
+        #region Constructors
         public ReservationModel() { }
 
         public ReservationModel(
@@ -79,12 +84,20 @@ namespace FlightReservation.Models.Reservation
 
             PNR = bookingReference;
         }
+        #endregion
 
+        #region Public Methods
+        /// <summary>
+        /// Create a new reservation instance with a booking reference while copying existing details.
+        /// </summary>
         public IReservation CreateWith(string bookingReference)
         {
             return new ReservationModel(bookingReference, FlightInfo, FlightDate, Passengers);
         }
 
+        /// <summary>
+        /// Create a new reservation instance from the provided details.
+        /// </summary>
         public IReservation CreateFrom(
             DateTime flightDate,
             IFlight flightInfo,
@@ -93,5 +106,6 @@ namespace FlightReservation.Models.Reservation
         {
             return new ReservationModel(flightInfo, flightDate, passengers);
         }
+        #endregion
     }
 }
