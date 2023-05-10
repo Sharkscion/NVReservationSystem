@@ -14,7 +14,6 @@ namespace FlightReservation.UI.Presenters.Reservation
         private readonly ICreateReservationView _view;
         private readonly IReservationService _reservationService;
         private readonly IFlightService _flightService;
-        private readonly IFlight _flightModel;
         private readonly IPassenger _passengerModel;
         private readonly IReservation _reservationModel;
         #endregion
@@ -25,14 +24,12 @@ namespace FlightReservation.UI.Presenters.Reservation
             IReservationService reservationService,
             IFlightService flightService,
             IReservation reservationModel,
-            IFlight flightModel,
             IPassenger passengerModel
         )
         {
             _reservationService = reservationService;
             _flightService = flightService;
 
-            _flightModel = flightModel;
             _passengerModel = passengerModel;
             _reservationModel = reservationModel;
 
@@ -139,15 +136,6 @@ namespace FlightReservation.UI.Presenters.Reservation
 
             try
             {
-                var flightInfo = _flightModel.CreateFrom(
-                    airlineCode: args.FlightInfo.AirlineCode,
-                    flightNumber: args.FlightInfo.FlightNumber,
-                    departureStation: args.FlightInfo.DepartureStation,
-                    arrivalStation: args.FlightInfo.ArrivalStation,
-                    departureScheduledTime: args.FlightInfo.DepartureScheduledTime,
-                    arrivalScheduledTime: args.FlightInfo.ArrivalScheduledTime
-                );
-
                 var passengers = args.Passengers.Select(
                     (item) =>
                         _passengerModel.CreateFrom(
@@ -159,7 +147,7 @@ namespace FlightReservation.UI.Presenters.Reservation
 
                 var reservation = _reservationModel.CreateFrom(
                     flightDate: args.FlightDate,
-                    flightInfo: flightInfo,
+                    flightInfo: args.FlightInfo,
                     passengers: passengers
                 );
 

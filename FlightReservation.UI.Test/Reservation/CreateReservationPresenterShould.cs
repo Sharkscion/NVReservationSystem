@@ -29,7 +29,6 @@ namespace FlightReservation.UI.Test.Reservation
                 reservationService: _mockReservationService.Object,
                 flightService: _mockFlightService.Object,
                 reservationModel: new FakeReservationModel(),
-                flightModel: new FakeFlightModel(),
                 passengerModel: new FakePassengerModel()
             );
         }
@@ -253,7 +252,7 @@ namespace FlightReservation.UI.Test.Reservation
             // Arrange reservation event args to be raised
             var eventArgs = new ReservationEventArgs();
             eventArgs.FlightDate = DateTime.Now;
-            eventArgs.FlightInfo = new FlightEventArgs
+            eventArgs.FlightInfo = new FakeFlightModel
             {
                 AirlineCode = "NV",
                 FlightNumber = 1,

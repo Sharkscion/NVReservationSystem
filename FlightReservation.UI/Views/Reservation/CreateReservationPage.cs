@@ -16,7 +16,7 @@ namespace FlightReservation.UI.Views.Reservation
         private int _paxCount;
         private CultureInfo _dateCulture;
         private List<PassengerEventArgs> _passengers;
-        private FlightEventArgs _selectedFlight;
+        private IFlight _selectedFlight;
 
         private bool _isFormValid;
 
@@ -190,14 +190,13 @@ namespace FlightReservation.UI.Views.Reservation
             string message =
                 FlightDate.Date != DateTime.Now.Date
                     ? $"No ({flightDesignator}) flights scheduled on {FlightDate.ToShortDateString()}"
-                    : $"No ({flightDesignator}) flights scheduled at least 1 hour from the current time: {FlightDate.ToString("MM/dd/yyyy HH:mm")}";
+                    : $"No ({flightDesignator}) flights scheduled at least 1 hour from the current time: {DateTime.Now.ToString("MM/dd/yyyy HH:mm")}";
 
             AlertError(header: "No Available Flights", message: message);
         }
 
         public void ShowFlightSelection(IEnumerable<IFlight> flights)
         {
-            IFlight? selectedFlight = null;
             do
             {
                 Console.Write("Choose a Flight: ");
@@ -219,18 +218,8 @@ namespace FlightReservation.UI.Views.Reservation
                     continue;
                 }
 
-                selectedFlight = flights.ElementAt(flightIndex);
+                _selectedFlight = flights.ElementAt(flightIndex);
             } while (!_isFormValid);
-
-            _selectedFlight = new FlightEventArgs()
-            {
-                AirlineCode = selectedFlight.AirlineCode,
-                FlightNumber = selectedFlight.FlightNumber,
-                DepartureStation = selectedFlight.DepartureStation,
-                ArrivalStation = selectedFlight.ArrivalStation,
-                DepartureScheduledTime = selectedFlight.DepartureScheduledTime,
-                ArrivalScheduledTime = selectedFlight.ArrivalScheduledTime,
-            };
         }
         #endregion
 
@@ -415,9 +404,9 @@ namespace FlightReservation.UI.Views.Reservation
             string originDestination =
                 _selectedFlight.DepartureStation + " -> " + _selectedFlight.ArrivalStation;
             string flightTime =
-                _selectedFlight.DepartureScheduledTime.ToString("HH:mm")
+                _selectedFlight.DepartureScheduledTimeString
                 + "-"
-                + _selectedFlight.ArrivalScheduledTime.ToString("HH:mm");
+                + _selectedFlight.ArrivalScheduledTimeString;
 
             Console.WriteLine($"[Selected Flight Details]");
             Console.WriteLine($"Flight Designator: {flightDesignator}");
