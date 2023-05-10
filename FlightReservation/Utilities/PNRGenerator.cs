@@ -11,11 +11,7 @@
         {
             char[] generatedCode = new char[length];
 
-            Func<char>[] generators =
-            {
-                GenerateRandomLetter,
-                GenerateRandomNumericCharacter,
-            };
+            Func<char>[] generators = { GenerateRandomLetter, GenerateRandomNumericCharacter, };
 
             Random randomGeneratorIndex = new Random();
 
