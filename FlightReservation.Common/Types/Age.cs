@@ -12,11 +12,11 @@
     /// <summary>
     /// Data type modeling an age of an entity (i.e. Person)
     /// </summary>
-    public struct Age
+    public readonly struct Age
     {
         #region Properties
-        public int Value { get; set; }
-        public TimePeriod TimePeriod { get; set; }
+        public int Value { get; init; }
+        public TimePeriod TimePeriod { get; init; }
         #endregion
 
         #region Constructors
