@@ -92,22 +92,4 @@
             : base(message, innerException) { }
         #endregion
     }
-
-    public class InvalidFlightTimeException : ArgumentException
-    {
-        #region Declarations
-        private const string DEFAULT_MESSAGE = "Flight time is invalid.";
-        #endregion
-
-        #region Constructors
-        public InvalidFlightTimeException()
-            : base(DEFAULT_MESSAGE) { }
-
-        public InvalidFlightTimeException(string? message, Exception? innerException)
-            : base(message, innerException) { }
-
-        public InvalidFlightTimeException(string? message, string? paramName)
-            : base(message, paramName) { }
-        #endregion
-    }
 }

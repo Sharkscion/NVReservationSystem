@@ -92,7 +92,6 @@ namespace FlightReservation.UI.Views
                 reservationService: _reservationService,
                 flightService: _flightService,
                 reservationModel: new ReservationModel(),
-                flightModel: new FlightModel(),
                 passengerModel: new PassengerModel()
             );
 

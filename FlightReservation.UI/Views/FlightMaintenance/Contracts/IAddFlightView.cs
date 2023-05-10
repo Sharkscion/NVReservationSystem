@@ -18,8 +18,6 @@ namespace FlightReservation.UI.Views.FlightMaintenance.Contracts
         event EventHandler FlightNumberChanged;
         event EventHandler ArrivalStationChanged;
         event EventHandler DepartureStationChanged;
-        event EventHandler ArrivalScheduledTimeChanged;
-        event EventHandler DepartureScheduledTimeChanged;
         event EventHandler Submitted;
         #endregion
     }

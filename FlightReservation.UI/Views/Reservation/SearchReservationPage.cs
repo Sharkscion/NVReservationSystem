@@ -81,9 +81,9 @@ namespace FlightReservation.UI.Views.Reservation
                 + " -> "
                 + reservation.FlightInfo.ArrivalStation;
             string flightTime =
-                reservation.FlightInfo.DepartureScheduledTime.ToString("HH:mm")
+                reservation.FlightInfo.DepartureScheduledTimeString
                 + "-"
-                + reservation.FlightInfo.ArrivalScheduledTime.ToString("HH:mm");
+                + reservation.FlightInfo.ArrivalScheduledTimeString;
 
             Console.WriteLine($"[Booked Flight Details]");
             Console.WriteLine($"Flight Designator: {flightDesignator}");

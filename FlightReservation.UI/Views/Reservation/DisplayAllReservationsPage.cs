@@ -59,9 +59,9 @@ namespace FlightReservation.UI.Views.Reservation
                     + reservation.FlightInfo.ArrivalStation;
 
                 var flightTime =
-                    reservation.FlightInfo.DepartureScheduledTime.ToString("HH:mm")
+                    reservation.FlightInfo.DepartureScheduledTimeString
                     + " - "
-                    + reservation.FlightInfo.ArrivalScheduledTime.ToString("HH:mm");
+                    + reservation.FlightInfo.ArrivalScheduledTimeString;
 
                 var output = String.Format(
                     "{0,3} {1,-6} {2,5} {3,-15} {4,-18} {5, -10} {6,-15}\n",

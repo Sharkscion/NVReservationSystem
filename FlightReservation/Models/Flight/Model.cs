@@ -6,6 +6,8 @@ namespace FlightReservation.Models.Flight
     public class FlightModel : IFlight
     {
         #region Declarations
+        private const string TIME_FORMAT = "HH:mm";
+
         private string _airlineCode;
         private int _flightNumber;
         private string _arrivalStation;
@@ -108,35 +110,31 @@ namespace FlightReservation.Models.Flight
         public TimeOnly ArrivalScheduledTime
         {
             get { return _arrivalScheduledTime; }
-            set
-            {
-                bool isAfterDepartureTime = DepartureScheduledTime < value;
-                if (!isAfterDepartureTime)
-                {
-                    throw new InvalidFlightTimeException(
-                        paramName: nameof(ArrivalScheduledTime),
-                        message: "Scheduled time of arrival must be after scheduled time of departure."
-                    );
-                }
-
-                _arrivalScheduledTime = value;
-            }
+            set { _arrivalScheduledTime = value; }
         }
         public TimeOnly DepartureScheduledTime
         {
             get { return _departureScheduledTime; }
-            set
+            set { _departureScheduledTime = value; }
+        }
+
+        public string ArrivalScheduledTimeString
+        {
+            get
             {
-                bool isBeforeArrivalTime = value < ArrivalScheduledTime;
-                if (!isBeforeArrivalTime)
+                var value = ArrivalScheduledTime.ToString(TIME_FORMAT);
+                if (DepartureScheduledTime >= ArrivalScheduledTime)
                 {
-                    throw new InvalidFlightTimeException(
-                        paramName: nameof(DepartureScheduledTime),
-                        message: "Scheduled time of departure must be before scheduled time of arrival."
-                    );
+                    value += " +1";
                 }
-                _departureScheduledTime = value;
+
+                return value;
             }
+        }
+
+        public string DepartureScheduledTimeString
+        {
+            get { return DepartureScheduledTime.ToString(TIME_FORMAT); }
         }
         #endregion
 
@@ -168,7 +166,7 @@ namespace FlightReservation.Models.Flight
         #region Public Methods
         public override string ToString()
         {
-            return $"{AirlineCode} {FlightNumber} {DepartureStation}->{ArrivalStation}";
+            return $"{AirlineCode} {FlightNumber} {DepartureStation}->{ArrivalStation} {DepartureScheduledTimeString}-{ArrivalScheduledTimeString}";
         }
 
         /// <summary>

@@ -31,7 +31,7 @@ namespace FlightReservation.Test.Services.Fixtures
                     FlightNumber = 1,
                     DepartureStation = "MNL",
                     ArrivalStation = "CEB",
-                    DepartureScheduledTime = new TimeOnly(hour: 14, minute: 0),
+                    DepartureScheduledTime = new TimeOnly(hour: 13, minute: 30),
                     ArrivalScheduledTime = new TimeOnly(hour: 15, minute: 0)
                 },
                 new FlightModel

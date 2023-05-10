@@ -128,45 +128,6 @@ namespace FlightReservation.UI.Test.FlightMaintenance
         }
 
         [Fact]
-        public void SetDepartureScheduledTimeError_WhenInvalid()
-        {
-            _mockView.SetupProperty(v => v.ArrivalScheduledTime, new TimeOnly(hour: 3, minute: 0));
-
-            _mockView
-                .SetupProperty(v => v.DepartureScheduledTime, new TimeOnly(hour: 4, minute: 0))
-                .Raise(v => v.DepartureScheduledTimeChanged += null, this, EventArgs.Empty);
-
-            _mockView.Verify(
-                v =>
-                    v.SetFieldError(
-                        nameof(v.DepartureScheduledTime),
-                        "Departure scheduled time must be before the arrival scheduled time."
-                    )
-            );
-        }
-
-        [Fact]
-        public void SetArrivalScheduledTimeError_WhenInvalid()
-        {
-            _mockView.SetupProperty(
-                v => v.DepartureScheduledTime,
-                new TimeOnly(hour: 3, minute: 0)
-            );
-
-            _mockView
-                .SetupProperty(v => v.ArrivalScheduledTime, new TimeOnly(hour: 2, minute: 0))
-                .Raise(v => v.ArrivalScheduledTimeChanged += null, this, EventArgs.Empty);
-
-            _mockView.Verify(
-                v =>
-                    v.SetFieldError(
-                        nameof(v.ArrivalScheduledTime),
-                        "Arrival scheduled time must be after the departure scheduled time."
-                    )
-            );
-        }
-
-        [Fact]
         public void CreateFlight_WhenSubmitted()
         {
             _mockView.SetupProperty(v => v.AirlineCode, "NV");
