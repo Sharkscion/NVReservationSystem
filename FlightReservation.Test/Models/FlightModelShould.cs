@@ -159,22 +159,6 @@ namespace FlightReservation.Test.Models
             Assert.Equal(value, model.ArrivalStation);
         }
 
-        [Theory]
-        [MemberData(nameof(GetInvalidDepartureArrivalScheduledTimePairs))]
-        public void RaiseError_WhenInvalidDepartureScheduledTime(
-            TimeOnly departureScheduledTime,
-            TimeOnly arrivalScheduledTime
-        )
-        {
-            var model = new FlightModel();
-            model.ArrivalScheduledTime = arrivalScheduledTime;
-
-            Action action = () => model.DepartureScheduledTime = departureScheduledTime;
-
-            var exception = Assert.Throws<InvalidFlightTimeException>(action);
-            Assert.Equal(nameof(model.DepartureScheduledTime), exception.ParamName);
-        }
-
         [Fact]
         public void SetDepartureScheduledTime_WhenValid()
         {
@@ -183,38 +167,24 @@ namespace FlightReservation.Test.Models
 
             model.DepartureScheduledTime = new TimeOnly(hour: 1, minute: 0);
 
-            Assert.Equal(model.DepartureScheduledTime, new TimeOnly(hour: 1, minute: 0));
-        }
-
-        [Theory]
-        [MemberData(nameof(GetInvalidDepartureArrivalScheduledTimePairs))]
-        public void RaiseError_WhenInvalidArrivalScheduledTime(
-            TimeOnly departureScheduledTime,
-            TimeOnly arrivalScheduledTime
-        )
-        {
-            var model = new FlightModel();
-            model.DepartureScheduledTime = departureScheduledTime;
-
-            Action action = () => model.ArrivalScheduledTime = arrivalScheduledTime;
-
-            var exception = Assert.Throws<InvalidFlightTimeException>(action);
-            Assert.Equal(nameof(model.ArrivalScheduledTime), exception.ParamName);
+            Assert.Equal( new TimeOnly(hour: 1, minute: 0), model.DepartureScheduledTime);
+            Assert.Equal("01:00", model.DepartureScheduledTimeString);
         }
 
         [Fact]
         public void SetArrivalScheduledTime_WhenValid()
         {
             var model = new FlightModel();
-            model.DepartureScheduledTime = new TimeOnly(hour: 1, minute: 0);
+            model.DepartureScheduledTime = new TimeOnly(hour: 11, minute: 0);
 
-            model.ArrivalScheduledTime = new TimeOnly(hour: 2, minute: 0);
+            model.ArrivalScheduledTime = new TimeOnly(hour: 10, minute: 0);
 
-            Assert.Equal(model.ArrivalScheduledTime, new TimeOnly(hour: 2, minute: 0));
+            Assert.Equal(new TimeOnly(hour: 10, minute: 0), model.ArrivalScheduledTime);
+            Assert.Equal("10:00 +1", model.ArrivalScheduledTimeString);
         }
 
         [Fact]
-        public void DisplayCorrectFlightFormat_WhenToStringCalled()
+        public void DisplayCorrectFlightFormat_WhenSTDPrecedesSTA()
         {
             var model = new FlightModel(
                 airlineCode: "AB",
@@ -227,7 +197,24 @@ namespace FlightReservation.Test.Models
 
             var result = model.ToString();
 
-            Assert.Equal("AB 1234 ABC->DEF", result);
+            Assert.Equal("AB 1234 ABC->DEF 01:00-02:00", result);
+        }
+
+        [Fact]
+        public void DisplayCorrectFlightFormat_WhenSTAPrecedesSTD()
+        {
+            var model = new FlightModel(
+                airlineCode: "AB",
+                flightNumber: 1234,
+                departureStation: "ABC",
+                arrivalStation: "DEF",
+                departureScheduledTime: new TimeOnly(hour: 11, minute: 30),
+                arrivalScheduledTime: new TimeOnly(hour: 10, minute: 30)
+            );
+
+            var result = model.ToString();
+
+            Assert.Equal("AB 1234 ABC->DEF 11:30-10:30 +1", result);
         }
 
         [Fact]
@@ -236,9 +223,9 @@ namespace FlightReservation.Test.Models
             string airlineCode = "NV";
             int flightNumber = 1234;
             string departureStation = "MNL";
-            string arrivalStation = "CEB";
-            TimeOnly departureScheduledTime = new TimeOnly(hour: 1, minute: 0);
-            TimeOnly arrivalScheduledTime = new TimeOnly(hour: 2, minute: 0);
+            string arrivalStation = "SLC";
+            TimeOnly departureScheduledTime = new TimeOnly(hour: 11, minute: 0);
+            TimeOnly arrivalScheduledTime = new TimeOnly(hour: 10, minute: 0);
 
             var initModel = new FlightModel();
 
@@ -253,7 +240,7 @@ namespace FlightReservation.Test.Models
             );
 
             // Assert
-            Assert.Equal("NV 1234 MNL->CEB", otherModel.ToString());
+            Assert.Equal("NV 1234 MNL->SLC 11:00-10:00 +1", otherModel.ToString());
             Assert.Equal(departureScheduledTime, otherModel.DepartureScheduledTime);
             Assert.Equal(arrivalScheduledTime, otherModel.ArrivalScheduledTime);
         }

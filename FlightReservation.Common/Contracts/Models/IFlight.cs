@@ -9,6 +9,8 @@
         public string DepartureStation { get; set; }
         public TimeOnly ArrivalScheduledTime { get; set; }
         public TimeOnly DepartureScheduledTime { get; set; }
+        public string ArrivalScheduledTimeString { get; }
+        public string DepartureScheduledTimeString { get; }
         #endregion
 
         #region Functions
