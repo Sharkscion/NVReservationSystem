@@ -72,10 +72,16 @@ namespace FlightReservation.Models.Passenger
         #endregion
 
         #region Constructors
-        public PassengerModel() { }
+        public PassengerModel() {
+            _firstName = string.Empty;
+            _lastName = string.Empty;
+        }
 
         public PassengerModel(IDateTimeProvider dateTimeProvider)
         {
+            _firstName = string.Empty;
+            _lastName = string.Empty;
+
             _dateTimeProvider = dateTimeProvider;
         }
 

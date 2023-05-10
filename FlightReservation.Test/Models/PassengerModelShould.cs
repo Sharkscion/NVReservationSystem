@@ -17,7 +17,7 @@ namespace FlightReservation.Test.Models
         #region Data Generators
         public static IEnumerable<object[]> GetInvalidNames()
         {
-            yield return new object[] { null };
+            yield return new object[] { null! };
             yield return new object[] { "" };
             yield return new object[] { " " };
             yield return new object[] { "Name Space" };
@@ -140,7 +140,6 @@ namespace FlightReservation.Test.Models
         public void CalculateCorrectAge_WhenBirthDateHasLeapYear()
         {
             var dateTimeProvider = new DateTimeProvider();
-
             DateTime leapBirthDate = new DateTime(year: 1996, month: 2, day: 29);
 
             var model = new PassengerModel(dateTimeProvider);

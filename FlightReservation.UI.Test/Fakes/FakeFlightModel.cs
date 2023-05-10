@@ -5,14 +5,14 @@ namespace FlightReservation.UI.Test.Fakes
     internal class FakeFlightModel : IFlight
     {
         #region Properties
-        public string AirlineCode { get; set; }
+        public string AirlineCode { get; set; } = string.Empty;
         public int FlightNumber { get; set; }
-        public string ArrivalStation { get; set; }
-        public string DepartureStation { get; set; }
+        public string ArrivalStation { get; set; } = string.Empty;
+        public string DepartureStation { get; set; } = string.Empty;
         public TimeOnly ArrivalScheduledTime { get; set; }
         public TimeOnly DepartureScheduledTime { get; set; }
-        public string ArrivalScheduledTimeString { get; }
-        public string DepartureScheduledTimeString { get; }
+        public string ArrivalScheduledTimeString { get; } = string.Empty;
+        public string DepartureScheduledTimeString { get; } = string.Empty;
 
         #endregion
 
