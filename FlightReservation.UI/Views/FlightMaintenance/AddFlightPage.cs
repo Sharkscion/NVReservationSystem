@@ -62,21 +62,13 @@ namespace FlightReservation.UI.Views.FlightMaintenance
         public TimeOnly DepartureScheduledTime
         {
             get { return _departureScheduledTime; }
-            set
-            {
-                _departureScheduledTime = value;
-                onScheduledDepartureTimeChanged();
-            }
+            set { _departureScheduledTime = value; }
         }
 
         public TimeOnly ArrivalScheduledTime
         {
             get { return _arrivalScheduledTime; }
-            set
-            {
-                _arrivalScheduledTime = value;
-                onScheduledArrivalTimeChanged();
-            }
+            set { _arrivalScheduledTime = value; }
         }
 
         public bool IsFormValid
@@ -90,8 +82,6 @@ namespace FlightReservation.UI.Views.FlightMaintenance
         public event EventHandler FlightNumberChanged;
         public event EventHandler ArrivalStationChanged;
         public event EventHandler DepartureStationChanged;
-        public event EventHandler ArrivalScheduledTimeChanged;
-        public event EventHandler DepartureScheduledTimeChanged;
         public event EventHandler Submitted;
         #endregion
 
@@ -171,16 +161,6 @@ namespace FlightReservation.UI.Views.FlightMaintenance
         private void onArrivalStationChanged()
         {
             ArrivalStationChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void onScheduledDepartureTimeChanged()
-        {
-            DepartureScheduledTimeChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void onScheduledArrivalTimeChanged()
-        {
-            ArrivalScheduledTimeChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void onSubmitted()
@@ -266,7 +246,7 @@ namespace FlightReservation.UI.Views.FlightMaintenance
         {
             do
             {
-                Console.Write("Departure Scheduled Time [HH:mm]: ");
+                Console.Write($"Departure Scheduled Time [{TIME_FORMAT}]: ");
                 string? input = Console.ReadLine();
 
                 _isFormValid = TimeOnly.TryParseExact(input, TIME_FORMAT, out TimeOnly parsedValue);
@@ -274,7 +254,7 @@ namespace FlightReservation.UI.Views.FlightMaintenance
                 {
                     SetFieldError(
                         nameof(DepartureScheduledTime),
-                        "Scheduled departure time should be in \"HH:mm\" format."
+                        $"Scheduled departure time should be in \"{TIME_FORMAT}\" format."
                     );
                     continue;
                 }
@@ -287,7 +267,7 @@ namespace FlightReservation.UI.Views.FlightMaintenance
         {
             do
             {
-                Console.Write("Arrival Scheduled Time [HH:mm]: ");
+                Console.Write($"Arrival Scheduled Time [{TIME_FORMAT}]: ");
                 string? input = Console.ReadLine();
 
                 _isFormValid = TimeOnly.TryParseExact(input, TIME_FORMAT, out TimeOnly parsedValue);
@@ -295,7 +275,7 @@ namespace FlightReservation.UI.Views.FlightMaintenance
                 {
                     SetFieldError(
                         nameof(ArrivalScheduledTime),
-                        "Scheduled arrival time should be in \"HH:mm\" format."
+                        $"Scheduled arrival time should be in \"{TIME_FORMAT}\" format."
                     );
                     continue;
                 }
@@ -326,9 +306,11 @@ namespace FlightReservation.UI.Views.FlightMaintenance
             Console.WriteLine($"Departure Station Code: {DepartureStation}");
             Console.WriteLine($"Arrival Station Code: {ArrivalStation}");
             Console.WriteLine(
-                $"Scheduled Departure Time: {DepartureScheduledTime.ToString("HH:mm")}"
+                $"Scheduled Departure Time: {DepartureScheduledTime.ToString(TIME_FORMAT)}"
             );
-            Console.WriteLine($"Scheduled Arrival Time: {ArrivalScheduledTime.ToString("HH:mm")}");
+            Console.WriteLine(
+                $"Scheduled Arrival Time: {ArrivalScheduledTime.ToString(TIME_FORMAT)}"
+            );
             Console.WriteLine("-------------------------------------------");
         }
         #endregion

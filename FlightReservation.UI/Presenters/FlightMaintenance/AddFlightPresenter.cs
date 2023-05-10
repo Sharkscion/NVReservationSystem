@@ -26,8 +26,6 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
             _view.FlightNumberChanged += OnFlightNumberChanged;
             _view.DepartureStationChanged += OnDepartureStationChanged;
             _view.ArrivalStationChanged += OnArrivalStationChanged;
-            _view.DepartureScheduledTimeChanged += OnDepartureScheduledTimeChanged;
-            _view.ArrivalScheduledTimeChanged += OnArrivalScheduledTimeChanged;
             _view.Submitted += OnSubmitted;
         }
         #endregion
@@ -64,28 +62,6 @@ namespace FlightReservation.UI.Presenters.FlightMaintenance
                 _view.SetFieldError(
                     nameof(_view.ArrivalStation),
                     "Arrival station must not be the same as the departure station."
-                );
-            }
-        }
-
-        public void OnArrivalScheduledTimeChanged(object? source, EventArgs e)
-        {
-            if (_view.DepartureScheduledTime > _view.ArrivalScheduledTime)
-            {
-                _view.SetFieldError(
-                    nameof(_view.ArrivalScheduledTime),
-                    "Arrival scheduled time must be after the departure scheduled time."
-                );
-            }
-        }
-
-        public void OnDepartureScheduledTimeChanged(object? source, EventArgs e)
-        {
-            if (_view.DepartureScheduledTime > _view.ArrivalScheduledTime)
-            {
-                _view.SetFieldError(
-                    nameof(_view.DepartureScheduledTime),
-                    "Departure scheduled time must be before the arrival scheduled time."
                 );
             }
         }
