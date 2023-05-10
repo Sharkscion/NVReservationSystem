@@ -131,7 +131,7 @@ namespace FlightReservation.Test.Models
             var otherModel = initModel.CreateFrom(flightDate, flight, passengers);
 
             // Assert
-            Assert.Null(otherModel.PNR);
+            Assert.Equal(string.Empty, otherModel.PNR);
             Assert.Equal(flight, otherModel.FlightInfo);
             Assert.Equal(flightDate, otherModel.FlightDate);
             Assert.Equal(passengers.Count(), otherModel.Passengers.Count());

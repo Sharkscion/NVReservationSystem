@@ -28,7 +28,7 @@ namespace FlightReservation.Models.Reservation
             }
         }
 
-        public string PNR { get; }
+        public string PNR { get; } = string.Empty;
 
         public IEnumerable<IPassenger> Passengers
         {
@@ -53,13 +53,15 @@ namespace FlightReservation.Models.Reservation
         #endregion
 
         #region Constructors
-        public ReservationModel() { }
+        public ReservationModel() { 
+            _passengers = new List<IPassenger>();
+        }
 
         public ReservationModel(
             IFlight flightInfo,
             DateTime flightDate,
             IEnumerable<IPassenger> passengers
-        )
+        ): this()
         {
             FlightInfo = flightInfo;
             FlightDate = flightDate;

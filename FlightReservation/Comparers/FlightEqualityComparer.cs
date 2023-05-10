@@ -8,10 +8,10 @@ namespace FlightReservation.Comparers
         #region Implementation of IEqualityComparer
         public bool Equals(IFlight? x, IFlight? y)
         {
-            return x.AirlineCode == y.AirlineCode
-                && x.FlightNumber == y.FlightNumber
-                && x.DepartureStation == y.DepartureStation
-                && x.ArrivalStation == y.ArrivalStation;
+            return x?.AirlineCode == y?.AirlineCode
+                && x?.FlightNumber == y?.FlightNumber
+                && x?.DepartureStation == y?.DepartureStation
+                && x?.ArrivalStation == y?.ArrivalStation;
         }
 
         public int GetHashCode([DisallowNull] IFlight obj)
