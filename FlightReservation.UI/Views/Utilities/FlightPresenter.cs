@@ -28,7 +28,7 @@ namespace FlightReservation.UI.Views.Utilities
                     flight.AirlineCode,
                     flight.FlightNumber,
                     $"{flight.DepartureStation} -> {flight.ArrivalStation}",
-                    $"{flight.DepartureScheduledTime.ToString("HH:mm")} - {flight.ArrivalScheduledTime.ToString("HH:mm")}"
+                    $"{flight.DepartureScheduledTimeString} - {flight.ArrivalScheduledTimeString}"
                 );
                 Console.WriteLine(output);
 
